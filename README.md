@@ -1,4 +1,4 @@
-# Keboola Angular Library
+# Keboola Angular Library [![Build Status](https://secure.travis-ci.org/keboola/angular-kb.png)](http://travis-ci.org/keboola/angular-kb)
 
 Keboola extensions library for Angular.
 
