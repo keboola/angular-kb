@@ -1,0 +1,23 @@
+{
+	"author": "https://github.com/keboola",
+	"name": "angular-kb",
+	"description": "KB - extensions library for AngularJS",
+	"version": "0.0.1",
+	"engines":{
+		"node": ">=0.8.0"
+	},
+	"devDependencies": {
+		"grunt": "~0.4.1",
+		"grunt-contrib-coffee": "~0.4.0",
+		"grunt-testacular": "~0.3.0",
+		"grunt-contrib-jshint": "~0.1.1",
+		"grunt-contrib-nodeunit": "~0.1.0",
+		"grunt-contrib-concat": "~0.1.2",
+		"grunt-contrib-uglify": "~0.1.1",
+		"grunt-contrib-connect": "~0.1.0",
+		"grunt-contrib-watch": "~0.2.0",
+		"grunt-contrib-clean": "~0.4.0",
+		"grunt-contrib-cssmin": "~0.4.1",
+		"grunt-karma": "~0.3.0"
+ 	}
+}
