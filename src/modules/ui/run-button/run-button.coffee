@@ -1,10 +1,10 @@
 
 
-angular.module('kb.ui.runButton', [])
+angular.module('kb.ui.runButton', ['kb.ui.loader'])
 	.directive('kbRunButton', ->
 			restrict: 'E'
 			template: """
-				<a href="#" class="btn run-transformation">
+				<a class="btn run-transformation kb-loader">
 					<i  class="icon-play"> </i>
 				</a>
 			"""

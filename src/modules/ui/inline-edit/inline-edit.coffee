@@ -20,7 +20,7 @@
 						</a>
 				</span>
 				<div ng-show="isEditing" class="input-append editing">
-					<input type="text" ng-model="editValue" /><button
+					<input type="text" ng-model="editValue" placeholder="{{ placeholder }}"/><button
 							class="btn btn-success" ng-click="save()">
 								<i class="icon-ok" title="save"></i></button><button
 						class="btn" ng-click="cancel()"><i class="icon-remove" title="Cancel"></i></button>

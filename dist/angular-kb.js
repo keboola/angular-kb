@@ -1220,7 +1220,7 @@
           onSave: '&',
           placeholder: '@'
         },
-        template: "<span class=\"static\" ng-hide=\"isEditing\" ng-click=\"edit()\">\n 	{{ value }}\n	 <a class=\"placeholder\" ng-show=\"!value\">\n			<i class=\"icon-edit\"></i>\n			{{ placeholder }}\n		</a>\n</span>\n<div ng-show=\"isEditing\" class=\"input-append editing\">\n	<input type=\"text\" ng-model=\"editValue\" /><button\n			class=\"btn btn-success\" ng-click=\"save()\">\n				<i class=\"icon-ok\" title=\"save\"></i></button><button\n		class=\"btn\" ng-click=\"cancel()\"><i class=\"icon-remove\" title=\"Cancel\"></i></button>\n</div>",
+        template: "<span class=\"static\" ng-hide=\"isEditing\" ng-click=\"edit()\">\n 	{{ value }}\n	 <a class=\"placeholder\" ng-show=\"!value\">\n			<i class=\"icon-edit\"></i>\n			{{ placeholder }}\n		</a>\n</span>\n<div ng-show=\"isEditing\" class=\"input-append editing\">\n	<input type=\"text\" ng-model=\"editValue\" placeholder=\"{{ placeholder }}\"/><button\n			class=\"btn btn-success\" ng-click=\"save()\">\n				<i class=\"icon-ok\" title=\"save\"></i></button><button\n		class=\"btn\" ng-click=\"cancel()\"><i class=\"icon-remove\" title=\"Cancel\"></i></button>\n</div>",
         controller: InlineEditController
       };
     }).directive('kbInlineEditDatetime', function() {
@@ -1358,7 +1358,7 @@
   angular.module('kb.ui.loader', []).directive('kbLoader', function() {
     return {
       restrict: 'E',
-      template: "<a>\n	<i  class=\"icon-refresh\"> </i>\n</a>",
+      template: "<a kb-loader class=\"kb-loader\">\n	<i class=\"icon-refresh\"> </i>\n</a>",
       replace: true,
       link: function(scope, element, attrs) {
         var icon;
@@ -1411,10 +1411,10 @@
 
 (function() {
 
-  angular.module('kb.ui.runButton', []).directive('kbRunButton', function() {
+  angular.module('kb.ui.runButton', ['kb.ui.loader']).directive('kbRunButton', function() {
     return {
       restrict: 'E',
-      template: "<a href=\"#\" class=\"btn run-transformation\">\n	<i  class=\"icon-play\"> </i>\n</a>",
+      template: "<a class=\"btn run-transformation kb-loader\">\n	<i  class=\"icon-play\"> </i>\n</a>",
       replace: true,
       link: function(scope, element, attrs) {
         var icon;

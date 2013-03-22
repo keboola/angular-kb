@@ -37,6 +37,10 @@ module.exports = function(grunt) {
 				src: ['**/*.coffee'],
 				dest: 'tmp/',
 				ext: '.js'
+			},
+			docs: {
+				src: ['docs/scripts/*.coffee'],
+				dest: 'docs/scripts/app.js'
 			}
 		},
 		concat: {
@@ -79,6 +83,10 @@ module.exports = function(grunt) {
 			grunt: {
 				files: ['Gruntfile.js'],
 				tasks: 'build'
+			},
+			docs: {
+				files: ['docs/scripts/**/*.coffee'],
+				tasks: ['coffee:docs']
 			}
 		},
 		jshint: {

@@ -1,0 +1,30 @@
+<div class="bs-docs-example">
+
+	<kb-toggable-group>
+		<kb-toggable header="First section">
+			Content of section 1.
+		</kb-toggable>
+		<kb-toggable header="Second section">
+			Content of section 2.
+		</kb-toggable>
+	</kb-toggable-group>
+
+</div>
+
+
+<p>Control of open state:</p>
+<div class="bs-docs-example">
+	<label class="checkbox">
+		<input type="checkbox" ng-model="opened" />
+		First section opened
+	</label>
+	<kb-toggable-group>
+		<kb-toggable header="First section" opened="opened">
+			Content of section 1.
+		</kb-toggable>
+		<kb-toggable header="Second section">
+			Content of section 2.
+		</kb-toggable>
+	</kb-toggable-group>
+
+</div>

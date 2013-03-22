@@ -9,8 +9,8 @@ files = [
   JASMINE_ADAPTER,
   'components/angular/angular.js',
   'components/angular-mocks/angular-mocks.js',
-  'components/bootstrap/docs/assets/js/bootstrap.min.js',
   'components/jquery/jquery.js',
+  'components/bootstrap/docs/assets/js/bootstrap.js',
   'dist/angular-kb.js',
   'tmp/modules/**/test/*.js'
 ];

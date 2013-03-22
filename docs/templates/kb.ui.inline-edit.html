@@ -1,0 +1,29 @@
+<div class="bs-docs-example">
+
+	<div class="row-fluid">
+		<div class="span3">
+			<strong>Your name:</strong><input ng-model="textEditValue"/>
+			<strong>Placeholder:</strong><input ng-model="textEditPlaceholder"/>
+			<strong>Title:</strong><input ng-model="textEditTitle"/>
+		</div>
+		<div class="span9">
+			<strong>kb-inline-edit</strong>:<br/>
+			<kb-inline-edit value="textEditValue" title="{{ textEditTitle }}" placeholder="{{ textEditPlaceholder }}"></kb-inline-edit>
+		</div>
+	</div>
+</div>
+
+<div class="bs-docs-example">
+
+	<div class="row-fluid">
+		<div class="span3">
+			<strong>Your name:</strong>
+			<textarea ng-model="textAreaValue"></textarea>
+			<strong>Placeholder:</strong><input ng-model="textAreaPlaceholder"/>
+		</div>
+		<div class="span9">
+			<strong>kb-inline-edit-textarea</strong>:<br/>
+			<kb-inline-edit-textarea value="textAreaValue" placeholder="{{ textAreaPlaceholder }}"></kb-inline-edit-textarea>
+		</div>
+	</div>
+</div>

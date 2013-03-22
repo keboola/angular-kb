@@ -3,8 +3,8 @@ angular.module('kb.ui.loader', [])
 	.directive('kbLoader', ->
 		restrict: 'E'
 		template: """
-			<a>
-				<i  class="icon-refresh"> </i>
+			<a kb-loader class="kb-loader">
+				<i class="icon-refresh"> </i>
 			</a>
 		"""
 		replace: true
