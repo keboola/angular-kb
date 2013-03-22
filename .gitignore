@@ -1,5 +1,5 @@
 .DS_Store
 .idea
 tmp
-components
+docs/components
 node_modules

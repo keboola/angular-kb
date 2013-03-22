@@ -7,11 +7,11 @@ basePath = '';
 files = [
   JASMINE,
   JASMINE_ADAPTER,
-  'components/angular/angular.js',
-  'components/angular-mocks/angular-mocks.js',
-  'components/jquery/jquery.js',
-  'components/bootstrap/docs/assets/js/bootstrap.js',
-  'dist/angular-kb.js',
+  'docs/components/angular/angular.js',
+  'docs/components/angular-mocks/angular-mocks.js',
+  'docs/components/jquery/jquery.js',
+  'docs/components/bootstrap/docs/assets/js/bootstrap.js',
+  'docs/build/angular-kb.js',
   'tmp/modules/**/test/*.js'
 ];
 
