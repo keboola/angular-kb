@@ -4,6 +4,12 @@
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */
+
+.copy-button-container {
+	display: inline-block;
+	position: relative;
+}
+
 /**
 * Inline edit
 */

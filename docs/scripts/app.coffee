@@ -10,6 +10,7 @@
 		'kb.ui.toggable'
 		'kb.ui.run-button'
 		'kb.ui.loader'
+		'kb.ui.copy-button'
 	]
 
 	app.config(($routeProvider) ->
@@ -130,7 +131,12 @@
 			lines
     """
 		$scope.textAreaPlaceholder = 'Enter some text...'
+	)
 
+	app.controller('kb.ui.copy-button', ($scope) ->
+		$scope.copyValue = "Text to copy"
+		$scope.copyMessage = "Text copied!"
+		$scope.copyTitle = "Copy text"
 	)
 
 

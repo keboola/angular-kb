@@ -1064,55 +1064,51 @@
 
 }).call(this);
 
-
-/*
-  Copy button
-  Copy value to clipboard on click
-  @TODO: add dependency for ZeroClipboard
-*/
-
-
 (function() {
 
   angular.module('kb.ui.copyButton', []).directive('kbCopyButton', [
     '$timeout', function($timeout) {
+      ZeroClipboard.setMoviePath('/components/zeroclipboard/ZeroClipboard.swf');
       return {
         restrict: 'E',
         scope: {
           copyValue: '=',
+          copyTitle: '@',
           copyMessage: '@'
         },
         replace: true,
         transclude: true,
         template: "<div class=\"copy-button-container\">\n	<div ng-transclude class=\"copy-button\"></div>\n</div>",
         link: function(scope, element, attrs) {
-          var clip;
-          element.css('position', 'relative');
-          ZeroClipboard.setMoviePath('/lib/zero-clipboard/ZeroClipboard.swf');
+          var clip, setTooltipTitle, tooltip;
           clip = new ZeroClipboard.Client();
           clip.glue(element.find('.copy-button')[0], angular.element(element)[0]);
           clip.setText(scope.copyValue);
           element.find('div').last().addClass('zero-clipboard-overlay');
+          element.tooltip({
+            title: scope.copyTitle
+          });
+          tooltip = element.data('tooltip');
+          setTooltipTitle = function(title) {
+            element.removeAttr('data-original-title');
+            return tooltip.options.title = title;
+          };
           scope.$watch('copyValue', function(newValue) {
             return clip.setText(newValue);
           });
+          scope.$watch('copyTitle', function(copyTitle) {
+            return setTooltipTitle(copyTitle);
+          });
           scope.$on('$destroy', function() {
-            return clip.destroy();
+            clip.destroy();
+            return tooltip.destroy();
           });
           return clip.addEventListener('onComplete', function(client, text) {
-            var originalTitle, setOriginalTitle, tooltip;
-            tooltip = element.data('tooltip');
-            if (!tooltip) {
-              return;
-            }
-            originalTitle = element.attr('data-original-title');
-            element.removeAttr('data-original-title');
-            tooltip.options.title = scope.copyMessage;
+            setTooltipTitle(scope.copyMessage);
             tooltip.show();
-            setOriginalTitle = function() {
-              return tooltip.options.title = originalTitle;
-            };
-            return $timeout(setOriginalTitle, 2000);
+            return $timeout(function() {
+              return setTooltipTitle(scope.copyTitle);
+            }, 2000);
           });
         }
       };

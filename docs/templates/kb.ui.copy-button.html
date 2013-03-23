@@ -1,0 +1,37 @@
+<div class="bs-docs-example">
+
+	<div class="control-group">
+		<label class="control-label" >Value to copy:</label>
+		<div class="controls">
+			<input type="text" ng-model="copyValue" />
+		</div>
+  	</div>
+
+	<div class="control-group">
+		<label class="control-label" >Copy action tooltip:</label>
+		<div class="controls">
+			<input type="text" ng-model="copyTitle" />
+		</div>
+	</div>
+
+	<div class="control-group">
+		<label class="control-label" >Copied message:</label>
+		<div class="controls">
+			<input type="text" ng-model="copyMessage" />
+		</div>
+	</div>
+
+	<div class="well">
+		<kb-copy-button copy-value="copyValue" copy-message="{{ copyMessage }}" copy-title="{{ copyTitle }}">
+			<span>{{ copyValue }}</span>
+			<span class="icon-share"></span>
+		</kb-copy-button>
+	</div>
+</div>
+
+<div class="bs-docs-example">
+	<kb-copy-button copy-value="'Copied value'" copy-message="copied!" copy-title="copy">
+		<span class="btn btn-primary">Copy!</span>
+	</kb-copy-button>
+	<textarea placeholder="Paste your clipboard here.."></textarea>
+</div>
