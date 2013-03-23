@@ -1,9 +1,14 @@
 
 
 angular
-	.module( 'kb.ui.copyButton', [])
-	.directive('kbCopyButton', ['$timeout', ($timeout) ->
-		ZeroClipboard.setMoviePath( '/components/zeroclipboard/ZeroClipboard.swf' )
+	.module( 'kb.ui.copyButton', ['kb.config'])
+	.directive('kbCopyButton', ['$timeout', 'kb.config', ($timeout, config) ->
+
+		# set zeroclipboard swf path
+		swfPath = config['ui']?['copy-button']?['swfPath']
+		swfPath = '/components/zeroclipboard/ZeroClipboard.swf' if !swfPath
+		ZeroClipboard.setMoviePath( swfPath )
+
 		return {
 			restrict: 'E'
 			scope:

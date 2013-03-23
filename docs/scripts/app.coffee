@@ -3,6 +3,12 @@
 
 	app = angular.module('kbDocs', ['kb'])
 
+	app.value('kb.config',
+		ui:
+			'copy-button':
+				swfPath: 'components/zeroclipboard/ZeroClipboard.swf'
+	)
+
 	modules = [
 		'kb.ui.inline-edit'
 		'kb.ui.datetime'

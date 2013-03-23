@@ -1066,9 +1066,14 @@
 
 (function() {
 
-  angular.module('kb.ui.copyButton', []).directive('kbCopyButton', [
-    '$timeout', function($timeout) {
-      ZeroClipboard.setMoviePath('/components/zeroclipboard/ZeroClipboard.swf');
+  angular.module('kb.ui.copyButton', ['kb.config']).directive('kbCopyButton', [
+    '$timeout', 'kb.config', function($timeout, config) {
+      var swfPath, _ref, _ref1;
+      swfPath = (_ref = config['ui']) != null ? (_ref1 = _ref['copy-button']) != null ? _ref1['swfPath'] : void 0 : void 0;
+      if (!swfPath) {
+        swfPath = '/components/zeroclipboard/ZeroClipboard.swf';
+      }
+      ZeroClipboard.setMoviePath(swfPath);
       return {
         restrict: 'E',
         scope: {
