@@ -2,4 +2,6 @@
 .idea
 tmp
 docs/components
+docs_dist
 node_modules
+docs/scripts/*.js
