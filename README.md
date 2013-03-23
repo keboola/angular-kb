@@ -9,3 +9,8 @@ Keboola extensions library for Angular.
 * Install dependencies `npm install && bower install --dev`
 * Run test server `grunt testServer`
 * Run watch in another terminal `grunt watch`
+
+
+## Documentation publish
+
+* `grunt publishDocs`
