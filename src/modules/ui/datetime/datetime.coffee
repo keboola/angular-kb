@@ -18,13 +18,15 @@ angular
 				datetime: '='
 				emptyValue: '@'
 			template: """
-				<span ng-cloak>{{ formattedValue() }}
+				<span ng-cloak>
+					{{ formattedValue() }}
 					<i class="kb-datetime icon-time" ng-show="isDatetime()"></i>
 				</span>
 			"""
 			link: (scope, element, attrs) ->
 
 				scope.resolveEmptyValue = ->
+					console.log scope
 					return 'N/A' if !scope.emptyValue
 					scope.emptyValue
 

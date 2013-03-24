@@ -121,6 +121,8 @@
 				"Something..."
 				""
 			]
+			$scope.editTime = "2013-03-06T15:24:12+00:00"
+			$scope.editEmptyValue = "N/A"
 	)
 
 	app.controller('kb.ui.inline-edit', ($scope) ->

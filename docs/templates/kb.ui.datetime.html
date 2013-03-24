@@ -14,6 +14,25 @@
 					<kb-datetime datetime="time"></kb-datetime>
 				</td>
 			</tr>
+			<tr>
+				<td>
+					<div class="control-group">
+						<label class="control-label" >Value</label>
+						<div class="controls">
+							<input type="text" ng-model="editTime" />
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" >Empty value</label>
+						<div class="controls">
+							<input type="text" ng-model="editEmptyValue" />
+						</div>
+					</div>
+				</td>
+				<td>
+					<kb-datetime datetime="editTime" empty-value="{{ editEmptyValue }}"></kb-datetime>
+				</td>
+			</tr>
 		</tbody>
 	</table>
 </div>

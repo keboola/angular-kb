@@ -1144,10 +1144,11 @@
           datetime: '=',
           emptyValue: '@'
         },
-        template: "<span ng-cloak>{{ formattedValue() }}\n	<i class=\"kb-datetime icon-time\" ng-show=\"isDatetime()\"></i>\n</span>",
+        template: "<span ng-cloak>\n	{{ formattedValue() }}\n	<i class=\"kb-datetime icon-time\" ng-show=\"isDatetime()\"></i>\n</span>",
         link: function(scope, element, attrs) {
           var tooltipTitle;
           scope.resolveEmptyValue = function() {
+            console.log(scope);
             if (!scope.emptyValue) {
               return 'N/A';
             }
