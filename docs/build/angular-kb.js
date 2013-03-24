@@ -1268,7 +1268,7 @@
           editTitle: '@',
           placeholder: '@'
         },
-        template: "<span class=\"static\" ng-hide=\"isEditing\" ng-click=\"edit()\">\n	{{ value }}\n	<span class=\"placeholder\" ng-show=\"!value\">{{ placeholder }}</span>\n</span>\n<div ng-show=\"isEditing\" class=\"input-append editing\">\n	<select ng-options=\"value for value in options\" class=\"\" ng-model=\"editValue\"></select>\n	<button class=\"btn btn-success\" ng-click=\"save()\">\n				<i class=\"icon-ok\" title=\"save\"></i>\n		</button>\n		<button class=\"btn\" ng-click=\"cancel()\">\n			<i class=\"icon-remove\" title=\"Cancel\"></i>\n		</button>\n</div>",
+        template: "<span class=\"static\" ng-hide=\"isEditing\" ng-click=\"edit()\">\n	{{ value }}\n	<span class=\"placeholder\" ng-show=\"!value\">{{ placeholder }}</span>\n</span>\n<div ng-show=\"isEditing\" class=\"input-append editing\">\n	<select ng-options=\"value for value in options\" ng-model=\"editValue\"></select>\n	<button class=\"btn btn-success\" ng-click=\"save()\">\n				<i class=\"icon-ok\" title=\"save\"></i>\n		</button>\n		<button class=\"btn\" ng-click=\"cancel()\">\n			<i class=\"icon-remove\" title=\"Cancel\"></i>\n		</button>\n</div>",
         controller: InlineEditController
       };
     });
