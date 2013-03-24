@@ -127,6 +127,7 @@
 		$scope.textEditValue = 'Martin'
 		$scope.textEditPlaceholder = 'Enter some value'
 		$scope.textEditTitle = 'Click to edit.'
+		$scope.textEditDisabled = false
 
 		$scope.saveTextEdit = ->
 
@@ -137,6 +138,17 @@
 			lines
     """
 		$scope.textAreaPlaceholder = 'Enter some text...'
+		$scope.textAreaTitle = 'Click to edit.'
+		$scope.textAreaDisabled = false
+
+		$scope.selectValue = 'Option 1'
+		$scope.selectTitle = 'Edit selection'
+		$scope.selectOptions = [
+			'Option 1'
+			'Option 2'
+			'Option 3'
+		]
+		$scope.selectDisabled = false
 	)
 
 	app.controller('kb.ui.copy-button', ($scope) ->

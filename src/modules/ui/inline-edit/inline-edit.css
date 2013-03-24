@@ -17,7 +17,7 @@
 	border: 1px solid transparent;
 	word-break: break-all;
 }
-.kb-inline-edit .static:hover {
+.kb-inline-edit:not(.disabled) .static:hover {
 	background-color: #EEE;
 	border: 1px solid #CCC;
 	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
@@ -29,7 +29,7 @@
 	transition: border linear .2s, box-shadow linear .2s;
 }
 
-.kb-inline-edit .disabled .static {
+.kb-inline-edit.disabled .static {
 	cursor: default;
 }
 

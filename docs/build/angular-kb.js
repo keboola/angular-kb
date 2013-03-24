@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.0.1 - 2013-03-23
+ * @version v0.0.1 - 2013-03-24
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -1219,7 +1219,8 @@
           value: '=',
           disabled: '=',
           onSave: '&',
-          placeholder: '@'
+          placeholder: '@',
+          editTitle: '@'
         },
         template: "<span class=\"static\" ng-hide=\"isEditing\" ng-click=\"edit()\">\n 	{{ value }}\n	 <a class=\"placeholder\" ng-show=\"!value\">\n			<i class=\"icon-edit\"></i>\n			{{ placeholder }}\n		</a>\n</span>\n<div ng-show=\"isEditing\" class=\"input-append editing\">\n	<input type=\"text\" ng-model=\"editValue\" placeholder=\"{{ placeholder }}\"/><button\n			class=\"btn btn-success\" ng-click=\"save()\">\n				<i class=\"icon-ok\" title=\"save\"></i></button><button\n		class=\"btn\" ng-click=\"cancel()\"><i class=\"icon-remove\" title=\"Cancel\"></i></button>\n</div>",
         controller: InlineEditController
@@ -1230,7 +1231,8 @@
         scope: {
           value: '=',
           disabled: '=',
-          onSave: '&'
+          onSave: '&',
+          editTitle: '@'
         },
         template: '\
 				<span class="static" ng-hide="isEditing" ng-click="edit()"><kb-datetime datetime="value"></kb-datetime></span>\
@@ -1249,7 +1251,8 @@
           value: '=',
           disabled: '=',
           onSave: '&',
-          placeholder: '@'
+          placeholder: '@',
+          editTitle: '@'
         },
         template: "<span class=\"static\" ng-hide=\"isEditing\" ng-click=\"edit()\">\n		<span kb-nl2br=\"value\"></span>\n		<a class=\"placeholder\" ng-show=\"!value\">\n			<i class=\"icon-edit\"></i>\n			{{ placeholder }}\n		</a>\n</span>\n<div ng-show=\"isEditing\" class=\"editing\">\n	<textarea type=\"text\" ng-model=\"editValue\" placeholder=\"{{ placeholder }}\">\n	</textarea>\n	<div class=\"form-actions\">\n				<button class=\"btn btn-primary\" ng-click=\"save()\">Save</button>\n				<button class=\"btn\" ng-click=\"cancel()\">Cancel</button>\n	</div>\n</div>",
         controller: InlineEditController
@@ -1261,48 +1264,52 @@
           value: '=',
           disabled: '=',
           onSave: '&',
-          options: '='
+          options: '=',
+          editTitle: '@',
+          placeholder: '@'
         },
-        template: "<span class=\"static\" ng-hide=\"isEditing\" ng-click=\"edit()\">{{ value }}\n	<span class=\"placeholder\" ng-show=\"!value\">{{ placeholder }}</span>\n<span>\n<div ng-show=\"isEditing\" class=\"input-append editing\">\n	<select ng-options=\"value for value in options\" class=\"span2\" ng-model=\"editValue\" /><button\n			class=\"btn btn-success\" ng-click=\"save()\"></select>\n				<i class=\"icon-ok\" title=\"save\"></i></button><button\n		class=\"btn\" ng-click=\"cancel()\"><i class=\"icon-remove\" title=\"Cancel\"></i></button>\n</div>'",
+        template: "<span class=\"static\" ng-hide=\"isEditing\" ng-click=\"edit()\">\n	{{ value }}\n	<span class=\"placeholder\" ng-show=\"!value\">{{ placeholder }}</span>\n</span>\n<div ng-show=\"isEditing\" class=\"input-append editing\">\n	<select ng-options=\"value for value in options\" class=\"\" ng-model=\"editValue\"></select>\n	<button class=\"btn btn-success\" ng-click=\"save()\">\n				<i class=\"icon-ok\" title=\"save\"></i>\n		</button>\n		<button class=\"btn\" ng-click=\"cancel()\">\n			<i class=\"icon-remove\" title=\"Cancel\"></i>\n		</button>\n</div>",
         controller: InlineEditController
       };
     });
     InlineEditController = function(scope, element, attrs, $timeout) {
-      var closeEditing, disabled, redraw, title, tooltip;
+      var resolveTooltip, setTooltipTitle, tooltip;
       element.addClass('form-inline');
-      element.addClass('inline-edit');
+      element.addClass('kb-inline-edit');
       element.addClass(element.get(0).tagName.toLowerCase());
-      disabled = false;
-      title = attrs.title;
-      element.removeAttr('title');
-      tooltip = null;
-      scope.$watch('disabled', function(newValue) {
-        disabled = newValue;
+      element.tooltip({
+        title: scope.editTitle
+      });
+      tooltip = element.data('tooltip');
+      setTooltipTitle = function(title) {
+        element.removeAttr('data-original-title');
+        return tooltip.options.title = title;
+      };
+      resolveTooltip = function() {
+        if (scope.isEditing || scope.disabled) {
+          return setTooltipTitle('');
+        } else {
+          return setTooltipTitle(scope.editTitle);
+        }
+      };
+      scope.$watch('disabled', function(disabled) {
         if (disabled) {
-          element.find('.static').removeAttr('title');
+          element.find('.static');
           element.addClass('disabled');
         } else {
-          element.find('.static').tooltip({
-            title: title
-          });
           element.removeClass('disabled');
-          tooltip = element.find('.static').data('tooltip');
         }
-        return redraw();
-      });
-      redraw = function() {
         if (scope.isEditing && !disabled) {
-          return scope.edit();
+          scope.edit();
         } else {
-          return scope.cancel();
+          scope.cancel();
         }
-      };
-      closeEditing = function() {
-        scope.isEditing = false;
-        return angular.element('body').unbind('.inlineEdit');
-      };
+        return resolveTooltip();
+      });
+      scope.$watch('isEditing', resolveTooltip);
+      scope.$watch('editTitle', resolveTooltip);
       scope.edit = function() {
-        if (disabled) {
+        if (scope.disabled) {
           return;
         }
         scope.isEditing = true;
@@ -1317,11 +1324,11 @@
           return e.stopPropagation();
         });
         element.bind('keyup.inlineEdit', function(e) {
-          if (e.keyCode === 13 &&  element.get(0).tagName.toLocaleLowerCase() !== 'kb-inline-edit-textarea') {
+          if (e.keyCode === 13 && element.get(0).tagName.toLocaleLowerCase() !== 'kb-inline-edit-textarea') {
             scope.$apply(scope.save);
           }
           if (e.keyCode === 27) {
-            scope.$apply(closeEditing);
+            scope.$apply(scope.cancel);
           }
           return false;
         });
@@ -1330,7 +1337,8 @@
         });
       };
       scope.cancel = function() {
-        return closeEditing();
+        scope.isEditing = false;
+        return angular.element('body').unbind('.inlineEdit');
       };
       scope.$on('$destroy', function() {
         if (tooltip) {
@@ -1346,7 +1354,7 @@
             });
           });
         }
-        return closeEditing();
+        return scope.cancel();
       };
     };
     return InlineEditController.$inject = ['$scope', '$element', '$attrs', '$timeout'];

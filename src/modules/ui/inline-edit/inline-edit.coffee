@@ -11,6 +11,7 @@
 				disabled: '='
 				onSave: '&'
 				placeholder: '@'
+				editTitle: '@'
 			template: """
 				<span class="static" ng-hide="isEditing" ng-click="edit()">
 				 	{{ value }}
@@ -36,6 +37,7 @@
 				value: '='
 				disabled: '='
 				onSave: '&'
+				editTitle: '@'
 			template: '
 				<span class="static" ng-hide="isEditing" ng-click="edit()"><kb-datetime datetime="value"></kb-datetime></span>
 				<div ng-show="isEditing" class="input-append editing">
@@ -55,6 +57,7 @@
 				disabled: '='
 				onSave: '&'
 				placeholder: '@'
+				editTitle: '@'
 			template: """
 				<span class="static" ng-hide="isEditing" ng-click="edit()">
 						<span kb-nl2br="value"></span>
@@ -82,16 +85,22 @@
 				disabled: '='
 				onSave: '&'
 				options: '='
+				editTitle: '@'
+				placeholder: '@'
 			template: """
-				<span class="static" ng-hide="isEditing" ng-click="edit()">{{ value }}
+				<span class="static" ng-hide="isEditing" ng-click="edit()">
+					{{ value }}
 					<span class="placeholder" ng-show="!value">{{ placeholder }}</span>
-				<span>
+				</span>
 				<div ng-show="isEditing" class="input-append editing">
-					<select ng-options="value for value in options" class="span2" ng-model="editValue" /><button
-							class="btn btn-success" ng-click="save()"></select>
-								<i class="icon-ok" title="save"></i></button><button
-						class="btn" ng-click="cancel()"><i class="icon-remove" title="Cancel"></i></button>
-				</div>'
+					<select ng-options="value for value in options" ng-model="editValue"></select>
+					<button class="btn btn-success" ng-click="save()">
+								<i class="icon-ok" title="save"></i>
+						</button>
+						<button class="btn" ng-click="cancel()">
+							<i class="icon-remove" title="Cancel"></i>
+						</button>
+				</div>
 				"""
 			controller: InlineEditController
 		)
@@ -99,44 +108,45 @@
 		InlineEditController = (scope, element, attrs, $timeout) ->
 
 			element.addClass 'form-inline'
-			element.addClass 'inline-edit'
+			element.addClass 'kb-inline-edit'
 			element.addClass element.get(0).tagName.toLowerCase()
 
-			disabled = false
-			title = attrs.title
-			element.removeAttr('title')
-			tooltip = null
-			scope.$watch('disabled', (newValue) ->
-				disabled = newValue
+
+			element.tooltip(
+				title: scope.editTitle
+			)
+			tooltip = element.data('tooltip')
+
+			setTooltipTitle = (title) ->
+				element.removeAttr('data-original-title')
+				tooltip.options.title = title
+
+			resolveTooltip = ->
+				if scope.isEditing || scope.disabled
+					setTooltipTitle('')
+				else
+					setTooltipTitle(scope.editTitle)
+
+			scope.$watch('disabled', (disabled) ->
 				if disabled
 					element.find('.static')
-						.removeAttr('title')
 					element.addClass('disabled')
 				else
-					element.find('.static')
-						.tooltip(
-							title: title
-						)
 					element.removeClass('disabled')
 
-					tooltip = element.find('.static')
-										.data('tooltip')
-
-				redraw()
+				if scope.isEditing && !disabled then scope.edit() else scope.cancel()
+				resolveTooltip()
 			)
 
-			redraw = ->
-				if scope.isEditing and !disabled then scope.edit() else scope.cancel()
-
-			closeEditing = ->
-				scope.isEditing = false
-				angular.element('body').unbind('.inlineEdit')
+			scope.$watch('isEditing', resolveTooltip)
+			scope.$watch('editTitle', resolveTooltip)
 
 			scope.edit = ->
-				return if disabled
+				return if scope.disabled
 				scope.isEditing = true
 				scope.editValue = scope.value
 
+				#  click outsid element = cancel editing state
 				angular.element('body').bind('click.inlineEdit', ->
 					scope.$apply ->
 						scope.cancel()
@@ -149,10 +159,10 @@
 
 				element.bind('keyup.inlineEdit', (e) ->
 					# save on enter
-					scope.$apply( scope.save ) if e.keyCode == 13 && element.get(0).tagName.toLocaleLowerCase() != 'kb-inline-edit-textarea'
+					scope.$apply( scope.save ) if e.keyCode == 13 && element.get(0).tagName.toLocaleLowerCase() != 'kb-inline-edit-textarea'
 
 					# close on escape
-					scope.$apply( closeEditing ) if e.keyCode == 27
+					scope.$apply( scope.cancel ) if e.keyCode == 27
 					false
 				)
 
@@ -161,7 +171,8 @@
 				)
 
 			scope.cancel = ->
-				closeEditing()
+				scope.isEditing = false
+				angular.element('body').unbind('.inlineEdit')
 
 			scope.$on('$destroy', ->
 				tooltip.destroy() if tooltip
@@ -174,7 +185,7 @@
 					$timeout( ->
 						scope.onSave( { newValue: scope.editValue } )
 					)
-				closeEditing()
+				scope.cancel()
 
 		InlineEditController.$inject = ['$scope', '$element', '$attrs', '$timeout']
 )(window.angular)
