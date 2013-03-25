@@ -26,7 +26,6 @@ angular
 			link: (scope, element, attrs) ->
 
 				scope.resolveEmptyValue = ->
-					console.log scope
 					return 'N/A' if !scope.emptyValue
 					scope.emptyValue
 

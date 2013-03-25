@@ -1148,7 +1148,6 @@
         link: function(scope, element, attrs) {
           var tooltipTitle;
           scope.resolveEmptyValue = function() {
-            console.log(scope);
             if (!scope.emptyValue) {
               return 'N/A';
             }
