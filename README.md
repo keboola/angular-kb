@@ -2,6 +2,8 @@
 
 Keboola extensions library for Angular.
 
+Demos and documentation: http://keboola.github.com/angular-kb
+
 
 ## Development
 
