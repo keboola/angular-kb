@@ -11,6 +11,14 @@ Keboola extensions library for Angular.
 * Run watch in another terminal `grunt watch`
 
 
+## New release
+
+* `grunt bumpup:type` - updates version in packages, allowed types: `major, minor, patch`. Default is `path`
+* `grunt` - rebuild package version written in dist files
+* `git tag OUTPUT_VERSION_OF_BUMPUP`
+* `git push origin --tags`
+
+
 ## Documentation publish
 
 * `grunt publishDocs`

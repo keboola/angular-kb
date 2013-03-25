@@ -1,14 +1,17 @@
 {
   "name": "angular-kb",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "dependencies": {
     "angular": "~1.0.5",
     "bootstrap": "~2.3.1",
-	"zeroclipboard": "~1.0.8"
+    "zeroclipboard": "~1.0.8"
   },
   "devDependencies": {
     "angular-mocks": "~1.0.5",
     "angular-scenario": "~1.0.5"
   },
-  "main": ["./docs/build/angular-kb.js", "./docs/build/angular-kb.css"]
+  "main": [
+    "./docs/build/angular-kb.js",
+    "./docs/build/angular-kb.css"
+  ]
 }

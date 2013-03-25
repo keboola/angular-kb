@@ -2,8 +2,8 @@
 	"author": "https://github.com/keboola",
 	"name": "angular-kb",
 	"description": "KB - extensions library for AngularJS",
-	"version": "0.0.1",
-	"engines":{
+	"version": "0.0.2",
+	"engines": {
 		"node": ">=0.8.0"
 	},
 	"devDependencies": {
@@ -18,7 +18,8 @@
 		"grunt-contrib-clean": "~0.4.0",
 		"grunt-contrib-cssmin": "~0.4.1",
 		"grunt-karma": "~0.3.0",
-		"grunt-contrib-copy": "~0.4.0"
- 	},
+		"grunt-contrib-copy": "~0.4.0",
+		"grunt-bumpup": "~0.2.0"
+	},
 	"test": "grunt"
 }
