@@ -45,8 +45,8 @@
 
 			@apiToken = ''
 			@token = {}
-			@endpoint = @defaultEndpoint = 'https://connection.kb.com'
-			@consoleUrl = 'https://storage-api-console.kb.com'
+			@endpoint = @defaultEndpoint = 'https://connection.keboola.com'
+			@consoleUrl = 'https://storage-api-console.keboola.com'
 			@apiVersion = 'v2'
 
 		isAuthenticated: ->

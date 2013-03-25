@@ -547,8 +547,8 @@
 
         this.apiToken = '';
         this.token = {};
-        this.endpoint = this.defaultEndpoint = 'https://connection.kb.com';
-        this.consoleUrl = 'https://storage-api-console.kb.com';
+        this.endpoint = this.defaultEndpoint = 'https://connection.keboola.com';
+        this.consoleUrl = 'https://storage-api-console.keboola.com';
         this.apiVersion = 'v2';
       }
 
