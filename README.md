@@ -10,6 +10,8 @@ Keboola extensions library for Angular.
 * Run test server `grunt testServer`
 * Run watch in another terminal `grunt watch`
 
+[Development with Karma Test Runner intro](http://www.youtube.com/watch?v=MVw8N3hTfCI)
+
 
 ## New release
 
