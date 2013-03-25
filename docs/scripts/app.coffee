@@ -17,7 +17,7 @@
 		'kb.ui.run-button'
 		'kb.ui.loader'
 		'kb.ui.copy-button'
-	]
+	].sort()
 
 	app.config(($routeProvider) ->
 		angular.forEach(modules, (module) ->

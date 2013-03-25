@@ -46,7 +46,7 @@
 			  <div class="well well-small">
 				  <ul class="nav nav-list">
 					  <li class="nav-header">Components</li>
-					  <li ng-cloak ng-repeat="module in modules.sort()" ng-class="{'active': module == currentModule}">
+					  <li ng-cloak ng-repeat="module in modules" ng-class="{'active': module == currentModule}">
 						  <a ng-click="openModule(module)">
 							{{ module }}
 						  </a>
