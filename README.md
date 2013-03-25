@@ -2,7 +2,15 @@
 
 Keboola extensions library for Angular.
 
+Custom directives and services used in Keboola applications.
+
 Demos and documentation: http://keboola.github.com/angular-kb
+
+Recommended angular libraries:
+
+  * http://angular-ui.github.com/
+  * http://angular-ui.github.com/bootstrap/
+
 
 
 ## Development
@@ -13,6 +21,8 @@ Demos and documentation: http://keboola.github.com/angular-kb
 * Run watch in another terminal `grunt watch`
 
 [Development with Karma Test Runner intro](http://www.youtube.com/watch?v=MVw8N3hTfCI)
+
+Before adding any directive please check that directive isn't already implemented in libraries mentioned above.
 
 
 ## New release
