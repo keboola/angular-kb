@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.0.6 - 2013-03-26
+ * @version v0.0.9 - 2013-03-26
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -897,7 +897,6 @@
 
       StorageService.prototype.createToken = function(token) {
         var params;
-        this.tokens.push(token);
         params = {
           description: token.description,
           expiresIn: token.expiresIn,
@@ -947,16 +946,9 @@
         });
       };
 
-      StorageService.prototype.deleteToken = function(token) {
-        var service;
-        service = this;
-        angular.forEach(this.tokens, function(listToken, index) {
-          if (listToken.id === token.id) {
-            return service.tokens.splice(index, 1);
-          }
-        });
+      StorageService.prototype.deleteToken = function(tokenId) {
         return this.http({
-          url: this.url('/storage/tokens/' + token.id),
+          url: this.url('/storage/tokens/' + tokenId),
           method: 'DELETE'
         });
       };
