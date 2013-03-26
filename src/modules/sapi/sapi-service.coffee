@@ -351,7 +351,6 @@
 			 )
 
 		createToken: (token) ->
-			@tokens.push(token)
 			params =
 				description: token.description
 				expiresIn: token.expiresIn
@@ -399,14 +398,9 @@
 
 				angular.copy(data, token)
 
-		deleteToken: (token) ->
-			service = @
-			angular.forEach(@tokens, (listToken, index) ->
-				service.tokens.splice( index, 1) if listToken.id == token.id
-			)
-
+		deleteToken: (tokenId) ->
 			@http(
-				url:  @url '/storage/tokens/' + token.id
+				url:  @url '/storage/tokens/' + tokenId
 				method: 'DELETE'
 			)
 
