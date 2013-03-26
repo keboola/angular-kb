@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.0.4 - 2013-03-26
+ * @version v0.0.6 - 2013-03-26
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -386,32 +386,76 @@
     ]);
     return StorageEventsService = (function() {
 
-      function StorageEventsService(eventsUrl, storageService, filter) {
+      function StorageEventsService(eventsUrl, storageService) {
         this.eventsUrl = eventsUrl;
         this.storageService = storageService;
-        if (filter == null) {
-          filter = null;
-        }
         this.events = [];
         this.olderEventsLoading = false;
         this.newEventsLoading = false;
         this.hasOlderEvents = true;
-        this.filter = filter || function(event) {
-          return event;
-        };
         this.loaded = false;
         this.defaultParams = {
-          count: 50,
+          limit: 50,
           offset: 0
         };
       }
 
-      StorageEventsService.prototype.setDefaultParam = function(name, value) {
-        this.defaultParams[name] = value;
-        return this;
+      StorageEventsService.prototype.load = function(params) {
+        var eventsService;
+        eventsService = this;
+        return this._load(params).success(function(events) {
+          eventsService.events = eventsService.events.concat(events);
+          if (!eventsService.events.length) {
+            return eventsService.hasOlderEvents = false;
+          }
+        });
       };
 
-      StorageEventsService.prototype.load = function(params) {
+      StorageEventsService.prototype.refresh = function() {
+        var eventsService;
+        eventsService = this;
+        this.newEventsLoading = true;
+        this.hasOlderEvents = true;
+        return this.load().success(function(events) {
+          eventsService.newEventsLoading = false;
+          return eventsService.events = events;
+        });
+      };
+
+      StorageEventsService.prototype.loadNewEvents = function() {
+        var eventsService, newest;
+        eventsService = this;
+        newest = _.max(this.events, function(event) {
+          return event.id;
+        });
+        this.newEventsLoading = true;
+        return this._load({
+          sinceId: newest.id
+        }).success(function(events) {
+          eventsService.newEventsLoading = false;
+          return eventsService.events = eventsService.events.concat(events);
+        });
+      };
+
+      StorageEventsService.prototype.loadOlderEvents = function() {
+        var eventsService, oldest;
+        eventsService = this;
+        oldest = _.min(this.events, function(event) {
+          return event.id;
+        });
+        this.olderEventsLoading = true;
+        return this._load({
+          maxId: oldest.id
+        }).success(function(events) {
+          eventsService.olderEventsLoading = false;
+          eventsService.events = eventsService.events.concat(events);
+          if (!events.length) {
+            return eventsService.hasOlderEvents = false;
+          }
+        });
+      };
+
+      StorageEventsService.prototype._load = function(params) {
         var eventsService;
         eventsService = this;
         return this.storageService.http({
@@ -423,48 +467,7 @@
           eventsService.olderEventsLoading = false;
           return eventsService.storageService.errorHandler(data, status, headers, config);
         }).success(function(events) {
-          eventsService.loaded = true;
-          eventsService.events = eventsService.events.concat(_.filter(events, eventsService.filter));
-          if (!eventsService.events.length) {
-            return eventsService.hasOlderEvents = false;
-          }
-        });
-      };
-
-      StorageEventsService.prototype.loadNewEvents = function() {
-        var eventsService, newest;
-        if (this.newEventsLoading) {
-          return;
-        }
-        eventsService = this;
-        newest = _.max(this.events, function(event) {
-          return event.id;
-        });
-        this.newEventsLoading = true;
-        return this.load({
-          sinceId: newest != null ? newest.id : void 0
-        }).success(function() {
-          return eventsService.newEventsLoading = false;
-        });
-      };
-
-      StorageEventsService.prototype.loadOlderEvents = function() {
-        var eventsService, oldest;
-        if (this.olderEventsLoading) {
-          return;
-        }
-        eventsService = this;
-        oldest = _.min(this.events, function(event) {
-          return event.id;
-        });
-        this.olderEventsLoading = true;
-        return this.load({
-          maxId: oldest.id
-        }).success(function(events) {
-          eventsService.olderEventsLoading = false;
-          if (!events.length) {
-            return eventsService.hasOlderEvents = false;
-          }
+          return eventsService.loaded = true;
         });
       };
 

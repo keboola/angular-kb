@@ -13,22 +13,59 @@
 
 	class StorageEventsService
 
-		constructor: (@eventsUrl, @storageService, filter = null) ->
+		constructor: (@eventsUrl, @storageService) ->
 			@events = []
 			@olderEventsLoading = false
 			@newEventsLoading = false
 			@hasOlderEvents = true
-			@filter = filter || (event) -> return event
 			@loaded = false
 			@defaultParams =
-					count: 50
-					offset: 0
-
-		setDefaultParam: (name, value) ->
-			@defaultParams[name] = value
-			@
+				limit: 50
+				offset: 0
 
 		load: (params) ->
+			eventsService = @
+			@_load(params)
+				.success (events) ->
+					eventsService.events = eventsService.events.concat( events )
+					eventsService.hasOlderEvents = false if !eventsService.events.length
+
+		refresh: ->
+			eventsService = @
+			@newEventsLoading = true
+			@hasOlderEvents = true
+			@load()
+				.success (events) ->
+					eventsService.newEventsLoading = false
+					eventsService.events = events
+
+		loadNewEvents: ->
+			eventsService = @
+			newest = _.max( @events , (event) ->
+				event.id
+			)
+			@newEventsLoading = true
+			@_load(
+				sinceId: newest.id
+			).success (events) ->
+				eventsService.newEventsLoading = false
+				eventsService.events = eventsService.events.concat( events )
+
+
+		loadOlderEvents: ->
+			eventsService = @
+			oldest = _.min( @events , (event) ->
+				event.id
+			)
+			@olderEventsLoading = true
+			@_load(
+				maxId: oldest.id
+			).success (events) ->
+				eventsService.olderEventsLoading = false
+				eventsService.events = eventsService.events.concat( events )
+				eventsService.hasOlderEvents = false if !events.length
+
+		_load: (params) ->
 			eventsService = @
 
 			@storageService.http(
@@ -42,34 +79,6 @@
 			)
 			.success( (events) ->
 				eventsService.loaded = true
-				eventsService.events = eventsService.events.concat(_.filter(events, eventsService.filter))
-				eventsService.hasOlderEvents = false if !eventsService.events.length
 			)
-
-		loadNewEvents: ->
-			return if @newEventsLoading
-			eventsService = @
-			newest = _.max( @events , (event) ->
-				event.id
-			)
-			@newEventsLoading = true
-			@load(
-				sinceId: newest?.id
-			).success ->
-				eventsService.newEventsLoading = false
-
-
-		loadOlderEvents: ->
-			return if @olderEventsLoading
-			eventsService = @
-			oldest = _.min( @events , (event) ->
-				event.id
-			)
-			@olderEventsLoading = true
-			@load(
-				maxId: oldest.id
-			).success (events) ->
-				eventsService.olderEventsLoading = false
-				eventsService.hasOlderEvents = false if !events.length
-
+	
 )(window.angular)
