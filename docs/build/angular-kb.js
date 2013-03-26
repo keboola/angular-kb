@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.0.3 - 2013-03-25
+ * @version v0.0.4 - 2013-03-26
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -665,6 +665,40 @@
         });
       };
 
+      StorageService.prototype.deleteTableColum = function(tableId, columnName) {
+        return this.http({
+          url: this.url("/storage/tables/" + tableId + "/columns/" + columnName),
+          method: 'DELETE'
+        });
+      };
+
+      StorageService.prototype.addTableColum = function(tableId, columnName) {
+        return this.http({
+          url: this.url('/storage/tables/' + tableId + '/columns/'),
+          method: 'POST',
+          params: {
+            name: columnName
+          }
+        });
+      };
+
+      StorageService.prototype.addTableColumnToIndexed = function(tableId, columnName) {
+        return this.http({
+          url: this.url('/storage/tables/' + tableId + '/indexed-columns'),
+          method: 'POST',
+          params: {
+            name: columnName
+          }
+        });
+      };
+
+      StorageService.prototype.removeTableColumnFromIndexedColumns = function(tableId, columnName) {
+        return this.http({
+          url: this.url('/storage/tables/' + tableId + '/indexed-columns/' + columnName),
+          method: 'DELETE'
+        });
+      };
+
       StorageService.prototype.deleteTableAttribute = function(tableId, attributeName) {
         return this.http({
           url: this.url('/storage/tables/' + tableId + '/attributes/' + attributeName),
@@ -672,16 +706,21 @@
         });
       };
 
-      StorageService.prototype.saveTableAttribute = function(tableId, name, value) {
+      StorageService.prototype.saveTableAttribute = function(tableId, name, value, protectedValue) {
+        var data;
+        data = {
+          value: value
+        };
+        if (!angular.isUndefined(protectedValue)) {
+          data['protected'] = protectedValue;
+        }
         return this.http({
           url: this.url('/storage/tables/' + tableId + '/attributes/' + name),
           method: 'POST',
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
           },
-          data: $.param({
-            value: value
-          })
+          data: $.param(data)
         }).success(function(data) {});
       };
 
@@ -692,16 +731,21 @@
         });
       };
 
-      StorageService.prototype.saveBucketAttribute = function(bucketId, name, value) {
+      StorageService.prototype.saveBucketAttribute = function(bucketId, name, value, protectedValue) {
+        var data;
+        data = {
+          value: value
+        };
+        if (!angular.isUndefined(protectedValue)) {
+          data['protected'] = protectedValue;
+        }
         return this.http({
           url: this.url('/storage/buckets/' + bucketId + '/attributes/' + name),
           method: 'POST',
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
           },
-          data: $.param({
-            value: value
-          })
+          data: $.param(data)
         });
       };
 

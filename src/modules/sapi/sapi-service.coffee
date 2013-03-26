@@ -141,6 +141,35 @@
 					unlink: 1
 			 )
 
+		# columns
+		deleteTableColum: (tableId, columnName) ->
+			@http(
+				url: @url "/storage/tables/#{tableId}/columns/#{columnName}"
+				method: 'DELETE'
+			)
+
+		addTableColum: (tableId, columnName) ->
+			@http(
+				url: @url '/storage/tables/' + tableId + '/columns/'
+				method: 'POST'
+				params:
+					name: columnName
+			)
+
+		addTableColumnToIndexed: (tableId, columnName) ->
+			@http(
+				url: @url '/storage/tables/' + tableId + '/indexed-columns'
+				method: 'POST'
+				params:
+					name: columnName
+			)
+
+		removeTableColumnFromIndexedColumns: (tableId, columnName) ->
+			@http(
+				url: @url '/storage/tables/' + tableId + '/indexed-columns/' + columnName
+				method: 'DELETE'
+			)
+
 
 		# attributes
 		deleteTableAttribute: (tableId, attributeName) ->
@@ -149,16 +178,17 @@
 				method: 'DELETE'
 			)
 
-		saveTableAttribute: (tableId, name, value) ->
+		saveTableAttribute: (tableId, name, value, protectedValue) ->
+			data =
+				value: value
 
+			data['protected'] = protectedValue if !angular.isUndefined(protectedValue)
 			@http(
 				url: @url '/storage/tables/' + tableId + '/attributes/' + name
 				method: 'POST'
 				headers:
 					'Content-Type': 'application/x-www-form-urlencoded'
-				data: $.param(
-					value: value
-				)
+				data: $.param(data)
 			)
 			.success( (data) ->
 	#			table.attributes = data
@@ -170,15 +200,17 @@
 				method: 'DELETE'
 			)
 
-		saveBucketAttribute: (bucketId, name, value) ->
+		saveBucketAttribute: (bucketId, name, value, protectedValue) ->
+			data =
+				value: value
+
+			data['protected'] = protectedValue if !angular.isUndefined(protectedValue)
 			@http(
 				url: @url '/storage/buckets/' + bucketId + '/attributes/' + name
 				method: 'POST'
 				headers:
 					'Content-Type': 'application/x-www-form-urlencoded'
-				data: $.param(
-					value: value
-				)
+				data: $.param(data)
 			)
 
 		deleteBucket: (id) ->
