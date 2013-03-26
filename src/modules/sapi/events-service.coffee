@@ -80,5 +80,5 @@
 			.success( (events) ->
 				eventsService.loaded = true
 			)
-	
+
 )(window.angular)
