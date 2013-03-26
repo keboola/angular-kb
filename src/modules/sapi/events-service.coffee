@@ -23,6 +23,10 @@
 				limit: 50
 				offset: 0
 
+		setDefaultParam: (name, value) ->
+			@defaultParams[name] = value
+			@
+
 		load: (params) ->
 			eventsService = @
 			@_load(params)

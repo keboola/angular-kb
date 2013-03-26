@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.0.9 - 2013-03-26
+ * @version v0.0.11 - 2013-03-26
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -399,6 +399,11 @@
           offset: 0
         };
       }
+
+      StorageEventsService.prototype.setDefaultParam = function(name, value) {
+        this.defaultParams[name] = value;
+        return this;
+      };
 
       StorageEventsService.prototype.load = function(params) {
         var eventsService;
