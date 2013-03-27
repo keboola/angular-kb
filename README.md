@@ -29,6 +29,7 @@ Before adding any directive please check that directive isn't already implemente
 
 * `grunt bumpup:type` - updates version in packages, allowed types: `major, minor, patch`. Default is `path`
 * `grunt` - rebuild package version written in dist files
+* `git commit -m "COMMIT_MESSAGE"`
 * `git tag OUTPUT_VERSION_OF_BUMPUP`
 * `git push origin --tags`
 
