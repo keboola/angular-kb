@@ -17,8 +17,8 @@ Recommended angular libraries:
 
 * Clone the repo
 * Install dependencies `npm install && bower install --dev`
-* Run test server `grunt testServer`
-* Run watch in another terminal `grunt watch`
+* Initial build `grunt`
+* Watch and test `grunt devel`
 
 [Development with Karma Test Runner intro](http://www.youtube.com/watch?v=MVw8N3hTfCI)
 
