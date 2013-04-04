@@ -68,6 +68,8 @@
 
 	app.controller('kb.ui.toggable', ($scope) ->
 		$scope.opened = true
+		$scope.toggableData =
+			content: 'some content'
 	)
 
 	app.controller('kb.ui.tree', ($scope) ->

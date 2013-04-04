@@ -10,6 +10,7 @@ angular.module('kb.ui.loader', [])
 		replace: true
 		link: (scope, element, attrs) ->
 			icon = element.find('i')
+
 			scope.$watch(attrs.isLoading, (newValue) ->
 				icon.removeClass('loading')
 				icon.addClass('loading') if newValue
