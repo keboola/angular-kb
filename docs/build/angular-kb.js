@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.0.11 - 2013-03-26
+ * @version v0.0.11 - 2013-04-04
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -1632,7 +1632,7 @@
       restrict: 'E',
       transclude: true,
       replace: true,
-      template: "<div class=\"accordion\" ng-transclude>\n</div>"
+      template: "<div class=\"accordion kb-toggable\" ng-transclude>\n</div>"
     };
   }).directive('kbToggable', function() {
     return {
@@ -1643,7 +1643,7 @@
         title: '@header',
         opened: '='
       },
-      template: "			<div class=\"accordion-group\">\n				<div class=\"accordion-heading\">\n				<a class=\"accordion-toggle\">\n					<span class=\"toggle-wrap\"><i class=\"toggle\"></i></span> {{ title }}\n				</a>\n			</div>\n			<div class=\"accordion-body collapse\">\n				<div class=\"accordion-inner\" ng-transclude></div>\n			</div>\n</div>",
+      template: "			<div class=\"accordion-group\">\n				<div class=\"accordion-heading\">\n				<a class=\"accordion-toggle\">\n					<span class=\"toggle-arrow-wrap\"><i class=\"toggle-arrow\"></i></span> {{ title }}\n				</a>\n			</div>\n			<div class=\"accordion-body collapse\">\n				<div class=\"accordion-inner\" ng-transclude></div>\n			</div>\n</div>",
       link: function(scope, element) {
         var elements, opened, title, toggle;
         title = element.find('.accordion-toggle');

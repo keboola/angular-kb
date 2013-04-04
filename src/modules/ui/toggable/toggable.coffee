@@ -8,7 +8,7 @@ angular.module('kb.ui.toggable', [])
 		transclude: true
 		replace: true
 		template: """
-		<div class="accordion" ng-transclude>
+		<div class="accordion kb-toggable" ng-transclude>
 		</div>
 				"""
 	)
@@ -23,7 +23,7 @@ angular.module('kb.ui.toggable', [])
 					<div class="accordion-group">
 						<div class="accordion-heading">
 						<a class="accordion-toggle">
-							<span class="toggle-wrap"><i class="toggle"></i></span> {{ title }}
+							<span class="toggle-arrow-wrap"><i class="toggle-arrow"></i></span> {{ title }}
 						</a>
 					</div>
 					<div class="accordion-body collapse">

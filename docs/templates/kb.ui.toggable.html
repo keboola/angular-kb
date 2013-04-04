@@ -12,15 +12,26 @@
 </div>
 
 
-<p>Control of open state:</p>
+<p>Control of open state and 2-way data binding:</p>
 <div class="bs-docs-example">
-	<label class="checkbox">
-		<input type="checkbox" ng-model="opened" />
-		First section opened
-	</label>
+	<div class="control-group">
+		<label class="control-label" >Input inside toggable value</label>
+		<div class="controls">
+			<input type="text" ng-model="toggableData.content"/>
+		</div>
+	</div>
+	<div class="control-group">
+		<div class="controls">
+			<label class="checkbox">
+				<input type="checkbox" ng-model="opened" />
+				First section opened
+			</label>
+		</div>
+	</div>
 	<kb-toggable-group>
 		<kb-toggable header="First section" opened="opened">
-			Content of section 1.
+			<p>Content of section 1.</p>
+			<input type="text" ng-model="toggableData.content" />
 		</kb-toggable>
 		<kb-toggable header="Second section">
 			Content of section 2.

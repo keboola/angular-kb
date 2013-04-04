@@ -105,6 +105,7 @@ module.exports = (grunt) ->
 		karma:
 			unit:
 				configFile: "karma.conf.js"
+				background: true
 
 			ci:
 				configFile: "karma.conf.js"
@@ -173,6 +174,7 @@ module.exports = (grunt) ->
 	]
 
 	grunt.registerTask "devel", [
+		"karma:unit"
 		"watch"
 	]
 
