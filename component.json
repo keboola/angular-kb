@@ -1,6 +1,6 @@
 {
   "name": "angular-kb",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "dependencies": {
     "angular": "~1.0.5",
     "bootstrap": "~2.3.1",

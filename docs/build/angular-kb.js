@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.0.13 - 2013-04-04
+ * @version v0.0.14 - 2013-04-08
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -1190,19 +1190,17 @@
         },
         template: "<span ng-cloak>\n	{{ formattedValue() }}\n	<i class=\"kb-datetime icon-time\" ng-show=\"isDatetime()\"></i>\n</span>",
         link: function(scope, element, attrs) {
-          var tooltipTitle;
+          var setTooltipTitle, tooltip;
           scope.resolveEmptyValue = function() {
             if (!scope.emptyValue) {
               return 'N/A';
             }
             return scope.emptyValue;
           };
-          tooltipTitle = function() {
-            if (scope.isDatetime()) {
-              return "Original time: " + scope.datetime;
-            } else {
-              return "";
-            }
+          tooltip = element.find('i').tooltip().data('tooltip');
+          setTooltipTitle = function() {
+            element.removeAttr('data-original-title');
+            return tooltip.options.title = scope.isDatetime() ? "Original time: " + scope.datetime : "";
           };
           scope.isDatetime = function() {
             return !!(scope.datetime && scope.datetime.match(R_ISO8601_STR));
@@ -1212,9 +1210,7 @@
             if (!newValue) {
               element.addClass('empty');
             }
-            return element.find('i').tooltip({
-              title: tooltipTitle()
-            });
+            return setTooltipTitle();
           });
           return scope.formattedValue = function() {
             if (!scope.datetime) {

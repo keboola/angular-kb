@@ -29,8 +29,15 @@ angular
 					return 'N/A' if !scope.emptyValue
 					scope.emptyValue
 
-				tooltipTitle = ->
-					if scope.isDatetime() then "Original time: " + scope.datetime else ""
+
+				tooltip = element.find('i')
+										.tooltip()
+										.data('tooltip')
+
+				setTooltipTitle = ->
+			        element.removeAttr('data-original-title')
+			        tooltip.options.title = if scope.isDatetime() then "Original time: " + scope.datetime else ""
+
 
 				scope.isDatetime = ->
 					!!(scope.datetime && scope.datetime.match(R_ISO8601_STR))
@@ -39,9 +46,7 @@ angular
 					element.removeClass('empty')
 					element.addClass('empty') if !newValue
 
-					element.find('i').tooltip(
-						title: tooltipTitle()
-					)
+					setTooltipTitle()
 				)
 
 				scope.formattedValue = ->
