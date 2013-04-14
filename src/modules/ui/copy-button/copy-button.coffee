@@ -7,7 +7,25 @@ angular
 		# set zeroclipboard swf path
 		swfPath = config['ui']?['copy-button']?['swfPath']
 		swfPath = '/components/zeroclipboard/ZeroClipboard.swf' if !swfPath
-		ZeroClipboard.setMoviePath( swfPath )
+		clip = new ZeroClipboard(null,
+			moviePath: swfPath
+		)
+
+		getTooltip = ->
+			angular.element(clip.htmlBridge).data('tooltip')
+
+		clip.on 'complete', (client, text) ->
+			tooltip = getTooltip()
+			tooltip.options.title = angular.element(@).attr 'data-copy-message'
+			tooltip.show()
+
+		clip.on 'load', (client) ->
+			angular.element(client.htmlBridge).tooltip()
+
+		clip.on 'mouseover', (client) ->
+			tooltip = getTooltip()
+			tooltip.options.title = angular.element(@).attr 'title'
+			tooltip.show()
 
 		return {
 			restrict: 'E'
@@ -18,46 +36,15 @@ angular
 			replace: true
 			transclude: true
 			template: """
-				<div class="copy-button-container">
-					<div ng-transclude class="copy-button"></div>
-				</div>
+					<span ng-transclude class="kb-copy-button" title="{{ copyTitle }}" data-clipboard-text="{{ copyValue }}" data-copy-message="{{ copyMessage }}"></span>
 			"""
 			link: (scope, element, attrs) ->
-				clip = new ZeroClipboard.Client();
-				clip.glue( element.find('.copy-button')[0], angular.element(element)[0] )
-				clip.setText( scope.copyValue )
 
-				element.find('div').last().addClass('zero-clipboard-overlay')
-				element.tooltip(
-					title: scope.copyTitle
-				)
-				tooltip = element.data('tooltip')
-
-				setTooltipTitle = (title) ->
-					element.removeAttr('data-original-title')
-					tooltip.options.title = title
-
-				scope.$watch('copyValue', (newValue) ->
-					clip.setText( newValue )
-				)
-
-				scope.$watch('copyTitle', (copyTitle) ->
-					setTooltipTitle(copyTitle)
-				)
+				clip.glue(element)
 
 				scope.$on('$destroy', ->
-					clip.destroy()
-					tooltip.destroy()
+					clip.unglue(element)
 				)
 
-				clip.addEventListener( 'onComplete', (client, text) ->
-
-					setTooltipTitle(scope.copyMessage)
-					tooltip.show()
-
-					$timeout(	->
-						setTooltipTitle(scope.copyTitle)
-					, 2000)
-				)
 		}
 	])

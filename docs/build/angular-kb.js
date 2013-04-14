@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.0.14 - 2013-04-08
+ * @version v0.0.15 - 2013-04-14
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -1112,12 +1112,32 @@
 
   angular.module('kb.ui.copyButton', ['kb.config']).directive('kbCopyButton', [
     '$timeout', 'kb.config', function($timeout, config) {
-      var swfPath, _ref, _ref1;
+      var clip, getTooltip, swfPath, _ref, _ref1;
       swfPath = (_ref = config['ui']) != null ? (_ref1 = _ref['copy-button']) != null ? _ref1['swfPath'] : void 0 : void 0;
       if (!swfPath) {
         swfPath = '/components/zeroclipboard/ZeroClipboard.swf';
       }
-      ZeroClipboard.setMoviePath(swfPath);
+      clip = new ZeroClipboard(null, {
+        moviePath: swfPath
+      });
+      getTooltip = function() {
+        return angular.element(clip.htmlBridge).data('tooltip');
+      };
+      clip.on('complete', function(client, text) {
+        var tooltip;
+        tooltip = getTooltip();
+        tooltip.options.title = angular.element(this).attr('data-copy-message');
+        return tooltip.show();
+      });
+      clip.on('load', function(client) {
+        return angular.element(client.htmlBridge).tooltip();
+      });
+      clip.on('mouseover', function(client) {
+        var tooltip;
+        tooltip = getTooltip();
+        tooltip.options.title = angular.element(this).attr('title');
+        return tooltip.show();
+      });
       return {
         restrict: 'E',
         scope: {
@@ -1127,37 +1147,11 @@
         },
         replace: true,
         transclude: true,
-        template: "<div class=\"copy-button-container\">\n	<div ng-transclude class=\"copy-button\"></div>\n</div>",
+        template: "<span ng-transclude class=\"kb-copy-button\" title=\"{{ copyTitle }}\" data-clipboard-text=\"{{ copyValue }}\" data-copy-message=\"{{ copyMessage }}\"></span>",
         link: function(scope, element, attrs) {
-          var clip, setTooltipTitle, tooltip;
-          clip = new ZeroClipboard.Client();
-          clip.glue(element.find('.copy-button')[0], angular.element(element)[0]);
-          clip.setText(scope.copyValue);
-          element.find('div').last().addClass('zero-clipboard-overlay');
-          element.tooltip({
-            title: scope.copyTitle
-          });
-          tooltip = element.data('tooltip');
-          setTooltipTitle = function(title) {
-            element.removeAttr('data-original-title');
-            return tooltip.options.title = title;
-          };
-          scope.$watch('copyValue', function(newValue) {
-            return clip.setText(newValue);
-          });
-          scope.$watch('copyTitle', function(copyTitle) {
-            return setTooltipTitle(copyTitle);
-          });
-          scope.$on('$destroy', function() {
-            clip.destroy();
-            return tooltip.destroy();
-          });
-          return clip.addEventListener('onComplete', function(client, text) {
-            setTooltipTitle(scope.copyMessage);
-            tooltip.show();
-            return $timeout(function() {
-              return setTooltipTitle(scope.copyTitle);
-            }, 2000);
+          clip.glue(element);
+          return scope.$on('$destroy', function() {
+            return clip.unglue(element);
           });
         }
       };

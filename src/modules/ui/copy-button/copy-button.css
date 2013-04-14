@@ -1,6 +1,7 @@
 
 
-.copy-button-container {
-	display: inline-block;
+
+.kb-copy-button {
 	position: relative;
+	cursor: pointer;
 }

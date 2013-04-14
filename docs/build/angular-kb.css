@@ -1,13 +1,14 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.0.14 - 2013-04-08
+ * @version v0.0.15 - 2013-04-14
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */
 
-.copy-button-container {
-	display: inline-block;
+
+.kb-copy-button {
 	position: relative;
+	cursor: pointer;
 }
 
 /**
