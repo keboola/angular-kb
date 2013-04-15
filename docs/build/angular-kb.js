@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.0.15 - 2013-04-14
+ * @version v0.0.16 - 2013-04-15
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -1125,8 +1125,9 @@
       };
       clip.on('complete', function(client, text) {
         var tooltip;
+        console.log(this);
         tooltip = getTooltip();
-        tooltip.options.title = angular.element(this).attr('data-copy-message');
+        tooltip.options.title = angular.element(this).attr('copy-message');
         return tooltip.show();
       });
       clip.on('load', function(client) {
@@ -1145,13 +1146,14 @@
           copyTitle: '@',
           copyMessage: '@'
         },
-        replace: true,
         transclude: true,
-        template: "<span ng-transclude class=\"kb-copy-button\" title=\"{{ copyTitle }}\" data-clipboard-text=\"{{ copyValue }}\" data-copy-message=\"{{ copyMessage }}\"></span>",
-        link: function(scope, element, attrs) {
-          clip.glue(element);
+        template: "<span ng-transclude class=\"kb-copy-button\" title=\"{{ copyTitle }}\" data-clipboard-text=\"{{ copyValue }}\" copy-message=\"{{ copyMessage }}\"></span>",
+        link: function(scope, element) {
+          var copyElement;
+          copyElement = element.find('.kb-copy-button');
+          clip.glue(copyElement);
           return scope.$on('$destroy', function() {
-            return clip.unglue(element);
+            return clip.unglue(copyElement);
           });
         }
       };

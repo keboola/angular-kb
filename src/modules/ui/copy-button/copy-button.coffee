@@ -15,8 +15,9 @@ angular
 			angular.element(clip.htmlBridge).data('tooltip')
 
 		clip.on 'complete', (client, text) ->
+			console.log @
 			tooltip = getTooltip()
-			tooltip.options.title = angular.element(@).attr 'data-copy-message'
+			tooltip.options.title = angular.element(@).attr 'copy-message'
 			tooltip.show()
 
 		clip.on 'load', (client) ->
@@ -33,17 +34,17 @@ angular
 				copyValue: '='
 				copyTitle: '@'
 				copyMessage: '@'
-			replace: true
 			transclude: true
 			template: """
-					<span ng-transclude class="kb-copy-button" title="{{ copyTitle }}" data-clipboard-text="{{ copyValue }}" data-copy-message="{{ copyMessage }}"></span>
+					<span ng-transclude class="kb-copy-button" title="{{ copyTitle }}" data-clipboard-text="{{ copyValue }}" copy-message="{{ copyMessage }}"></span>
 			"""
-			link: (scope, element, attrs) ->
+			link: (scope, element) ->
 
-				clip.glue(element)
+				copyElement = element.find('.kb-copy-button')
+				clip.glue(copyElement)
 
 				scope.$on('$destroy', ->
-					clip.unglue(element)
+					clip.unglue(copyElement)
 				)
 
 		}
