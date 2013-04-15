@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.0.18 - 2013-04-15
+ * @version v0.0.19 - 2013-04-15
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -1272,10 +1272,17 @@
         emptyValue: '@'
       },
       replace: true,
-      template: "<span title=\"{{ duration }} seconds\">\n	<span ng-hide=\"isEmpty()\">{{ duration | kbDuration }}</span>\n	<span ng-show=\"isEmpty()\" class=\"muted\">{{ emptyValue || 'N/A' }}</span>\n</span>",
+      template: "<span title=\"{{ duration }} seconds\">\n	<span ng-hide=\"isEmpty()\">{{ duration | kbDuration }}</span>\n	<span ng-show=\"isEmpty()\" class=\"muted\">{{ getEmptyValue() }}</span>\n</span>",
       link: function(scope) {
-        return scope.isEmpty = function() {
-          return scope.duration === null;
+        scope.isEmpty = function() {
+          return scope.duration === null || angular.isUndefined(scope.duration);
+        };
+        return scope.getEmptyValue = function() {
+          if (angular.isUndefined(scope.emptyValue)) {
+            return "N/A";
+          } else {
+            return scope.emptyValue;
+          }
         };
       }
     };
