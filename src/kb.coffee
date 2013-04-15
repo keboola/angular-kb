@@ -19,6 +19,7 @@ angular.module('kb', [
 	'kb.ui.runButton'
 	'kb.ui.codemirror'
 	'kb.ui.datetime'
+	'kb.ui.duration'
 
 	'kb.utils.multipartUpload'
 	'kb.utils.csv'
@@ -28,6 +29,7 @@ angular.module('kb', [
 	'kb.filters.date'
 	'kb.filters.filesize'
 	'kb.filters.webalize'
+	'kb.filters.duration'
 
 	'kb.sapi.sapiService'
 	'kb.sapi.eventsService'

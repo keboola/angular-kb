@@ -17,6 +17,7 @@
 		'kb.ui.run-button'
 		'kb.ui.loader'
 		'kb.ui.copy-button'
+		'kb.ui.duration'
 	].sort()
 
 	app.config(($routeProvider) ->
@@ -159,6 +160,18 @@
 		$scope.copyValue = "Text to copy"
 		$scope.copyMessage = "Text copied!"
 		$scope.copyTitle = "Copy text"
+	)
+
+	app.controller('kb.ui.duration', ($scope) ->
+		$scope.durations = [
+			35
+			126
+			8600
+			23400
+		]
+
+		$scope.editDuration = 130
+		$scope.editEmptyValue = 'N/A'
 	)
 
 

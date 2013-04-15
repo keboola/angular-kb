@@ -1,0 +1,38 @@
+<div class="bs-docs-example">
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Duration</th>
+				<th>kb.ui.duration</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="duration in durations">
+				<td>{{ duration }}</td>
+				<td>
+					<kb-duration duration="duration"></kb-duration>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div class="control-group">
+						<label class="control-label" >Value</label>
+						<div class="controls">
+							<input type="number" ng-model="editDuration" />
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" >Empty value</label>
+						<div class="controls">
+							<input type="text" ng-model="editEmptyValue" />
+						</div>
+					</div>
+				</td>
+				<td>
+					<kb-duration duration="editDuration" empty-value="{{ editEmptyValue }}"></kb-duration>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

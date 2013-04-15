@@ -40,6 +40,7 @@ angular
 			link: (scope, element) ->
 
 				copyElement = element.find('.kb-copy-button')
+
 				clip.glue(copyElement)
 
 				scope.$on('$destroy', ->

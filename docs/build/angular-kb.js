@@ -1,13 +1,13 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.0.16 - 2013-04-15
+ * @version v0.0.18 - 2013-04-15
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
 
   angular.module('kb.config', []).value('kb.config', {});
 
-  angular.module('kb', ['kb.config', 'kb.ui.inlineEdit', 'kb.ui.clickToggle', 'kb.ui.copyButton', 'kb.ui.nl2br', 'kb.ui.toggable', 'kb.ui.sapiEventsTable', 'kb.ui.loader', 'kb.ui.autoComplete', 'kb.ui.focus', 'kb.ui.tree', 'kb.ui.runButton', 'kb.ui.codemirror', 'kb.ui.datetime', 'kb.utils.multipartUpload', 'kb.utils.csv', 'kb.utils.keyboardShortcuts', 'kb.utils.appVersion', 'kb.filters.date', 'kb.filters.filesize', 'kb.filters.webalize', 'kb.sapi.sapiService', 'kb.sapi.eventsService', 'kb.sapi.errorHandler']);
+  angular.module('kb', ['kb.config', 'kb.ui.inlineEdit', 'kb.ui.clickToggle', 'kb.ui.copyButton', 'kb.ui.nl2br', 'kb.ui.toggable', 'kb.ui.sapiEventsTable', 'kb.ui.loader', 'kb.ui.autoComplete', 'kb.ui.focus', 'kb.ui.tree', 'kb.ui.runButton', 'kb.ui.codemirror', 'kb.ui.datetime', 'kb.ui.duration', 'kb.utils.multipartUpload', 'kb.utils.csv', 'kb.utils.keyboardShortcuts', 'kb.utils.appVersion', 'kb.filters.date', 'kb.filters.filesize', 'kb.filters.webalize', 'kb.filters.duration', 'kb.sapi.sapiService', 'kb.sapi.eventsService', 'kb.sapi.errorHandler']);
 
 }).call(this);
 
@@ -26,6 +26,39 @@
       };
     }
   ]);
+
+}).call(this);
+
+
+/*
+  Formats duration in seconds to minutes, hours, ...
+*/
+
+
+(function() {
+
+  angular.module('kb.filters.duration', []).filter('kbDuration', function() {
+    return function(duration) {
+      var value;
+      value = function(durationCoverted, singular, plural) {
+        var rounded;
+        rounded = Math.round(durationCoverted * 2) / 2;
+        if (rounded > 1) {
+          return "" + rounded + " " + plural;
+        } else {
+          return "" + rounded + " " + singular;
+        }
+      };
+      switch (false) {
+        case !(duration < 60):
+          return value(duration, 'sec', 'secs');
+        case !(duration < 60 * 60):
+          return value(duration / 60, 'min', 'mins');
+        default:
+          return value(duration / (60 * 60), 'hour', 'hours');
+      }
+    };
+  });
 
 }).call(this);
 
@@ -1220,6 +1253,33 @@
       };
     }
   ]);
+
+}).call(this);
+
+
+/*
+  Formatted duration
+*/
+
+
+(function() {
+
+  angular.module('kb.ui.duration', ['kb.filters.duration']).directive('kbDuration', function() {
+    return {
+      restrict: 'E',
+      scope: {
+        duration: '=',
+        emptyValue: '@'
+      },
+      replace: true,
+      template: "<span title=\"{{ duration }} seconds\">\n	<span ng-hide=\"isEmpty()\">{{ duration | kbDuration }}</span>\n	<span ng-show=\"isEmpty()\" class=\"muted\">{{ emptyValue || 'N/A' }}</span>\n</span>",
+      link: function(scope) {
+        return scope.isEmpty = function() {
+          return scope.duration === null;
+        };
+      }
+    };
+  });
 
 }).call(this);
 
