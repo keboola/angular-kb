@@ -1125,7 +1125,6 @@
       };
       clip.on('complete', function(client, text) {
         var tooltip;
-        console.log(this);
         tooltip = getTooltip();
         tooltip.options.title = angular.element(this).attr('copy-message');
         return tooltip.show();

@@ -15,7 +15,6 @@ angular
 			angular.element(clip.htmlBridge).data('tooltip')
 
 		clip.on 'complete', (client, text) ->
-			console.log @
 			tooltip = getTooltip()
 			tooltip.options.title = angular.element(@).attr 'copy-message'
 			tooltip.show()
