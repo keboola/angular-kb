@@ -6,8 +6,7 @@
 
 	angular.module('kb.sapi.sapiService', [
 		'kb.utils.csv',
-		'kb.utils.multipartUpload',
-		'kb.sapi.errorHandler'
+		'kb.utils.multipartUpload'
 	])
 	.factory( "kbSapiService", [ '$http', '$rootScope', 'kbCsv', 'kbMultipartUpload', '$q', ($http, $rootScope, csv, multipartUpload, $q) ->
 		new StorageService($http, $rootScope, csv, multipartUpload, $q)

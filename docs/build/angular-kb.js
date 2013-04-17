@@ -1,13 +1,13 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.0.21 - 2013-04-17
+ * @version v0.1.0 - 2013-04-17
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
 
   angular.module('kb.config', []).value('kb.config', {});
 
-  angular.module('kb', ['kb.config', 'kb.ui.inlineEdit', 'kb.ui.clickToggle', 'kb.ui.copyButton', 'kb.ui.nl2br', 'kb.ui.toggable', 'kb.ui.sapiEventsTable', 'kb.ui.loader', 'kb.ui.autoComplete', 'kb.ui.focus', 'kb.ui.tree', 'kb.ui.runButton', 'kb.ui.codemirror', 'kb.ui.datetime', 'kb.ui.duration', 'kb.utils.multipartUpload', 'kb.utils.csv', 'kb.utils.keyboardShortcuts', 'kb.utils.appVersion', 'kb.filters.date', 'kb.filters.filesize', 'kb.filters.webalize', 'kb.filters.duration', 'kb.sapi.sapiService', 'kb.sapi.eventsService', 'kb.sapi.errorHandler']);
+  angular.module('kb', ['kb.config', 'kb.ui.inlineEdit', 'kb.ui.clickToggle', 'kb.ui.copyButton', 'kb.ui.nl2br', 'kb.ui.toggable', 'kb.ui.sapiEventsTable', 'kb.ui.loader', 'kb.ui.autoComplete', 'kb.ui.focus', 'kb.ui.tree', 'kb.ui.runButton', 'kb.ui.codemirror', 'kb.ui.datetime', 'kb.ui.duration', 'kb.utils.multipartUpload', 'kb.utils.csv', 'kb.utils.keyboardShortcuts', 'kb.utils.appVersion', 'kb.filters.date', 'kb.filters.filesize', 'kb.filters.webalize', 'kb.filters.duration', 'kb.sapi.sapiService', 'kb.sapi.eventsService']);
 
 }).call(this);
 
@@ -360,45 +360,6 @@
 
 
 /*
- SAPI error handler
- Renders error modal
- Must be wired with sapi error event on application run start
-*/
-
-
-(function() {
-
-  angular.module('kb.sapi.errorHandler', ['modal']).factory('kbSapiErrorHandler', [
-    "$bsModal", function($bsModal) {
-      var handler;
-      handler = {
-        remainingTimeText: function(estimatedEndTime) {
-          var minutes;
-          minutes = Math.round((estimatedEndTime - new Date()) / (1000 * 60));
-          if (minutes > 0) {
-            return "after " + minutes + " minutes.";
-          } else {
-            return ' in few minutes.';
-          }
-        },
-        handleError: function(errorResponse) {
-          var errorMessage;
-          errorMessage = errorResponse.message || errorResponse.error || "Unknown error during comunication with API";
-          if (errorResponse.status === 'maintenance') {
-            errorMessage = errorResponse.reason;
-            errorMessage += '. Please repeat the action ' + this.remainingTimeText(new Date(errorResponse.estimatedEndTime));
-          }
-          return $bsModal.ThisOrThat('Application Error', errorMessage, 'Close', null, null, null, 'danger').addClass('alert alert-error');
-        }
-      };
-      return handler;
-    }
-  ]);
-
-}).call(this);
-
-
-/*
   SAPI events service
 */
 
@@ -528,7 +489,7 @@
 
   (function(angular) {
     var StorageService, Token;
-    angular.module('kb.sapi.sapiService', ['kb.utils.csv', 'kb.utils.multipartUpload', 'kb.sapi.errorHandler']).factory("kbSapiService", [
+    angular.module('kb.sapi.sapiService', ['kb.utils.csv', 'kb.utils.multipartUpload']).factory("kbSapiService", [
       '$http', '$rootScope', 'kbCsv', 'kbMultipartUpload', '$q', function($http, $rootScope, csv, multipartUpload, $q) {
         return new StorageService($http, $rootScope, csv, multipartUpload, $q);
       }
