@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.0.20 - 2013-04-15
+ * @version v0.0.21 - 2013-04-17
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -1216,7 +1216,7 @@
           datetime: '=',
           emptyValue: '@'
         },
-        template: "<span ng-cloak>\n	{{ formattedValue() }}\n	<i class=\"kb-datetime icon-time\" ng-show=\"isDatetime()\"></i>\n</span>",
+        template: "<span ng-cloak ng-class=\"{'muted': isEmpty()}\">\n	{{ formattedValue() }}\n	<i class=\"kb-datetime icon-time\" ng-show=\"isDatetime()\"></i>\n</span>",
         link: function(scope, element, attrs) {
           var setTooltipTitle, tooltip;
           scope.resolveEmptyValue = function() {
@@ -1224,6 +1224,9 @@
               return 'N/A';
             }
             return scope.emptyValue;
+          };
+          scope.isEmpty = function() {
+            return !scope.datetime;
           };
           tooltip = element.find('i').tooltip().data('tooltip');
           setTooltipTitle = function() {
@@ -1234,14 +1237,10 @@
             return !!(scope.datetime && scope.datetime.match(R_ISO8601_STR));
           };
           scope.$watch('datetime', function(newValue) {
-            element.removeClass('empty');
-            if (!newValue) {
-              element.addClass('empty');
-            }
             return setTooltipTitle();
           });
           return scope.formattedValue = function() {
-            if (!scope.datetime) {
+            if (scope.isEmpty()) {
               return scope.resolveEmptyValue();
             }
             if (scope.isDatetime()) {

@@ -18,7 +18,7 @@ angular
 				datetime: '='
 				emptyValue: '@'
 			template: """
-				<span ng-cloak>
+				<span ng-cloak ng-class="{'muted': isEmpty()}">
 					{{ formattedValue() }}
 					<i class="kb-datetime icon-time" ng-show="isDatetime()"></i>
 				</span>
@@ -29,6 +29,8 @@ angular
 					return 'N/A' if !scope.emptyValue
 					scope.emptyValue
 
+				scope.isEmpty = ->
+					!scope.datetime
 
 				tooltip = element.find('i')
 										.tooltip()
@@ -43,14 +45,11 @@ angular
 					!!(scope.datetime && scope.datetime.match(R_ISO8601_STR))
 
 				scope.$watch('datetime', (newValue) ->
-					element.removeClass('empty')
-					element.addClass('empty') if !newValue
-
 					setTooltipTitle()
 				)
 
 				scope.formattedValue = ->
-					return scope.resolveEmptyValue() if !scope.datetime
+					return scope.resolveEmptyValue() if scope.isEmpty()
 					if scope.isDatetime()
 						return dateFilter scope.datetime, 'fullDate'
 
