@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.1.2 - 2013-04-17
+ * @version v0.1.3 - 2013-04-18
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -62,14 +62,139 @@
 
 }).call(this);
 
+
+/*
+  File size formatter: https://github.com/avoidwork/filesize.js
+*/
+
+
 (function() {
 
   angular.module('kb.filters.filesize', []).filter('kbfilesize', function() {
-    return function(fileSize) {
-      if (!angular.isNumber(fileSize)) {
+    var fileSize;
+    fileSize = (function ( global ) {
+			"use strict";
+
+			var base    = 10,
+			    right   = /\.(.*)/,
+			    bit     = /b$/,
+			    byte    = /^B$/,
+			    zero    = /^0$/,
+			    options = {
+			    	all : {
+			    		increments : [["B", 1], ["Kb", 128], ["KB", 1024], ["Mb", 131072], ["MB", 1.049e+6], ["Gb", 1.342e+8], ["GB", 1.074e+9], ["Tb", 1.374e+11], ["TB", 1.1e+12], ["Pb", 1.407e+14], ["PB", 1.126e+15]],
+			    		nth        : 11
+			    	},
+			    	bitless : {
+			    		increments : [["B", 1], ["KB", 1024], ["MB", 1.049e+6], ["GB", 1.074e+9], ["TB", 1.1e+12], ["PB", 1.126e+15]],
+			    		nth        : 6
+			    	}
+			    };
+
+			/**
+			 * filesize
+			 *
+			 * @param  {Mixed}   arg  String, Int or Float to transform
+			 * @param  {Mixed}   pos  [Optional] Position to round to, defaults to 2 if short is ommitted, or "true" for shorthand output
+			 * @param  {Boolean} bits [Optional] Determines if "bit" sizes are used for result calculation, default is true
+			 * @return {String}       Readable file size String
+			 */
+			function filesize (arg) {
+				var result = "",
+				    bits   = true,
+				    skip   = false,
+				    i, neg, num, pos, short, size, sizes, suffix, z;
+
+				// Determining arguments
+				if (arguments[3] !== undefined) {
+					pos   = arguments[1];
+					short = arguments[2];
+					bits  = arguments[3];
+				}
+				else {
+					typeof arguments[1] === "boolean" ? short = arguments[1] : pos = arguments[1];
+
+					if ( typeof arguments[2] === "boolean" ) {
+						bits = arguments[2];
+					}
+				}
+
+				if ( isNaN( arg ) || ( pos !== undefined && isNaN( pos ) ) ) {
+					throw Error("Invalid arguments");
+				}
+
+				short = ( short === true );
+				bits  = ( bits === true );
+				pos   = short ? 1 : ( pos === undefined ? 2 : parseInt( pos, base ) );
+				num   = Number( arg );
+				neg   = ( num < 0 );
+
+				// Flipping a negative number to determine the size
+				if ( neg ) {
+					num = -num;
+				}
+
+				// Zero is now a special case because bytes divide by 1
+				if ( num === 0 ) {
+					result = "0B";
+				}
+				else {
+					if ( bits ) {
+						sizes = options.all.increments;
+						i     = options.all.nth;
+					}
+					else {
+						sizes = options.bitless.increments;
+						i     = options.bitless.nth;
+					}
+
+					while ( i-- ) {
+						size   = sizes[i][1];
+						suffix = sizes[i][0];
+
+						if ( num >= size ) {
+							// Treating bytes as cardinal
+							if ( byte.test( suffix ) ) {
+								skip = true;
+								pos  = 0;
+							}
+
+							result = ( num / size ).toFixed( pos );
+
+							if ( !skip && short ) {
+								if ( bits && bit.test( suffix ) ) {
+									suffix = suffix.toLowerCase();
+								}
+
+								suffix = suffix.charAt( 0 );
+								z      = right.exec( result );
+
+								if ( z !== null && z[1] !== undefined && zero.test( z[1] ) ) {
+									result = parseInt( result, base );
+								}
+							}
+
+							result += suffix;
+							break;
+						}
+					}
+				}
+
+				// Decorating a 'diff'
+				if ( neg ) {
+					result = "-" + result;
+				}
+
+				return result;
+			};
+
+			return filesize;
+		})( this );;
+    return function(value) {
+      if (!angular.isNumber(value)) {
         return 'N/A';
       }
-      return filesize(fileSize);
+      return fileSize(value);
     };
   });
 
