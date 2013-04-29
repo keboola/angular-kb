@@ -848,21 +848,21 @@
         });
       };
 
-      StorageService.prototype.removeAliasTableFilter = function() {
+      StorageService.prototype.removeAliasTableFilter = function(tableId) {
         return this.http({
           url: this.url("/storage/tables/" + tableId + "/alias-filter"),
           method: 'DELETE'
         });
       };
 
-      StorageService.prototype.enableAliasTableColumnsAutoSync = function() {
+      StorageService.prototype.enableAliasTableColumnsAutoSync = function(tableId) {
         return this.http({
           url: this.url("/storage/tables/" + tableId + "/alias-columns-auto-sync"),
           method: 'POST'
         });
       };
 
-      StorageService.prototype.disableAliasTableColumnsAutoSync = function() {
+      StorageService.prototype.disableAliasTableColumnsAutoSync = function(tableId) {
         return this.http({
           url: this.url("/storage/tables/" + tableId + "/alias-columns-auto-sync"),
           method: 'DELETE'

@@ -188,19 +188,19 @@
 				data: $.param(filterOptions)
 			)
 
-		removeAliasTableFilter: ->
+		removeAliasTableFilter: (tableId) ->
 			@http(
 				url: @url "/storage/tables/#{tableId}/alias-filter"
 				method: 'DELETE'
 			)
 
-		enableAliasTableColumnsAutoSync: ->
+		enableAliasTableColumnsAutoSync: (tableId) ->
 			@http(
 				url: @url "/storage/tables/#{tableId}/alias-columns-auto-sync"
 				method: 'POST'
 			)
 
-		disableAliasTableColumnsAutoSync: ->
+		disableAliasTableColumnsAutoSync: (tableId) ->
 			@http(
 				url: @url "/storage/tables/#{tableId}/alias-columns-auto-sync"
 				method: 'DELETE'
