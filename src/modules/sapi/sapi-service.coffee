@@ -169,6 +169,42 @@
 				method: 'DELETE'
 			)
 
+		# aliases
+		createAliasTable: (bucketId, options) ->
+			@http(
+				url: @url "/storage/buckets/#{bucketId}/table-aliases"
+				method: 'POST'
+				headers:
+					'Content-Type': 'application/x-www-form-urlencoded'
+				data: $.param(options)
+			)
+
+		setAliasTableFilter: (tableId, filterOptions) ->
+			@http(
+				url: @url "/storage/tables/#{tableId}/alias-filter"
+				method: 'POST'
+				headers:
+					'Content-Type': 'application/x-www-form-urlencoded'
+				data: $.param(filterOptions)
+			)
+
+		removeAliasTableFilter: ->
+			@http(
+				url: @url "/storage/tables/#{tableId}/alias-filter"
+				method: 'DELETE'
+			)
+
+		enableAliasTableColumnsAutoSync: ->
+			@http(
+				url: @url "/storage/tables/#{tableId}/alias-columns-auto-sync"
+				method: 'POST'
+			)
+
+		disableAliasTableColumnsAutoSync: ->
+			@http(
+				url: @url "/storage/tables/#{tableId}/alias-columns-auto-sync"
+				method: 'DELETE'
+			)
 
 		# attributes
 		deleteTableAttribute: (tableId, attributeName) ->

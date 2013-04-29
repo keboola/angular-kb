@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.1.3 - 2013-04-18
+ * @version v0.1.4 - 2013-04-29
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -822,6 +822,49 @@
       StorageService.prototype.removeTableColumnFromIndexedColumns = function(tableId, columnName) {
         return this.http({
           url: this.url('/storage/tables/' + tableId + '/indexed-columns/' + columnName),
+          method: 'DELETE'
+        });
+      };
+
+      StorageService.prototype.createAliasTable = function(bucketId, options) {
+        return this.http({
+          url: this.url("/storage/buckets/" + bucketId + "/table-aliases"),
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          data: $.param(options)
+        });
+      };
+
+      StorageService.prototype.setAliasTableFilter = function(tableId, filterOptions) {
+        return this.http({
+          url: this.url("/storage/tables/" + tableId + "/alias-filter"),
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          data: $.param(filterOptions)
+        });
+      };
+
+      StorageService.prototype.removeAliasTableFilter = function() {
+        return this.http({
+          url: this.url("/storage/tables/" + tableId + "/alias-filter"),
+          method: 'DELETE'
+        });
+      };
+
+      StorageService.prototype.enableAliasTableColumnsAutoSync = function() {
+        return this.http({
+          url: this.url("/storage/tables/" + tableId + "/alias-columns-auto-sync"),
+          method: 'POST'
+        });
+      };
+
+      StorageService.prototype.disableAliasTableColumnsAutoSync = function() {
+        return this.http({
+          url: this.url("/storage/tables/" + tableId + "/alias-columns-auto-sync"),
           method: 'DELETE'
         });
       };
