@@ -18,6 +18,7 @@
 		'kb.ui.loader'
 		'kb.ui.copy-button'
 		'kb.ui.duration'
+		'kb.filter.filesize'
 	].sort()
 
 	app.config(($routeProvider) ->
@@ -172,6 +173,20 @@
 
 		$scope.editDuration = 130
 		$scope.editEmptyValue = 'N/A'
+	)
+
+	app.controller('kb.filter.filesize' , ($scope) ->
+
+		$scope.sizes = [
+			125
+			1356
+			2345678
+			797540352
+			2345678000
+		]
+
+		$scope.edit =
+			value: ''
 	)
 
 

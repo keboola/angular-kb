@@ -37,3 +37,7 @@ Before adding any directive please check that directive isn't already implemente
 ## Documentation publish
 
 * `grunt publishDocs`
+
+
+## Release History
+See the [CHANGELOG](CHANGELOG.md).

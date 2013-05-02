@@ -1,0 +1,28 @@
+<div class="bs-docs-example">
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Original size in bytes</th>
+				<th>kb.filter.filesize</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="size in sizes">
+				<td>{{ size }}</td>
+				<td>
+					{{ size | kbfilesize }}
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="number" ng-model="edit.value" placeholder="Enter size in bytes..."/>
+				</td>
+				<td>
+					{{ edit.value | kbfilesize }}
+				</td>
+
+			</tr>
+		</tbody>
+	</table>
+</div>

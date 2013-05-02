@@ -16,7 +16,9 @@ describe 'kbfilesize', ->
 
 	it 'should convert MB', ->
 		expect(filesizeFilter(2345678)).toBe('2.24MB')
+		expect(filesizeFilter(797540352)).toBe('760.59MB')
 
 	it 'should convert GB', ->
 		expect(filesizeFilter(2345678000)).toBe('2.18GB')
+
 

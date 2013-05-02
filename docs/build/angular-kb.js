@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.1.4 - 2013-04-29
+ * @version v0.1.6 - 2013-05-02
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -82,11 +82,11 @@
 			    zero    = /^0$/,
 			    options = {
 			    	all : {
-			    		increments : [["B", 1], ["Kb", 128], ["KB", 1024], ["Mb", 131072], ["MB", 1.049e+6], ["Gb", 1.342e+8], ["GB", 1.074e+9], ["Tb", 1.374e+11], ["TB", 1.1e+12], ["Pb", 1.407e+14], ["PB", 1.126e+15]],
+			    		increments : [["B", 1], ["Kb", 128], ["KB", 1024], ["Mb", 131072], ["MB", 1024*1024], ["Gb", 1.342e+8], ["GB", 1.074e+9], ["Tb", 1.374e+11], ["TB", 1.1e+12], ["Pb", 1.407e+14], ["PB", 1.126e+15]],
 			    		nth        : 11
 			    	},
 			    	bitless : {
-			    		increments : [["B", 1], ["KB", 1024], ["MB", 1.049e+6], ["GB", 1.074e+9], ["TB", 1.1e+12], ["PB", 1.126e+15]],
+			    		increments : [["B", 1], ["KB", 1024], ["MB", 1024*1024], ["GB", 1024*1024*1024], ["TB", 1024*1024*1024*1024], ["PB", 1.126e+15]],
 			    		nth        : 6
 			    	}
 			    };
@@ -194,7 +194,7 @@
       if (!angular.isNumber(value)) {
         return 'N/A';
       }
-      return fileSize(value);
+      return fileSize(value, 2, false);
     };
   });
 
