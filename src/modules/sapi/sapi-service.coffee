@@ -348,11 +348,15 @@
 
 		# Read and parse table data
 		# returns promise
-		tableData: (tableId, limit, callback) ->
+		tableData: (tableId, options, callback) ->
 			csv = @csv
 			deferred = @$q.defer()
+
+			# BC compatibility
+			params = if angular.isNumber(options) then limit: options else options
+
 			@http(
-				url: @exportUrl( tableId, limit )
+				url: @exportUrl( tableId ) + "?" + $.param(params)
 				method: 'GET'
 			 )
 			.success( (data) ->

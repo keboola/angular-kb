@@ -1026,12 +1026,15 @@
         });
       };
 
-      StorageService.prototype.tableData = function(tableId, limit, callback) {
-        var csv, deferred, promise;
+      StorageService.prototype.tableData = function(tableId, options, callback) {
+        var csv, deferred, params, promise;
         csv = this.csv;
         deferred = this.$q.defer();
+        params = angular.isNumber(options) ? {
+          limit: options
+        } : options;
         this.http({
-          url: this.exportUrl(tableId, limit),
+          url: this.exportUrl(tableId) + "?" + $.param(params),
           method: 'GET'
         }).success(function(data) {
           var parsed;

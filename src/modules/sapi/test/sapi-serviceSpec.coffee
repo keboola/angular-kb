@@ -33,3 +33,31 @@ describe 'kb.sapi.service', ->
 				delimiter: ","
 			$httpBackend.flush()
 
+
+	describe 'table export', ->
+
+		it 'should accept options', ->
+			$httpBackend
+				.expectGET("#{sapiBaseUrl}/v2/storage/tables/in.c-tests.users/export?" + $.param
+					limit: 10
+					whereColumn: 'id'
+					whereValues: [234]
+				)
+				.respond(200, '"id","name"')
+
+			sapiService.tableData('in.c-tests.users',
+				limit: 10
+				whereColumn: 'id'
+				whereValues: [234]
+			)
+			$httpBackend.flush()
+
+		it 'should keep limit parameter BC', ->
+			$httpBackend
+				.expectGET("#{sapiBaseUrl}/v2/storage/tables/in.c-tests.users/export?limit=10")
+				.respond(200, '"id","name"')
+
+			sapiService.tableData('in.c-tests.users', 10)
+			$httpBackend.flush()
+
+
