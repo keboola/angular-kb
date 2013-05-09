@@ -12,10 +12,9 @@ module.exports = (grunt) ->
 		meta:
 			banner: "/**\n" + " * <%= pkg.description %>\n" + " * @version v<%= pkg.version %> - " + "<%= grunt.template.today(\"yyyy-mm-dd\") %>\n" + " * @link <%= pkg.homepage %>\n" + " * @license MIT License, http://www.opensource.org/licenses/MIT\n" + " */"
 
-
 		bumpup: [
 			'package.json'
-			'component.json'
+			'bower.json'
 		]
 		clean:
 			dist: ["docs/build"]

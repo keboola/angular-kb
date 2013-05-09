@@ -1,3 +1,4 @@
 {
-    "directory": "docs/components"
+    "directory": "docs/components",
+    "json": "bower.json"
 }
