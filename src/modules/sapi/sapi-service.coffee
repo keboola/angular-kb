@@ -333,16 +333,17 @@
 			@url '/storage/tables/' + tableId + '/export?token=' + @apiToken +
 				(if limit then '&limit=' + limit else '')
 
-		saveTableData: (tableId, rawData) ->
+		saveTableData: (tableId, rawData, options) ->
+			params  = angular.extend {}, options, dataString: rawData
+			params.incremental = Number(params.incremental) if !angular.isUndefined params.incremental
+			params.partial = Number(params.partial) if !angular.isUndefined params.partial
+
 			@http(
 				url: @url( '/storage/tables/' + tableId  + '/import')
 				method: 'POST'
 				headers:
 					'Content-Type': 'application/x-www-form-urlencoded'
-				data: $.param(
-					name: name
-					dataString: rawData
-				)
+				data: $.param(params)
 			)
 
 		# Read and parse table data

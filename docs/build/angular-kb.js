@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.1.6 - 2013-05-02
+ * @version v0.1.6 - 2013-05-09
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -1005,17 +1005,24 @@
         return this.url('/storage/tables/' + tableId + '/export?token=' + this.apiToken + (limit ? '&limit=' + limit : ''));
       };
 
-      StorageService.prototype.saveTableData = function(tableId, rawData) {
+      StorageService.prototype.saveTableData = function(tableId, rawData, options) {
+        var params;
+        params = angular.extend({}, options, {
+          dataString: rawData
+        });
+        if (!angular.isUndefined(params.incremental)) {
+          params.incremental = Number(params.incremental);
+        }
+        if (!angular.isUndefined(params.partial)) {
+          params.partial = Number(params.partial);
+        }
         return this.http({
           url: this.url('/storage/tables/' + tableId + '/import'),
           method: 'POST',
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
           },
-          data: $.param({
-            name: name,
-            dataString: rawData
-          })
+          data: $.param(params)
         });
       };
 
