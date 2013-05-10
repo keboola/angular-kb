@@ -60,4 +60,10 @@ describe 'kb.sapi.service', ->
 			sapiService.tableData('in.c-tests.users', 10)
 			$httpBackend.flush()
 
+		it 'should not require options', ->
+			$httpBackend
+				.expectGET("#{sapiBaseUrl}/v2/storage/tables/in.c-tests.users/export?")
+				.respond(200, '"id","name"')
+			sapiService.tableData('in.c-tests.users')
+			$httpBackend.flush()
 

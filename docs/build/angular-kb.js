@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.1.7 - 2013-05-09
+ * @version v0.1.8 - 2013-05-10
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -1028,6 +1028,12 @@
 
       StorageService.prototype.tableData = function(tableId, options, callback) {
         var csv, deferred, params, promise;
+        if (options == null) {
+          options = {};
+        }
+        if (callback == null) {
+          callback = null;
+        }
         csv = this.csv;
         deferred = this.$q.defer();
         params = angular.isNumber(options) ? {

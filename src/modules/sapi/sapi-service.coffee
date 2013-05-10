@@ -348,7 +348,7 @@
 
 		# Read and parse table data
 		# returns promise
-		tableData: (tableId, options, callback) ->
+		tableData: (tableId, options = {}, callback = null) ->
 			csv = @csv
 			deferred = @$q.defer()
 

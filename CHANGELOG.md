@@ -1,3 +1,6 @@
+## 0.1.8
+ * [Bugfix] Table export empty options allowed
+
 ## 0.1.7
  * [Feature] Table import options
  * [Feature] Table export options
