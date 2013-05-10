@@ -119,7 +119,7 @@ module.exports = (grunt) ->
 			file: 'package.json'
 			commit:  true
 			message: 'Release %version%'
-			prefix:  'v'
+			prefix:  ''
 			annotate: false
 
 		connect:
