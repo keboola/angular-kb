@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.1.8 - 2013-05-10
+ * @version v0.1.9 - 2013-05-10
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -1584,7 +1584,8 @@
       };
       scope.cancel = function() {
         scope.isEditing = false;
-        return angular.element('body').unbind('.inlineEdit');
+        angular.element('body').unbind('.inlineEdit');
+        return element.unbind('.inlineEdit');
       };
       scope.$on('$destroy', function() {
         if (tooltip) {

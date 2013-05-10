@@ -102,3 +102,22 @@
 		</div>
 	</div>
 </div>
+
+<div class="bs-docs-example">
+
+	<div class="row-fluid">
+
+		<div class="span6">
+			<strong>kb-inline-edit</strong>:<br/>
+			<kb-inline-edit value="itemAdd" on-save="addItem(newValue)" edit-title="Edit" placeholder="Enter new item"></kb-inline-edit>
+		</div>
+		<div class="span6">
+			<strong>Items:</strong>
+			<ul>
+				<li ng-repeat="item in items">
+					{{ item }}
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>

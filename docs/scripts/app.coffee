@@ -135,6 +135,11 @@
 		$scope.textEditTitle = 'Click to edit.'
 		$scope.textEditDisabled = false
 
+		$scope.items = []
+		$scope.itemAdd = ''
+		$scope.addItem = (item) ->
+			$scope.items.push item
+
 		$scope.saveTextEdit = ->
 
 		$scope.textAreaValue = """

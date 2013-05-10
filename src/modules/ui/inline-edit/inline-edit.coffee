@@ -173,6 +173,7 @@
 			scope.cancel = ->
 				scope.isEditing = false
 				angular.element('body').unbind('.inlineEdit')
+				element.unbind('.inlineEdit')
 
 			scope.$on('$destroy', ->
 				tooltip.destroy() if tooltip
