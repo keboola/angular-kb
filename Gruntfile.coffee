@@ -1,5 +1,9 @@
 module.exports = (grunt) ->
-	pkg = grunt.file.readJSON("package.json")
+
+	readPackage = ->
+		grunt.file.readJSON('package.json')
+
+	pkg = readPackage()
 
 	# load npm tasks defined in package
 	for npmTask of pkg.devDependencies
@@ -111,6 +115,13 @@ module.exports = (grunt) ->
 				singleRun: true
 				browsers: ["PhantomJS"]
 
+		tagrelease:
+			file: 'package.json'
+			commit:  true
+			message: 'Release %version%'
+			prefix:  'v'
+			annotate: false
+
 		connect:
 			docsServer:
 				options:
@@ -163,7 +174,9 @@ module.exports = (grunt) ->
 			done(err)
 		)
 
-	grunt.registerTask "default", [
+
+
+	grunt.registerTask "build", [
 		"clean"
 		"coffee"
 		"concat"
@@ -172,13 +185,19 @@ module.exports = (grunt) ->
 		"karma:ci"
 	]
 
+	grunt.registerTask "updatePkg", ->
+	    grunt.config.set "pkg", readPackage()
+
+	grunt.registerTask "release", (type) ->
+		grunt.task.run('jshint')
+		grunt.task.run('bumpup:' + if type then type else "patch")
+		grunt.task.run('updatePkg')
+		grunt.task.run('build')
+		grunt.task.run('tagrelease')
+
 	grunt.registerTask "devel", [
 		"karma:unit"
 		"watch"
-	]
-
-	grunt.registerTask "testServer", [
-		"karma:unit"
 	]
 
 	grunt.registerTask "docsServer", [
@@ -190,4 +209,8 @@ module.exports = (grunt) ->
 			"clean:docs_dist"
 			"copy:docs_dist"
 			"uploadDocs"
+	]
+
+	grunt.registerTask "default", [
+		"build"
 	]

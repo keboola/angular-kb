@@ -1,3 +1,9 @@
+## 0.1.10
+ * [Build] Release scripting
+
+## 0.1.9
+ * [Bugfix] Inline edit key board events unbind
+
 ## 0.1.8
  * [Bugfix] Table export empty options allowed
 
