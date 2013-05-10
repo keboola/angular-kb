@@ -1,11 +1,16 @@
+---
 language: node_js
 node_js:
-  - 0.8
-
+- 0.8
 before_install:
-  - npm install -g grunt-cli
-  - npm install -g bower
-  - npm install
-  - bower install --dev
-
-script: "grunt"
+- npm install -g grunt-cli
+- npm install -g bower
+- npm install
+- bower install --dev
+script: grunt
+notifications:
+  hipchat:
+    secure: |-
+      ZWGWaNTV+ojiPpvYTERKfXgyOlVh2ZUeUmvBNM87tW9d2dGxHvLc4CgoHW4X
+      +6GM8IV3UZNFVuUwmXUZjtThGCzF6MKJSovicDcRwpTGhk+8SFip3pIWLJ79
+      iwp7mo0RsPBSkzQ3Ndb5cW3rqe8q3QGdFY6anSHXzLUwM5dRXEU=
