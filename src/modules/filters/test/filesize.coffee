@@ -8,6 +8,12 @@ describe 'kbfilesize', ->
 		filesizeFilter = $filter('kbfilesize')
 	))
 
+	it 'should return default empty value when value is empty', ->
+		expect(filesizeFilter(null)).toBe('N/A')
+
+	it 'should return empty value when value is empty', ->
+		expect(filesizeFilter(null, '')).toBe('')
+
 	it 'should convert B', ->
 		expect(filesizeFilter(125)).toBe('125B')
 

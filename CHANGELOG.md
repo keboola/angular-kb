@@ -1,3 +1,6 @@
+## 0.1.11
+ * [Feature] Filesize filter - empty value parameter added
+
 ## 0.1.10
  * [Build] Release scripting
 

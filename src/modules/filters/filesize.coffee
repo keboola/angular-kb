@@ -123,7 +123,7 @@ angular.module( 'kb.filters.filesize', [])
 			return filesize;
 		})( this );`
 
-		(value) ->
-			return 'N/A' if not angular.isNumber( value )
+		(value, emptyValue = 'N/A') ->
+			return emptyValue if not angular.isNumber( value )
 			fileSize value, 2, false
 	)

@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.1.10 - 2013-05-10
+ * @version v0.1.10 - 2013-05-15
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -190,9 +190,12 @@
 
 			return filesize;
 		})( this );;
-    return function(value) {
+    return function(value, emptyValue) {
+      if (emptyValue == null) {
+        emptyValue = 'N/A';
+      }
       if (!angular.isNumber(value)) {
-        return 'N/A';
+        return emptyValue;
       }
       return fileSize(value, 2, false);
     };

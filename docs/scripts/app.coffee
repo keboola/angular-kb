@@ -192,6 +192,7 @@
 
 		$scope.edit =
 			value: ''
+			emptyValue: 'N/A'
 	)
 
 

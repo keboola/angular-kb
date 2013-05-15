@@ -17,9 +17,10 @@
 			<tr>
 				<td>
 					<input type="number" ng-model="edit.value" placeholder="Enter size in bytes..."/>
+					<input type="text" ng-model="edit.emptyValue" placeholder="Empty value"/>
 				</td>
 				<td>
-					{{ edit.value | kbfilesize }}
+					{{ edit.value | kbfilesize:edit.emptyValue }}
 				</td>
 
 			</tr>
