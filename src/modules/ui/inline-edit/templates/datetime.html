@@ -1,0 +1,7 @@
+<span class="static" ng-hide="isEditing" ng-click="edit()"><kb-datetime datetime="value"></kb-datetime></span>
+<div ng-show="isEditing" class="input-append editing">
+	<input type="text" ng-model="editValue" /><button
+			class="btn btn-success" ng-click="save()">
+				<i class="icon-ok" title="save"></i></button><button
+		class="btn" ng-click="cancel()"><i class="icon-remove" title="Cancel"></i></button>
+</div>'

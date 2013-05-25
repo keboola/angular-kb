@@ -20,7 +20,8 @@
 		"grunt-karma": "~0.4.2",
 		"grunt-contrib-copy": "~0.4.0",
 		"grunt-bumpup": "~0.2.0",
-		"grunt-tagrelease": "~0.2.0"
+		"grunt-tagrelease": "~0.2.0",
+		"grunt-angular-templates" : "~0.3.6"
 	},
 	"test": "grunt"
 }

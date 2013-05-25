@@ -1,13 +1,15 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.1.11 - 2013-05-15
+ * @version v0.1.11 - 2013-05-25
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
 
   angular.module('kb.config', []).value('kb.config', {});
 
-  angular.module('kb', ['kb.config', 'kb.ui.inlineEdit', 'kb.ui.clickToggle', 'kb.ui.copyButton', 'kb.ui.nl2br', 'kb.ui.toggable', 'kb.ui.sapiEventsTable', 'kb.ui.loader', 'kb.ui.autoComplete', 'kb.ui.focus', 'kb.ui.tree', 'kb.ui.runButton', 'kb.ui.codemirror', 'kb.ui.datetime', 'kb.ui.duration', 'kb.utils.multipartUpload', 'kb.utils.csv', 'kb.utils.keyboardShortcuts', 'kb.utils.appVersion', 'kb.filters.date', 'kb.filters.filesize', 'kb.filters.webalize', 'kb.filters.duration', 'kb.sapi.sapiService', 'kb.sapi.eventsService']);
+  angular.module('kb.templates', []);
+
+  angular.module('kb', ['kb.config', 'kb.ui.inlineEdit', 'kb.ui.clickToggle', 'kb.ui.copyButton', 'kb.ui.nl2br', 'kb.ui.toggable', 'kb.ui.sapiEventsTable', 'kb.ui.loader', 'kb.ui.autoComplete', 'kb.ui.focus', 'kb.ui.tree', 'kb.ui.runButton', 'kb.ui.codemirror', 'kb.ui.datetime', 'kb.ui.duration', 'kb.utils.multipartUpload', 'kb.utils.csv', 'kb.utils.keyboardShortcuts', 'kb.utils.appVersion', 'kb.filters.date', 'kb.filters.filesize', 'kb.filters.webalize', 'kb.filters.duration', 'kb.sapi.sapiService', 'kb.sapi.eventsService', 'kb.templates']);
 
 }).call(this);
 
@@ -1460,154 +1462,118 @@
 (function() {
 
   (function(angular) {
-    var InlineEditController;
-    angular.module('kb.ui.inlineEdit', []).directive('kbInlineEdit', function() {
-      return {
-        restrict: 'E',
-        scope: {
-          value: '=',
-          disabled: '=',
-          onSave: '&',
-          placeholder: '@',
-          editTitle: '@'
-        },
-        template: "<span class=\"static\" ng-hide=\"isEditing\" ng-click=\"edit()\">\n 	{{ value }}\n	 <a class=\"placeholder\" ng-show=\"!value\">\n			<i class=\"icon-edit\"></i>\n			{{ placeholder }}\n		</a>\n</span>\n<div ng-show=\"isEditing\" class=\"input-append editing\">\n	<input type=\"text\" ng-model=\"editValue\" placeholder=\"{{ placeholder }}\"/><button\n			class=\"btn btn-success\" ng-click=\"save()\">\n				<i class=\"icon-ok\" title=\"save\"></i></button><button\n		class=\"btn\" ng-click=\"cancel()\"><i class=\"icon-remove\" title=\"Cancel\"></i></button>\n</div>",
-        controller: InlineEditController
-      };
-    }).directive('kbInlineEditDatetime', function() {
-      return {
-        restrict: 'E',
-        scope: {
-          value: '=',
-          disabled: '=',
-          onSave: '&',
-          editTitle: '@'
-        },
-        template: '\
-				<span class="static" ng-hide="isEditing" ng-click="edit()"><kb-datetime datetime="value"></kb-datetime></span>\
-				<div ng-show="isEditing" class="input-append editing">\
-					<input type="text" ng-model="editValue" /><button\
-							class="btn btn-success" ng-click="save()">\
-								<i class="icon-ok" title="save"></i></button><button\
-						class="btn" ng-click="cancel()"><i class="icon-remove" title="Cancel"></i></button>\
-				</div>',
-        controller: InlineEditController
-      };
-    }).directive('kbInlineEditTextarea', function() {
-      return {
-        restrict: 'E',
-        scope: {
-          value: '=',
-          disabled: '=',
-          onSave: '&',
-          placeholder: '@',
-          editTitle: '@'
-        },
-        template: "<span class=\"static\" ng-hide=\"isEditing\" ng-click=\"edit()\">\n		<span kb-nl2br=\"value\"></span>\n		<a class=\"placeholder\" ng-show=\"!value\">\n			<i class=\"icon-edit\"></i>\n			{{ placeholder }}\n		</a>\n</span>\n<div ng-show=\"isEditing\" class=\"editing\">\n	<textarea type=\"text\" ng-model=\"editValue\" placeholder=\"{{ placeholder }}\">\n	</textarea>\n	<div class=\"form-actions\">\n				<button class=\"btn btn-primary\" ng-click=\"save()\">Save</button>\n				<button class=\"btn\" ng-click=\"cancel()\">Cancel</button>\n	</div>\n</div>",
-        controller: InlineEditController
-      };
-    }).directive('kbInlineEditSelect', function() {
-      return {
-        restrict: 'E',
-        scope: {
-          value: '=',
-          disabled: '=',
-          onSave: '&',
-          options: '=',
-          editTitle: '@',
-          placeholder: '@'
-        },
-        template: "<span class=\"static\" ng-hide=\"isEditing\" ng-click=\"edit()\">\n	{{ value }}\n	<span class=\"placeholder\" ng-show=\"!value\">{{ placeholder }}</span>\n</span>\n<div ng-show=\"isEditing\" class=\"input-append editing\">\n	<select ng-options=\"value for value in options\" ng-model=\"editValue\"></select>\n	<button class=\"btn btn-success\" ng-click=\"save()\">\n				<i class=\"icon-ok\" title=\"save\"></i>\n		</button>\n		<button class=\"btn\" ng-click=\"cancel()\">\n			<i class=\"icon-remove\" title=\"Cancel\"></i>\n		</button>\n</div>",
-        controller: InlineEditController
-      };
-    });
-    InlineEditController = function(scope, element, attrs, $timeout) {
-      var resolveTooltip, setTooltipTitle, tooltip;
-      element.addClass('form-inline');
-      element.addClass('kb-inline-edit');
-      element.addClass(element.get(0).tagName.toLowerCase());
-      element.tooltip({
-        title: scope.editTitle
-      });
-      tooltip = element.data('tooltip');
-      setTooltipTitle = function(title) {
-        element.removeAttr('data-original-title');
-        return tooltip.options.title = title;
-      };
-      resolveTooltip = function() {
-        if (scope.isEditing || scope.disabled) {
-          return setTooltipTitle('');
-        } else {
-          return setTooltipTitle(scope.editTitle);
-        }
-      };
-      scope.$watch('disabled', function(disabled) {
-        if (disabled) {
-          element.find('.static');
-          element.addClass('disabled');
-        } else {
-          element.removeClass('disabled');
-        }
-        if (scope.isEditing && !disabled) {
-          scope.edit();
-        } else {
-          scope.cancel();
-        }
-        return resolveTooltip();
-      });
-      scope.$watch('isEditing', resolveTooltip);
-      scope.$watch('editTitle', resolveTooltip);
-      scope.edit = function() {
-        if (scope.disabled) {
-          return;
-        }
-        scope.isEditing = true;
-        scope.editValue = scope.value;
-        angular.element('body').bind('click.inlineEdit', function() {
-          scope.$apply(function() {
-            return scope.cancel();
-          });
-          return true;
-        });
-        element.bind('click.inlineEdit', function(e) {
-          return e.stopPropagation();
-        });
-        element.bind('keyup.inlineEdit', function(e) {
-          if (e.keyCode === 13 && element.get(0).tagName.toLocaleLowerCase() !== 'kb-inline-edit-textarea') {
-            scope.$apply(scope.save);
-          }
-          if (e.keyCode === 27) {
-            scope.$apply(scope.cancel);
-          }
-          return false;
-        });
-        return $timeout(function() {
-          return element.find(':input').not('button').focus();
-        });
-      };
-      scope.cancel = function() {
-        scope.isEditing = false;
-        angular.element('body').unbind('.inlineEdit');
-        return element.unbind('.inlineEdit');
-      };
-      scope.$on('$destroy', function() {
-        if (tooltip) {
-          return tooltip.destroy();
-        }
-      });
-      return scope.save = function() {
-        scope.value = scope.editValue;
-        if (angular.isFunction(scope.onSave)) {
-          $timeout(function() {
-            return scope.onSave({
-              newValue: scope.editValue
-            });
-          });
-        }
-        return scope.cancel();
+    var inlineEditFactory, module;
+    module = angular.module('kb.ui.inlineEdit', []);
+    inlineEditFactory = function(templateUrl) {
+      return function() {
+        return {
+          restrict: 'E',
+          scope: {
+            value: '=',
+            disabled: '=',
+            onSave: '&',
+            placeholder: '@',
+            editTitle: '@'
+          },
+          templateUrl: templateUrl,
+          controller: [
+            "$scope", "$element", "$attrs", "$timeout", function(scope, element, attrs, $timeout) {
+              var resolveTooltip, setTooltipTitle, tooltip;
+              element.addClass('form-inline');
+              element.addClass('kb-inline-edit');
+              element.addClass(element[0].tagName.toLowerCase());
+              element.tooltip({
+                title: scope.editTitle
+              });
+              tooltip = element.data('tooltip');
+              setTooltipTitle = function(title) {
+                element.removeAttr('data-original-title');
+                return tooltip.options.title = title;
+              };
+              resolveTooltip = function() {
+                if (scope.isEditing || scope.disabled) {
+                  return setTooltipTitle('');
+                } else {
+                  return setTooltipTitle(scope.editTitle);
+                }
+              };
+              scope.$watch('disabled', function(disabled) {
+                if (disabled) {
+                  element.addClass('disabled');
+                } else {
+                  element.removeClass('disabled');
+                }
+                if (scope.isEditing && !disabled) {
+                  scope.edit();
+                } else {
+                  scope.cancel();
+                }
+                return resolveTooltip();
+              });
+              scope.$watch('isEditing', resolveTooltip);
+              scope.$watch('editTitle', resolveTooltip);
+              scope.edit = function() {
+                if (scope.disabled) {
+                  return;
+                }
+                scope.isEditing = true;
+                scope.editValue = scope.value;
+                angular.element('body').bind('click.inlineEdit', function() {
+                  scope.$apply(function() {
+                    return scope.cancel();
+                  });
+                  return true;
+                });
+                element.bind('click.inlineEdit', function(e) {
+                  return e.stopPropagation();
+                });
+                element.bind('keyup.inlineEdit', function(e) {
+                  if (e.keyCode === 13 && element.get(0).tagName.toLocaleLowerCase() !== 'kb-inline-edit-textarea') {
+                    scope.$apply(scope.save);
+                  }
+                  if (e.keyCode === 27) {
+                    scope.$apply(scope.cancel);
+                  }
+                  return false;
+                });
+                return $timeout(function() {
+                  return element.find(':input').not('button').focus();
+                });
+              };
+              scope.cancel = function() {
+                scope.isEditing = false;
+                angular.element('body').unbind('.inlineEdit');
+                return element.unbind('.inlineEdit');
+              };
+              scope.$on('$destroy', function() {
+                if (tooltip) {
+                  return tooltip.destroy();
+                }
+              });
+              return scope.save = function() {
+                scope.value = scope.editValue;
+                if (angular.isFunction(scope.onSave)) {
+                  $timeout(function() {
+                    return scope.onSave({
+                      newValue: scope.editValue
+                    });
+                  });
+                }
+                return scope.cancel();
+              };
+            }
+          ]
+        };
       };
     };
-    return InlineEditController.$inject = ['$scope', '$element', '$attrs', '$timeout'];
+    return module.factory('kbInlineEdit', function() {
+      return inlineEditFactory;
+    }).directive('kbInlineEdit', inlineEditFactory("kb/ui/inline-edit/templates/text.html")).directive('kbInlineEditDatetime', inlineEditFactory("kb/ui/inline-edit/templates/datetime.html")).directive('kbInlineEditTextarea', inlineEditFactory("kb/ui/inline-edit/templates/textarea.html")).directive('kbInlineEditSelect', function() {
+      var config;
+      config = inlineEditFactory("kb/ui/inline-edit/templates/select.html")();
+      config.scope.options = '=';
+      return config;
+    });
   })(window.angular);
 
 }).call(this);
@@ -2726,3 +2692,67 @@
   });
 
 }).call(this);
+
+angular.module("kb.templates").run(["$templateCache", function($templateCache) {
+
+  $templateCache.put("kb/ui/inline-edit/templates/datetime.html",
+    "<span class=\"static\" ng-hide=\"isEditing\" ng-click=\"edit()\"><kb-datetime datetime=\"value\"></kb-datetime></span>\n" +
+    "<div ng-show=\"isEditing\" class=\"input-append editing\">\n" +
+    "\t<input type=\"text\" ng-model=\"editValue\" /><button\n" +
+    "\t\t\tclass=\"btn btn-success\" ng-click=\"save()\">\n" +
+    "\t\t\t\t<i class=\"icon-ok\" title=\"save\"></i></button><button\n" +
+    "\t\tclass=\"btn\" ng-click=\"cancel()\"><i class=\"icon-remove\" title=\"Cancel\"></i></button>\n" +
+    "</div>'"
+  );
+
+  $templateCache.put("kb/ui/inline-edit/templates/select.html",
+    "<span class=\"static\" ng-hide=\"isEditing\" ng-click=\"edit()\">\n" +
+    "\t{{ value }}\n" +
+    "\t<span class=\"placeholder\" ng-show=\"!value\">{{ placeholder }}</span>\n" +
+    "</span>\n" +
+    "<div ng-show=\"isEditing\" class=\"input-append editing\">\n" +
+    "\t<select ng-options=\"value for value in options\" ng-model=\"editValue\"></select>\n" +
+    "\t<button class=\"btn btn-success\" ng-click=\"save()\">\n" +
+    "\t\t\t\t<i class=\"icon-ok\" title=\"save\"></i>\n" +
+    "\t\t</button>\n" +
+    "\t\t<button class=\"btn\" ng-click=\"cancel()\">\n" +
+    "\t\t\t<i class=\"icon-remove\" title=\"Cancel\"></i>\n" +
+    "\t\t</button>\n" +
+    "</div>"
+  );
+
+  $templateCache.put("kb/ui/inline-edit/templates/text.html",
+    "<span class=\"static\" ng-hide=\"isEditing\" ng-click=\"edit()\">\n" +
+    "\t{{ value }}\n" +
+    "\t <a class=\"placeholder\" ng-show=\"!value\">\n" +
+    "\t\t\t<i class=\"icon-edit\"></i>\n" +
+    "\t\t\t{{ placeholder }}\n" +
+    "\t\t</a>\n" +
+    "</span>\n" +
+    "<div ng-show=\"isEditing\" class=\"input-append editing\">\n" +
+    "\t<input type=\"text\" ng-model=\"editValue\" placeholder=\"{{ placeholder }}\"/><button\n" +
+    "\t\t\tclass=\"btn btn-success\" ng-click=\"save()\">\n" +
+    "\t\t\t\t<i class=\"icon-ok\" title=\"save\"></i></button><button\n" +
+    "\t\tclass=\"btn\" ng-click=\"cancel()\"><i class=\"icon-remove\" title=\"Cancel\"></i></button>\n" +
+    "</div>"
+  );
+
+  $templateCache.put("kb/ui/inline-edit/templates/textarea.html",
+    "<span class=\"static\" ng-hide=\"isEditing\" ng-click=\"edit()\">\n" +
+    "\t\t<span kb-nl2br=\"value\"></span>\n" +
+    "\t\t<a class=\"placeholder\" ng-show=\"!value\">\n" +
+    "\t\t\t<i class=\"icon-edit\"></i>\n" +
+    "\t\t\t{{ placeholder }}\n" +
+    "\t\t</a>\n" +
+    "</span>\n" +
+    "<div ng-show=\"isEditing\" class=\"editing\">\n" +
+    "\t<textarea type=\"text\" ng-model=\"editValue\" placeholder=\"{{ placeholder }}\">\n" +
+    "\t</textarea>\n" +
+    "\t<div class=\"form-actions\">\n" +
+    "\t\t\t\t<button class=\"btn btn-primary\" ng-click=\"save()\">Save</button>\n" +
+    "\t\t\t\t<button class=\"btn\" ng-click=\"cancel()\">Cancel</button>\n" +
+    "\t</div>\n" +
+    "</div>"
+  );
+
+}]);

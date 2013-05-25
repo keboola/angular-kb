@@ -44,12 +44,26 @@ module.exports = (grunt) ->
 				src: ["docs/scripts/*.coffee"]
 				dest: "docs/scripts/app.js"
 
+		# concatenate & register AngularJS templates in the $templateCache
+		ngtemplates:
+			dist:
+				options:
+					module: "kb.templates"
+					prepend: "kb/"
+					base: "src/modules"
+				src: ["src/**/*.html"]
+				dest: "tmp/templates.js"
+
 		concat:
 			options:
 				banner: "<%= meta.banner %>"
 
 			dist_scripts:
-				src: ["tmp/kb.js", "tmp/modules/**/!(lang|test)/*.js"]
+				src: [
+					"tmp/kb.js"
+					"tmp/modules/**/!(lang|test)/*.js"
+					"<%= ngtemplates.dist.dest %>"
+				]
 				dest: "docs/build/angular-kb.js"
 
 			dist_css:
@@ -60,7 +74,6 @@ module.exports = (grunt) ->
 			dist:
 				src: ["<%= concat.dist_css.dest %>"]
 				dest: "docs/build/angular-kb.min.css"
-
 
 		# minifications
 		uglify:
@@ -79,6 +92,10 @@ module.exports = (grunt) ->
 			css:
 				files: ["<%= concat.dist_css.src %>"]
 				tasks: ["concat:dist_css", "cssmin"]
+
+			html:
+				files: ["src/**/*.html"]
+				tasks: ["ngtemplates", "concat:dist_scripts", "uglify", "karma:unit:run"]
 
 			grunt:
 				files: ["Gruntfile.coffee"]
@@ -179,6 +196,7 @@ module.exports = (grunt) ->
 	grunt.registerTask "build", [
 		"clean"
 		"coffee"
+		"ngtemplates"
 		"concat"
 		"uglify"
 		"cssmin"

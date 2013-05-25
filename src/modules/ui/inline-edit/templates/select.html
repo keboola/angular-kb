@@ -1,0 +1,13 @@
+<span class="static" ng-hide="isEditing" ng-click="edit()">
+	{{ value }}
+	<span class="placeholder" ng-show="!value">{{ placeholder }}</span>
+</span>
+<div ng-show="isEditing" class="input-append editing">
+	<select ng-options="value for value in options" ng-model="editValue"></select>
+	<button class="btn btn-success" ng-click="save()">
+				<i class="icon-ok" title="save"></i>
+		</button>
+		<button class="btn" ng-click="cancel()">
+			<i class="icon-remove" title="Cancel"></i>
+		</button>
+</div>

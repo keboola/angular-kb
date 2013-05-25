@@ -3,6 +3,8 @@
 angular.module('kb.config', [])
 	.value('kb.config', {})
 
+angular.module('kb.templates', [])
+
 angular.module('kb', [
 	'kb.config'
 
@@ -33,4 +35,6 @@ angular.module('kb', [
 
 	'kb.sapi.sapiService'
 	'kb.sapi.eventsService'
+
+	'kb.templates'
 ])
