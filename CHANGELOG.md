@@ -1,3 +1,6 @@
+## 0.1.12
+ * [Refactoring] Inline edit, inline template
+
 ## 0.1.11
  * [Feature] Filesize filter - empty value parameter added
 
