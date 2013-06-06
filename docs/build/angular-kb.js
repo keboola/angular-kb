@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.1.12 - 2013-05-25
+ * @version v0.1.12 - 2013-06-06
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -1031,6 +1031,24 @@
         });
       };
 
+      StorageService.prototype.saveTableDataAsync = function(tableId, importFileId, options) {
+        var params;
+        params = angular.extend({}, options, {
+          dataFileId: importFileId
+        });
+        if (!angular.isUndefined(params.incremental)) {
+          params.incremental = Number(params.incremental);
+        }
+        if (!angular.isUndefined(params.partial)) {
+          params.partial = Number(params.partial);
+        }
+        return this.http({
+          url: this.url('/storage/tables/' + tableId + '/import-async'),
+          method: 'POST',
+          data: $.param(params)
+        });
+      };
+
       StorageService.prototype.tableData = function(tableId, options, callback) {
         var csv, deferred, params, promise;
         if (options == null) {
@@ -1155,6 +1173,28 @@
             limit: limit,
             offset: offset
           }
+        });
+      };
+
+      StorageService.prototype.prepareFileUpload = function(params) {
+        return this.http({
+          url: this.url('/storage/files'),
+          method: 'POST',
+          params: params
+        });
+      };
+
+      StorageService.prototype.getJobs = function() {
+        return this.http({
+          url: this.url('/storage/jobs'),
+          method: 'GET'
+        });
+      };
+
+      StorageService.prototype.getJob = function(id) {
+        return this.http({
+          url: this.url("/storage/jobs/{id}"),
+          method: 'GET'
         });
       };
 

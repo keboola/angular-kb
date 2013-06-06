@@ -346,6 +346,17 @@
 				data: $.param(params)
 			)
 
+		saveTableDataAsync: (tableId, importFileId, options) ->
+			params  = angular.extend {}, options, dataFileId: importFileId
+			params.incremental = Number(params.incremental) if !angular.isUndefined params.incremental
+			params.partial = Number(params.partial) if !angular.isUndefined params.partial
+
+			@http(
+				url: @url( '/storage/tables/' + tableId  + '/import-async')
+				method: 'POST'
+				data: $.param(params)
+			)
+
 		# Read and parse table data
 		# returns promise
 		tableData: (tableId, options = {}, callback = null) ->
@@ -452,6 +463,27 @@
 				params:
 					limit: limit
 					offset: offset
+			)
+
+		prepareFileUpload: (params) ->
+			@http(
+				url: @url '/storage/files'
+				method: 'POST'
+				params:
+					params
+			)
+
+		# jobs
+		getJobs: ->
+			@http(
+				url: @url '/storage/jobs'
+				method: 'GET'
+			)
+
+		getJob: (id) ->
+			@http(
+				url: @url "/storage/jobs/{id}"
+				method: 'GET'
 			)
 
 		# ticketing service

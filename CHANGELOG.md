@@ -1,3 +1,6 @@
+## 0.1.13
+ * [Feature] SAPI Client - file upload prepare, jobs resource, table async import
+
 ## 0.1.12
  * [Refactoring] Inline edit, inline template
 
