@@ -354,6 +354,8 @@
 			@http(
 				url: @url( '/storage/tables/' + tableId  + '/import-async')
 				method: 'POST'
+				headers:
+					'Content-Type': 'application/x-www-form-urlencoded'
 				data: $.param(params)
 			)
 
@@ -469,8 +471,9 @@
 			@http(
 				url: @url '/storage/files-prepare'
 				method: 'POST'
-				params:
-					params
+				headers:
+					'Content-Type': 'application/x-www-form-urlencoded'
+				data: $.param(params)
 			)
 
 		# jobs

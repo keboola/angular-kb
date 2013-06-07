@@ -1045,6 +1045,9 @@
         return this.http({
           url: this.url('/storage/tables/' + tableId + '/import-async'),
           method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
           data: $.param(params)
         });
       };
@@ -1180,7 +1183,10 @@
         return this.http({
           url: this.url('/storage/files-prepare'),
           method: 'POST',
-          params: params
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          data: $.param(params)
         });
       };
 
