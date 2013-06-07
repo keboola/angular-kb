@@ -1,3 +1,6 @@
+## 0.1.14
+ * [Bugfix] SAPI Client - file upload prepare
+
 ## 0.1.13
  * [Feature] SAPI Client - file upload prepare, jobs resource, table async import
 

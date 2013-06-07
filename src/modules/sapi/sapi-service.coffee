@@ -467,7 +467,7 @@
 
 		prepareFileUpload: (params) ->
 			@http(
-				url: @url '/storage/files'
+				url: @url '/storage/files-prepare'
 				method: 'POST'
 				params:
 					params

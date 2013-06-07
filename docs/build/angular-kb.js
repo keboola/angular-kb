@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.1.13 - 2013-06-06
+ * @version v0.1.13 - 2013-06-07
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -1178,7 +1178,7 @@
 
       StorageService.prototype.prepareFileUpload = function(params) {
         return this.http({
-          url: this.url('/storage/files'),
+          url: this.url('/storage/files-prepare'),
           method: 'POST',
           params: params
         });
