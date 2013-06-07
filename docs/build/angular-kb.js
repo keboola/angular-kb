@@ -1181,7 +1181,7 @@
 
       StorageService.prototype.prepareFileUpload = function(params) {
         return this.http({
-          url: this.url('/storage/files-prepare'),
+          url: this.url('/storage/files/prepare'),
           method: 'POST',
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded'

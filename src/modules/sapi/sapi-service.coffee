@@ -469,7 +469,7 @@
 
 		prepareFileUpload: (params) ->
 			@http(
-				url: @url '/storage/files-prepare'
+				url: @url '/storage/files/prepare'
 				method: 'POST'
 				headers:
 					'Content-Type': 'application/x-www-form-urlencoded'

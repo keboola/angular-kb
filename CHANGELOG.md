@@ -1,3 +1,6 @@
+## 0.1.17
+ * [Bugfix] SAPI Client - file upload prepare
+
 ## 0.1.15
  * [Bugfix] SAPI Client - file upload prepare, async import
 
