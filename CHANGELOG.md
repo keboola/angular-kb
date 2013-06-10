@@ -1,3 +1,6 @@
+## 0.1.18
+ * [Bugfix] SAPI Client - job detail
+
 ## 0.1.17
  * [Bugfix] SAPI Client - file upload prepare
 

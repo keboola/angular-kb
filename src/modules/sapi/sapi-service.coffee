@@ -485,7 +485,7 @@
 
 		getJob: (id) ->
 			@http(
-				url: @url "/storage/jobs/{id}"
+				url: @url "/storage/jobs/#{id}"
 				method: 'GET'
 			)
 
