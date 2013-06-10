@@ -1,6 +1,9 @@
+## 0.2.0
+ * [BC Break] SAPI Client saveTableDataAsync method signature changed
+
 ## 0.1.17
  * [Bugfix] SAPI Client - file upload prepare
-  * [Bugfix] SAPI Client - job detail
+ * [Bugfix] SAPI Client - job detail
 
 ## 0.1.15
  * [Bugfix] SAPI Client - file upload prepare, async import

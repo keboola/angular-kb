@@ -346,8 +346,7 @@
 				data: $.param(params)
 			)
 
-		saveTableDataAsync: (tableId, importFileId, options) ->
-			params  = angular.extend {}, options, dataFileId: importFileId
+		saveTableDataAsync: (tableId, params) ->
 			params.incremental = Number(params.incremental) if !angular.isUndefined params.incremental
 			params.partial = Number(params.partial) if !angular.isUndefined params.partial
 
