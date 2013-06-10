@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.1.17 - 2013-06-10
+ * @version v0.2.0 - 2013-06-10
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -1031,11 +1031,7 @@
         });
       };
 
-      StorageService.prototype.saveTableDataAsync = function(tableId, importFileId, options) {
-        var params;
-        params = angular.extend({}, options, {
-          dataFileId: importFileId
-        });
+      StorageService.prototype.saveTableDataAsync = function(tableId, params) {
         if (!angular.isUndefined(params.incremental)) {
           params.incremental = Number(params.incremental);
         }
