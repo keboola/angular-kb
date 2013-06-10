@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.1.16 - 2013-06-07
+ * @version v0.1.17 - 2013-06-10
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -1199,7 +1199,7 @@
 
       StorageService.prototype.getJob = function(id) {
         return this.http({
-          url: this.url("/storage/jobs/{id}"),
+          url: this.url("/storage/jobs/" + id),
           method: 'GET'
         });
       };
