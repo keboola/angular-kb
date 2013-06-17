@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.2.0 - 2013-06-10
+ * @version v0.2.0 - 2013-06-17
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -1075,11 +1075,24 @@
             callback(parsed);
           }
           return deferred.resolve(parsed);
+        }).error(function(data, status, headers, config) {
+          return deferred.reject({
+            data: data,
+            status: status,
+            heders: headers,
+            config: config
+          });
         });
         promise = deferred.promise;
         promise.success = function(fn) {
           promise.then(function(parsedData) {
             return fn(parsedData);
+          });
+          return promise;
+        };
+        promise.error = function(fn) {
+          promise.then(null, function(response) {
+            return fn(response.data, response.status, response.headers);
           });
           return promise;
         };

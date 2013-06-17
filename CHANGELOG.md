@@ -1,3 +1,6 @@
+## 0.2.1
+ * [Bugfix] SAPI Client - error handling
+
 ## 0.2.0
  * [BC Break] SAPI Client saveTableDataAsync method signature changed
 

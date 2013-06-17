@@ -67,3 +67,21 @@ describe 'kb.sapi.service', ->
 			sapiService.tableData('in.c-tests.users')
 			$httpBackend.flush()
 
+		it 'should propagate error', ->
+			$httpBackend
+				.expectGET("#{sapiBaseUrl}/v2/storage/tables/in.c-tests.users/export?")
+				.respond(500,
+					'error': 'Unknown error'
+				)
+
+			errorHandler = jasmine.createSpy 'errorHandler'
+
+			sapiService
+				.tableData('in.c-tests.users')
+				.error((error) ->
+					errorHandler(error)
+				)
+
+			$httpBackend.flush()
+			expect(errorHandler).toHaveBeenCalled()
+

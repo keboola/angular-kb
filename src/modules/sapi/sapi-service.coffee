@@ -379,6 +379,14 @@
 				callback( parsed ) if callback
 				deferred.resolve( parsed )
 			)
+			.error((data, status, headers, config) ->
+				deferred.reject(
+					data: data
+					status: status
+					heders: headers
+					config: config
+				)
+			)
 
 			promise = deferred.promise
 			promise.success = (fn) ->
@@ -386,6 +394,13 @@
 						fn(parsedData)
 				)
 				promise
+
+			promise.error = (fn) ->
+				promise.then(null, (response) ->
+					fn(response.data, response.status, response.headers)
+				)
+				promise
+
 			return promise
 
 
