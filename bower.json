@@ -1,6 +1,6 @@
 {
   "name": "angular-kb",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "dependencies": {
     "angular": "~1.0.6",
     "jquery": "~1.9.1",
