@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.2.1 - 2013-06-17
+ * @version v0.2.1 - 2013-06-18
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -2757,7 +2757,7 @@ angular.module("kb.templates").run(["$templateCache", function($templateCache) {
     "\t\t\tclass=\"btn btn-success\" ng-click=\"save()\">\n" +
     "\t\t\t\t<i class=\"icon-ok\" title=\"save\"></i></button><button\n" +
     "\t\tclass=\"btn\" ng-click=\"cancel()\"><i class=\"icon-remove\" title=\"Cancel\"></i></button>\n" +
-    "</div>'"
+    "</div>"
   );
 
   $templateCache.put("kb/ui/inline-edit/templates/select.html",

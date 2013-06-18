@@ -1,3 +1,6 @@
+## 0.2.2
+ * [Bugfix] Inline edit - removed forgotten quote from template
+
 ## 0.2.1
  * [Bugfix] SAPI Client - error handling
 
