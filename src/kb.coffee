@@ -22,6 +22,7 @@ angular.module('kb', [
 	'kb.ui.codemirror'
 	'kb.ui.datetime'
 	'kb.ui.duration'
+	'kb.ui.sapiConsoleHref'
 
 	'kb.utils.multipartUpload'
 	'kb.utils.csv'

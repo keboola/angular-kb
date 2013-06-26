@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.2.2 - 2013-06-18
+ * @version v0.2.3 - 2013-06-26
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -9,7 +9,7 @@
 
   angular.module('kb.templates', []);
 
-  angular.module('kb', ['kb.config', 'kb.ui.inlineEdit', 'kb.ui.clickToggle', 'kb.ui.copyButton', 'kb.ui.nl2br', 'kb.ui.toggable', 'kb.ui.sapiEventsTable', 'kb.ui.loader', 'kb.ui.autoComplete', 'kb.ui.focus', 'kb.ui.tree', 'kb.ui.runButton', 'kb.ui.codemirror', 'kb.ui.datetime', 'kb.ui.duration', 'kb.utils.multipartUpload', 'kb.utils.csv', 'kb.utils.keyboardShortcuts', 'kb.utils.appVersion', 'kb.filters.date', 'kb.filters.filesize', 'kb.filters.webalize', 'kb.filters.duration', 'kb.sapi.sapiService', 'kb.sapi.eventsService', 'kb.templates']);
+  angular.module('kb', ['kb.config', 'kb.ui.inlineEdit', 'kb.ui.clickToggle', 'kb.ui.copyButton', 'kb.ui.nl2br', 'kb.ui.toggable', 'kb.ui.sapiEventsTable', 'kb.ui.loader', 'kb.ui.autoComplete', 'kb.ui.focus', 'kb.ui.tree', 'kb.ui.runButton', 'kb.ui.codemirror', 'kb.ui.datetime', 'kb.ui.duration', 'kb.ui.sapiConsoleHref', 'kb.utils.multipartUpload', 'kb.utils.csv', 'kb.utils.keyboardShortcuts', 'kb.utils.appVersion', 'kb.filters.date', 'kb.filters.filesize', 'kb.filters.webalize', 'kb.filters.duration', 'kb.sapi.sapiService', 'kb.sapi.eventsService', 'kb.templates']);
 
 }).call(this);
 
@@ -1714,6 +1714,44 @@
       }
     };
   });
+
+}).call(this);
+
+
+/*
+  Link to SAPI Console
+  Token is transfered threw POST body instead of URL parameters
+  Implemented by form submit into blank window
+*/
+
+
+(function() {
+
+  angular.module('kb.ui.sapiConsoleHref', ['kb.sapi.sapiService']).directive('kbSapiConsoleHref', [
+    "kbSapiService", function(sapiService) {
+      return {
+        restrict: 'E',
+        transclude: true,
+        scope: {
+          path: '@'
+        },
+        template: "<form action=\"{{ url() }}\" method=\"post\" class=\"kb-sapi-console-href\" target=\"_blank\">\n	<a ng-click=\"submit()\" ng-transclude></a>\n	<input type=\"hidden\" name=\"token\" value=\"{{ sapiService.apiToken }}\" />\n</form>",
+        link: function(scope, element) {
+          var path;
+          path = function() {
+            return scope.path || "/";
+          };
+          scope.sapiService = sapiService;
+          scope.url = function() {
+            return "" + sapiService.consoleUrl + (path()) + "?endpoint=" + sapiService.endpoint;
+          };
+          return scope.submit = function() {
+            return element.find('form').submit();
+          };
+        }
+      };
+    }
+  ]);
 
 }).call(this);
 

@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.2.2 - 2013-06-18
+ * @version v0.2.3 - 2013-06-26
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */
@@ -163,6 +163,12 @@
     to {
         -o-transform: rotate(360deg);
     }
+}
+
+
+.form- {
+	margin: 0;
+	display: inline-block;
 }
 
 

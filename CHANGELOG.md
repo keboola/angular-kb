@@ -1,3 +1,6 @@
+## 0.2.3
+ * [Feature] SAPI Console href directive added
+
 ## 0.2.2
  * [Bugfix] Inline edit - removed forgotten quote from template
 
