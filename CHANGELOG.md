@@ -1,3 +1,6 @@
+## 0.2.4
+ * [Bugfix] SAPI Console href directive css
+
 ## 0.2.3
  * [Feature] SAPI Console href directive added
 
