@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.2.4 - 2013-06-26
+ * @version v0.2.5 - 2013-06-28
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -1168,6 +1168,17 @@
         return this.http({
           url: this.url('/storage/tokens/' + tokenId),
           method: 'DELETE'
+        });
+      };
+
+      StorageService.prototype.shareToken = function(tokenId, recipientEmail, message) {
+        return this.http({
+          url: this.url("/storage/tokens/" + tokenId + "/share"),
+          method: 'POST',
+          params: {
+            recipientEmail: recipientEmail,
+            message: message
+          }
         });
       };
 
