@@ -1,3 +1,6 @@
+## 0.2.5
+ * [Feature] SAPI Client - share token by email method added
+
 ## 0.2.4
  * [Bugfix] SAPI Console href directive css
 

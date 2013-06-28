@@ -471,6 +471,16 @@
 				method: 'DELETE'
 			)
 
+		shareToken: (tokenId, recipientEmail, message) ->
+			@http(
+				url: @url "/storage/tokens/#{tokenId}/share"
+				method: 'POST'
+				params:
+					recipientEmail: recipientEmail
+					message: message
+			)
+
+
 		# files
 		getFiles: (limit = 100, offset = 0) ->
 			@http(
