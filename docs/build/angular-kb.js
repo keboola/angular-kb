@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.2.5 - 2013-06-28
+ * @version v0.2.6 - 2013-06-28
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -1175,10 +1175,13 @@
         return this.http({
           url: this.url("/storage/tokens/" + tokenId + "/share"),
           method: 'POST',
-          params: {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          data: $.param({
             recipientEmail: recipientEmail,
             message: message
-          }
+          })
         });
       };
 
