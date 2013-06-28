@@ -475,9 +475,12 @@
 			@http(
 				url: @url "/storage/tokens/#{tokenId}/share"
 				method: 'POST'
-				params:
+				headers:
+					'Content-Type': 'application/x-www-form-urlencoded'
+				data: $.param(
 					recipientEmail: recipientEmail
 					message: message
+				)
 			)
 
 

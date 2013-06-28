@@ -1,3 +1,6 @@
+## 0.2.6
+ * [Bugfix] SAPI Client - share token params
+
 ## 0.2.5
  * [Feature] SAPI Client - share token by email method added
 
