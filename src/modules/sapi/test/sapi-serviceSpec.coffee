@@ -3,6 +3,8 @@ describe 'kb.sapi.service', ->
 
 	sapiService = null
 	$httpBackend = null
+	$timeout = null
+	$rootScope = null
 	sapiBaseUrl = "https://connection.keboola.com"
 
 	beforeEach(module('kb.sapi.sapiService'))
@@ -10,6 +12,8 @@ describe 'kb.sapi.service', ->
 		sapiService = $injector.get('kbSapiService')
 		sapiService.endpoint = sapiBaseUrl
 		$httpBackend  = $injector.get('$httpBackend');
+		$timeout = $injector.get('$timeout')
+		$rootScope = $injector.get('$rootScope')
 	))
 
 
@@ -84,4 +88,131 @@ describe 'kb.sapi.service', ->
 
 			$httpBackend.flush()
 			expect(errorHandler).toHaveBeenCalled()
+
+	describe 'job poll', ->
+
+		it 'should stop polling on success', ->
+
+			jobUrl = "#{sapiBaseUrl}/v2/storage/jobs/12"
+
+			# 1. check
+			$httpBackend
+					.expectGET(jobUrl)
+					.respond(200,
+						'id': '12'
+						'status': 'waiting'
+					)
+
+			doneCallback = jasmine.createSpy('done');
+			sapiService
+				.pollJobUntilDone(12)
+				.then(doneCallback)
+
+			$timeout.flush()
+			$httpBackend.flush()
+			expect(doneCallback).not.toHaveBeenCalled()
+
+			# 2. check
+			$httpBackend
+					.expectGET(jobUrl)
+					.respond(200,
+						'id': '12'
+						'status': 'processing'
+					)
+
+			$timeout.flush()
+			$httpBackend.flush()
+			expect(doneCallback).not.toHaveBeenCalled()
+
+			# 3. check
+			$httpBackend
+					.expectGET(jobUrl)
+					.respond(200,
+						'id': '12'
+						'status': 'success'
+					)
+
+			$timeout.flush()
+			$httpBackend.flush()
+			expect(doneCallback).toHaveBeenCalled()
+
+			job = doneCallback.mostRecentCall.args[0]
+			expect(job.id).toBe '12'
+			expect(job.status).toBe 'success'
+
+		it 'should return error on job fetch error', ->
+
+			jobUrl = "#{sapiBaseUrl}/v2/storage/jobs/12"
+
+			# 1. check
+			$httpBackend
+					.expectGET(jobUrl)
+					.respond(200,
+						'id': '12'
+						'status': 'waiting'
+					)
+
+			doneCallback = jasmine.createSpy('done')
+			errorCallback = jasmine.createSpy('error')
+
+			sapiService
+				.pollJobUntilDone(12)
+				.then(doneCallback, errorCallback)
+
+			$timeout.flush()
+			$httpBackend.flush()
+			expect(doneCallback).not.toHaveBeenCalled()
+			expect(errorCallback).not.toHaveBeenCalled()
+
+			# 2. check
+			errorResponse =
+				'error': 'Core dumped'
+				'message': 'error'
+
+			$httpBackend
+					.expectGET(jobUrl)
+					.respond(500, errorResponse)
+
+
+			$timeout.flush()
+			$httpBackend.flush()
+			expect(doneCallback).not.toHaveBeenCalled()
+			expect(errorCallback).toHaveBeenCalled()
+
+			errorHandlerArgs = job = errorCallback.mostRecentCall.args
+			expect(errorHandlerArgs[0]).toBe errorResponse
+
+
+		it 'should timeout after 20 attempts', ->
+
+			jobUrl = "#{sapiBaseUrl}/v2/storage/jobs/12"
+
+			doneCallback = jasmine.createSpy('done')
+			errorCallback = jasmine.createSpy('error')
+
+			sapiService
+				.pollJobUntilDone(12)
+				.then(doneCallback, errorCallback)
+
+			performCheck = ->
+				$httpBackend
+						.expectGET(jobUrl)
+						.respond(200,
+							'id': '12'
+							'status': 'processing'
+						)
+
+				$timeout.flush()
+				$httpBackend.flush()
+				expect(doneCallback).not.toHaveBeenCalled()
+				expect(errorCallback).not.toHaveBeenCalled()
+
+			limit = 20
+			performCheck() while limit -= 1
+
+			# timeout
+			$timeout.flush()
+			$rootScope.$apply()
+			expect(doneCallback).not.toHaveBeenCalled()
+			expect(errorCallback).toHaveBeenCalled()
 

@@ -1,3 +1,6 @@
+## 0.2.7
+ * [Feature] SAPI Client - `pollJobUntilDone` method added - wait for async job execution
+
 ## 0.2.6
  * [Bugfix] SAPI Client - share token params
 

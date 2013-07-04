@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.2.6 - 2013-06-28
+ * @version v0.2.6 - 2013-07-04
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -620,8 +620,8 @@
   (function(angular) {
     var StorageService, Token;
     angular.module('kb.sapi.sapiService', ['kb.utils.csv', 'kb.utils.multipartUpload']).factory("kbSapiService", [
-      '$http', '$rootScope', 'kbCsv', 'kbMultipartUpload', '$q', function($http, $rootScope, csv, multipartUpload, $q) {
-        return new StorageService($http, $rootScope, csv, multipartUpload, $q);
+      '$http', '$rootScope', 'kbCsv', 'kbMultipartUpload', '$q', '$timeout', function($http, $rootScope, csv, multipartUpload, $q, $timeout) {
+        return new StorageService($http, $rootScope, csv, multipartUpload, $q, $timeout);
       }
     ]);
     Token = (function() {
@@ -667,12 +667,13 @@
     })();
     return StorageService = (function() {
 
-      function StorageService($http, $rootScope, csv, multipartUpload, $q) {
+      function StorageService($http, $rootScope, csv, multipartUpload, $q, $timeout) {
         this.$http = $http;
         this.$rootScope = $rootScope;
         this.csv = csv;
         this.multipartUpload = multipartUpload;
         this.$q = $q;
+        this.$timeout = $timeout;
         this.errorHandler = __bind(this.errorHandler, this);
 
         this.setVerifiedToken = __bind(this.setVerifiedToken, this);
@@ -1225,6 +1226,38 @@
           url: this.url("/storage/jobs/" + id),
           method: 'GET'
         });
+      };
+
+      StorageService.prototype.pollJobUntilDone = function(id) {
+        var attemptsCount, checkJob, deferred, jobFetchError, jobReceived, maxAttemptsCount, service;
+        deferred = this.$q.defer();
+        service = this;
+        maxAttemptsCount = 20;
+        attemptsCount = 0;
+        jobReceived = function(job) {
+          if (job.status === 'success' || job.status === 'error') {
+            deferred.resolve(job);
+            return;
+          }
+          return checkJob();
+        };
+        jobFetchError = function(data) {
+          return deferred.reject(data);
+        };
+        checkJob = function() {
+          return service.$timeout(function() {
+            attemptsCount++;
+            if (attemptsCount >= maxAttemptsCount) {
+              jobFetchError({
+                error: "Timeout after " + maxAttemptsCount + " requests"
+              });
+              return;
+            }
+            return service.getJob(id).success(jobReceived).error(jobFetchError);
+          }, 2000, false);
+        };
+        checkJob();
+        return deferred.promise;
       };
 
       StorageService.prototype.generateId = function() {

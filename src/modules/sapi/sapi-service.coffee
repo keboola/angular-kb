@@ -8,9 +8,17 @@
 		'kb.utils.csv',
 		'kb.utils.multipartUpload'
 	])
-	.factory( "kbSapiService", [ '$http', '$rootScope', 'kbCsv', 'kbMultipartUpload', '$q', ($http, $rootScope, csv, multipartUpload, $q) ->
-		new StorageService($http, $rootScope, csv, multipartUpload, $q)
+	.factory( "kbSapiService", [
+			'$http'
+			'$rootScope'
+			'kbCsv'
+			'kbMultipartUpload'
+			'$q'
+			'$timeout'
+			($http, $rootScope, csv, multipartUpload, $q, $timeout) ->
+				new StorageService($http, $rootScope, csv, multipartUpload, $q, $timeout)
 	])
+
 
 	# SAPI Token
 	class Token
@@ -38,9 +46,10 @@
 				count++
 			count > 0
 
+
 	class StorageService
 
-		constructor: (@$http, @$rootScope, @csv, @multipartUpload, @$q) ->
+		constructor: (@$http, @$rootScope, @csv, @multipartUpload, @$q, @$timeout) ->
 
 			@apiToken = ''
 			@token = {}
@@ -515,6 +524,39 @@
 				url: @url "/storage/jobs/#{id}"
 				method: 'GET'
 			)
+
+		pollJobUntilDone: (id) ->
+			deferred = @$q.defer()
+			service = @
+			maxAttemptsCount = 20
+			attemptsCount = 0
+
+			jobReceived = (job) ->
+				if job.status == 'success' || job.status == 'error'
+					deferred.resolve(job)
+					return
+				checkJob()
+
+			jobFetchError = (data) ->
+				deferred.reject(data)
+
+			checkJob = ->
+				service.$timeout( ->
+					attemptsCount++
+					if attemptsCount >= maxAttemptsCount
+						jobFetchError(
+							error: "Timeout after #{maxAttemptsCount} requests"
+						)
+						return
+
+					service.getJob(id)
+						.success(jobReceived)
+						.error(jobFetchError)
+				, 2000, false)
+
+			checkJob()
+
+			deferred.promise
 
 		# ticketing service
 		generateId: ->
