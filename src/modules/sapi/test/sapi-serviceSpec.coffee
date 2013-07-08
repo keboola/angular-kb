@@ -3,6 +3,7 @@ describe 'kb.sapi.service', ->
 
 	sapiService = null
 	$httpBackend = null
+	$http = null
 	$timeout = null
 	$rootScope = null
 	sapiBaseUrl = "https://connection.keboola.com"
@@ -11,7 +12,8 @@ describe 'kb.sapi.service', ->
 	beforeEach(inject(($injector) ->
 		sapiService = $injector.get('kbSapiService')
 		sapiService.endpoint = sapiBaseUrl
-		$httpBackend  = $injector.get('$httpBackend');
+		$httpBackend  = $injector.get('$httpBackend')
+		$http = $injector.get('$http')
 		$timeout = $injector.get('$timeout')
 		$rootScope = $injector.get('$rootScope')
 	))
@@ -215,4 +217,87 @@ describe 'kb.sapi.service', ->
 			$rootScope.$apply()
 			expect(doneCallback).not.toHaveBeenCalled()
 			expect(errorCallback).toHaveBeenCalled()
+
+	describe 'async request resolution', ->
+
+		it 'should resolve as success on job finished successfully', ->
+
+			jobUrl = "#{sapiBaseUrl}/v2/storage/jobs/20"
+
+			results = 'output'
+			$httpBackend
+				.expectPOST('/v2/storage/columns')
+				.respond(202,
+					id: 20
+					status: 'waiting'
+				)
+
+			doneCallback = jasmine.createSpy('done')
+			errorCallback = jasmine.createSpy('error')
+
+			sapiService
+				.resolveAsyncRequest($http.post('/v2/storage/columns'))
+				.then(doneCallback, errorCallback)
+
+			$httpBackend.flush()
+			expect(doneCallback).not.toHaveBeenCalled()
+			expect(errorCallback).not.toHaveBeenCalled()
+
+			# job resource is retrieved
+			$httpBackend
+				.expectGET(jobUrl)
+				.respond(200,
+						id: 20
+						status: 'success'
+						results: results
+					)
+			$timeout.flush()
+			$httpBackend.flush()
+
+			# promise should be resolved
+			expect(doneCallback).toHaveBeenCalledWith(results)
+			expect(errorCallback).not.toHaveBeenCalled()
+
+		it 'should resolve as error on job finished with error', ->
+
+			jobUrl = "#{sapiBaseUrl}/v2/storage/jobs/20"
+
+			results =
+				error: 'some error'
+				exceptionId: 'xxx'
+
+			$httpBackend
+				.expectPOST('/v2/storage/columns')
+				.respond(202,
+					id: 20
+					status: 'waiting'
+				)
+
+			doneCallback = jasmine.createSpy('done')
+			errorCallback = jasmine.createSpy('error')
+
+			sapiService
+				.resolveAsyncRequest($http.post('/v2/storage/columns'))
+				.then(doneCallback, errorCallback)
+
+			$httpBackend.flush()
+			expect(doneCallback).not.toHaveBeenCalled()
+			expect(errorCallback).not.toHaveBeenCalled()
+
+			# job resource is retrieved
+			$httpBackend
+				.expectGET(jobUrl)
+				.respond(200,
+						id: 20
+						status: 'error'
+						error: results
+					)
+			$timeout.flush()
+			$httpBackend.flush()
+
+			# promise should be resolved
+			expect(doneCallback).not.toHaveBeenCalled()
+			expect(errorCallback).toHaveBeenCalledWith(results)
+
+
 

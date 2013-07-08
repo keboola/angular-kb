@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.2.7 - 2013-07-04
+ * @version v0.2.7 - 2013-07-08
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -1228,6 +1228,52 @@
         });
       };
 
+      /*
+        	# Accepts HTTP requests promise - expects job resource returned
+          # Returns promise
+          # Job resource is polled until job is executed
+          # Promise is resolved when job finishes with success otherwise promise is rejected
+      */
+
+
+      StorageService.prototype.resolveAsyncRequest = function(httpRequestPromise) {
+        var deferred, fetchJob, jobError, jobSuccess, service;
+        deferred = this.$q.defer();
+        service = this;
+        jobError = function(error) {
+          service.errorHandler(error);
+          return deferred.reject(error);
+        };
+        jobSuccess = function(results) {
+          return deferred.resolve(results);
+        };
+        fetchJob = function(jobId) {
+          return service.pollJobUntilDone(jobId).then(function(finishedJob) {
+            if (finishedJob.status === 'success') {
+              jobSuccess(finishedJob.results);
+            }
+            if (finishedJob.status === 'error') {
+              return jobError(finishedJob.error);
+            }
+          }, function(error) {
+            return jobError(error);
+          });
+        };
+        httpRequestPromise.success(function(job) {
+          return fetchJob(job.id);
+        }).error(function(error) {
+          return jobError(error);
+        });
+        return deferred.promise;
+      };
+
+      /*
+        	# Poll job resource until job status is `success` or `error`
+          # Resolved as error after 20 tries
+          # Returns promise - resolved when job is finished
+      */
+
+
       StorageService.prototype.pollJobUntilDone = function(id) {
         var attemptsCount, checkJob, deferred, jobFetchError, jobReceived, maxAttemptsCount, service;
         deferred = this.$q.defer();
@@ -1242,6 +1288,7 @@
           return checkJob();
         };
         jobFetchError = function(data) {
+          service.errorHandler(data);
           return deferred.reject(data);
         };
         checkJob = function() {

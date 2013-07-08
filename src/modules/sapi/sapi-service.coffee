@@ -172,6 +172,7 @@
 					name: columnName
 			)
 
+
 		removeTableColumnFromIndexedColumns: (tableId, columnName) ->
 			@http(
 				url: @url '/storage/tables/' + tableId + '/indexed-columns/' + columnName
@@ -525,6 +526,48 @@
 				method: 'GET'
 			)
 
+		###
+  	# Accepts HTTP requests promise - expects job resource returned
+    # Returns promise
+    # Job resource is polled until job is executed
+    # Promise is resolved when job finishes with success otherwise promise is rejected
+		###
+		resolveAsyncRequest: (httpRequestPromise) ->
+			deferred = @$q.defer()
+			service = @
+
+			jobError = (error) ->
+				service.errorHandler error
+				deferred.reject error
+
+			jobSuccess = (results) ->
+				deferred.resolve results
+
+			fetchJob = (jobId) ->
+				service
+					.pollJobUntilDone(jobId)
+					.then((finishedJob) ->
+						jobSuccess(finishedJob.results) if finishedJob.status == 'success'
+						jobError(finishedJob.error) if finishedJob.status == 'error'
+					, (error) ->
+						jobError error
+					)
+
+			httpRequestPromise
+				.success( (job) ->
+					fetchJob job.id
+				)
+				.error( (error) ->
+					jobError(error)
+				)
+
+			deferred.promise
+
+		###
+  	# Poll job resource until job status is `success` or `error`
+    # Resolved as error after 20 tries
+    # Returns promise - resolved when job is finished
+		###
 		pollJobUntilDone: (id) ->
 			deferred = @$q.defer()
 			service = @
@@ -538,6 +581,7 @@
 				checkJob()
 
 			jobFetchError = (data) ->
+				service.errorHandler data
 				deferred.reject(data)
 
 			checkJob = ->
@@ -564,6 +608,5 @@
 				url: @url '/storage/tickets'
 				method: 'POST'
 			).error(@errorHandler)
-
 
 )(window.angular)

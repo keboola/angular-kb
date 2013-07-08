@@ -1,3 +1,6 @@
+## 0.2.8
+ * [Feature] SAPI Client - `resolveAsyncRequest` method added
+
 ## 0.2.7
  * [Feature] SAPI Client - `pollJobUntilDone` method added - wait for async job execution
 
