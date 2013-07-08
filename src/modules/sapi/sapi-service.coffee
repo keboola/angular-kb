@@ -150,13 +150,13 @@
 			 )
 
 		# columns
-		deleteTableColum: (tableId, columnName) ->
+		deleteTableColumn: (tableId, columnName) ->
 			@http(
 				url: @url "/storage/tables/#{tableId}/columns/#{columnName}"
 				method: 'DELETE'
 			)
 
-		addTableColum: (tableId, columnName) ->
+		addTableColumn: (tableId, columnName) ->
 			@http(
 				url: @url '/storage/tables/' + tableId + '/columns/'
 				method: 'POST'

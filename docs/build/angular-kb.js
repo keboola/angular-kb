@@ -805,7 +805,7 @@
         });
       };
 
-      StorageService.prototype.addTableColum = function(tableId, columnName) {
+      StorageService.prototype.addTableColumn = function(tableId, columnName) {
         return this.http({
           url: this.url('/storage/tables/' + tableId + '/columns/'),
           method: 'POST',
