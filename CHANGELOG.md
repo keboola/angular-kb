@@ -1,3 +1,6 @@
+## 0.3.0
+ * [BC Break] SAPI Client - method signature typos fixed
+
 ## 0.2.8
  * [Feature] SAPI Client - `resolveAsyncRequest` method added
 
