@@ -1,3 +1,6 @@
+## 0.3.1
+ * [Feature] SAPI Client - params hashmap added to getJobs method
+
 ## 0.3.0
  * [BC Break] SAPI Client - method signature typos fixed
 
