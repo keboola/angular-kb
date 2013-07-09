@@ -493,7 +493,6 @@
 				)
 			)
 
-
 		# files
 		getFiles: (limit = 100, offset = 0) ->
 			@http(
@@ -514,10 +513,11 @@
 			)
 
 		# jobs
-		getJobs: ->
+		getJobs: (params) ->
 			@http(
 				url: @url '/storage/jobs'
 				method: 'GET'
+				params: params
 			)
 
 		getJob: (id) ->
