@@ -1289,11 +1289,13 @@
       */
 
 
-      StorageService.prototype.pollJobUntilDone = function(id) {
-        var attemptsCount, checkJob, deferred, jobFetchError, jobReceived, maxAttemptsCount, service;
+      StorageService.prototype.pollJobUntilDone = function(id, maxAttemptsCount) {
+        var attemptsCount, checkJob, deferred, jobFetchError, jobReceived, service;
+        if (maxAttemptsCount == null) {
+          maxAttemptsCount = 20;
+        }
         deferred = this.$q.defer();
         service = this;
-        maxAttemptsCount = 20;
         attemptsCount = 0;
         jobReceived = function(job) {
           if (job.status === 'success' || job.status === 'error') {
@@ -1316,7 +1318,7 @@
               return;
             }
             return service.getJob(id).success(jobReceived).error(jobFetchError);
-          }, 2000, false);
+          }, Math.max((Math.pow(2, attemptsCount) * 1000) + (Math.round(Math.random() * 1000)), 60 * 1000), false);
         };
         checkJob();
         return deferred.promise;

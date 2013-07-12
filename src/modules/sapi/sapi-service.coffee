@@ -578,10 +578,9 @@
     # Resolved as error after 20 tries
     # Returns promise - resolved when job is finished
 		###
-		pollJobUntilDone: (id) ->
+		pollJobUntilDone: (id, maxAttemptsCount = 20) ->
 			deferred = @$q.defer()
 			service = @
-			maxAttemptsCount = 20
 			attemptsCount = 0
 
 			jobReceived = (job) ->
@@ -606,7 +605,7 @@
 					service.getJob(id)
 						.success(jobReceived)
 						.error(jobFetchError)
-				, 2000, false)
+				, Math.max((Math.pow(2, attemptsCount) * 1000) + (Math.round(Math.random() * 1000)), 60 * 1000), false)
 
 			checkJob()
 

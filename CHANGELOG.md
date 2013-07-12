@@ -1,3 +1,6 @@
+## 0.3.3
+ * [Feature] SAPI Client - `resolveAsyncRequest` exponential backoff, maxAttemptsCount parameter
+
 ## 0.3.2
  * [Feature] SAPI Client - create table async method added
 

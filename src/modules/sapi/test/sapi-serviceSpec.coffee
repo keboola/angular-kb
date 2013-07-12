@@ -185,15 +185,16 @@ describe 'kb.sapi.service', ->
 			expect(errorHandlerArgs[0]).toBe errorResponse
 
 
-		it 'should timeout after 20 attempts', ->
+		it 'should timeout after max attempts cout', ->
 
 			jobUrl = "#{sapiBaseUrl}/v2/storage/jobs/12"
 
 			doneCallback = jasmine.createSpy('done')
 			errorCallback = jasmine.createSpy('error')
 
+			maxAttemptsCount = 5
 			sapiService
-				.pollJobUntilDone(12)
+				.pollJobUntilDone(12, maxAttemptsCount)
 				.then(doneCallback, errorCallback)
 
 			performCheck = ->
@@ -209,7 +210,7 @@ describe 'kb.sapi.service', ->
 				expect(doneCallback).not.toHaveBeenCalled()
 				expect(errorCallback).not.toHaveBeenCalled()
 
-			limit = 20
+			limit = maxAttemptsCount
 			performCheck() while limit -= 1
 
 			# timeout
