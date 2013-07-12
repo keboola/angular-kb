@@ -1,3 +1,6 @@
+## 0.3.5
+ * [Bugfix] SAPI Client - `resolveAsyncRequest` exponential backoff intervals adjustment
+
 ## 0.3.4
  * [Bugfix] SAPI Client - `resolveAsyncRequest` exponential backoff
 

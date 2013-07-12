@@ -1318,7 +1318,7 @@
               return;
             }
             return service.getJob(id).success(jobReceived).error(jobFetchError);
-          }, Math.min((Math.pow(2, attemptsCount) * 1000) + (Math.round(Math.random() * 1000)), 60 * 1000), false);
+          }, Math.min((Math.pow(2, attemptsCount) * 100) + (Math.round(Math.random() * 100)), 60 * 1000), false);
         };
         checkJob();
         return deferred.promise;
