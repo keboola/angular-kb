@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.3.1 - 2013-07-09
+ * @version v0.3.2 - 2013-07-12
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -762,6 +762,20 @@
             name: name,
             dataString: columns.join(",")
           })
+        });
+      };
+
+      StorageService.prototype.createTableAsync = function(bucketId, params) {
+        if (!angular.isUndefined(params.transactional)) {
+          params.transactional = Number(params.transactional);
+        }
+        return this.http({
+          url: this.url("/storage/buckets/" + bucketId + "/tables-async"),
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          data: $.param(params)
         });
       };
 
