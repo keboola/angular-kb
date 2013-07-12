@@ -122,6 +122,16 @@
 				)
 			)
 
+		createTableAsync: (bucketId, params) ->
+			params.transactional = Number(params.transactional) if !angular.isUndefined params.transactional
+			@http(
+				url: @url( "/storage/buckets/#{bucketId}/tables-async" )
+				method: 'POST'
+				headers:
+					'Content-Type': 'application/x-www-form-urlencoded'
+				data: $.param(params)
+			)
+
 		getTable: (id) ->
 			@http(
 				url:  @url( '/storage/tables/' + id )

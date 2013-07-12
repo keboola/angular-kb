@@ -1,3 +1,6 @@
+## 0.3.2
+ * [Feature] SAPI Client - create table async method added
+
 ## 0.3.1
  * [Feature] SAPI Client - params hashmap added to getJobs method
 
