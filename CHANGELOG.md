@@ -1,3 +1,6 @@
+## 0.3.4
+ * [Bugfix] SAPI Client - `resolveAsyncRequest` exponential backoff
+
 ## 0.3.3
  * [Feature] SAPI Client - `resolveAsyncRequest` exponential backoff, maxAttemptsCount parameter
 
