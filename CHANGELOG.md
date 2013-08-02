@@ -1,4 +1,4 @@
-## O.3.6
+## 0.3.6
  * [Feature] SAPI Client - table snapshots support added
 
 ## 0.3.5
