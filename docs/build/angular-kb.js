@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.3.5 - 2013-07-12
+ * @version v0.3.5 - 2013-08-02
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -783,6 +783,14 @@
         return this.http({
           url: this.url('/storage/tables/' + id),
           method: 'GET'
+        });
+      };
+
+      StorageService.prototype.getTableSnapshots = function(tableId, params) {
+        return this.http({
+          url: this.url("/storage/tables/" + tableId + "/snapshots"),
+          method: 'GET',
+          params: params
         });
       };
 

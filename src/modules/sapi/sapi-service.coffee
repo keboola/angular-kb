@@ -138,6 +138,14 @@
 				method: 'GET'
 			 )
 
+		getTableSnapshots: (tableId, params) ->
+			@http(
+				url: @url( "/storage/tables/#{tableId}/snapshots")
+				method: 'GET'
+				params: params
+			)
+			
+
 		getTables: ->
 			@http(
 				url:  @url( '/storage/tables/' )

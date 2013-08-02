@@ -1,3 +1,6 @@
+## O.3.6
+ * [Feature] SAPI Client - table snapshots support added
+
 ## 0.3.5
  * [Bugfix] SAPI Client - `resolveAsyncRequest` exponential backoff intervals adjustment
 
