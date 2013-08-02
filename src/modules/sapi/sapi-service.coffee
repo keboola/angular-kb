@@ -132,17 +132,41 @@
 				data: $.param(params)
 			)
 
+		createTableFromSnapshot: (bucketId, snapshotId, name = null) ->
+			@createTableAsync(bucketId, {
+				snapshotId: snapshotId
+				name: name
+			})
+
 		getTable: (id) ->
 			@http(
 				url:  @url( '/storage/tables/' + id )
 				method: 'GET'
 			 )
 
+
+		createTableSnapshot: (tableId, description = null) ->
+			@http(
+				url: @url("/storage/tables/#{tableId}/snapshots")
+				method: 'POST'
+				headers:
+					'Content-Type': 'application/x-www-form-urlencoded'
+				data: $.param(
+					description: description
+				)
+			)
+
 		getTableSnapshots: (tableId, params) ->
 			@http(
 				url: @url( "/storage/tables/#{tableId}/snapshots")
 				method: 'GET'
 				params: params
+			)
+
+		getSnapshot: (id) ->
+			@http(
+				url: @url ("/storage/snapshots/#{id}")
+				method: 'GET'
 			)
 			
 

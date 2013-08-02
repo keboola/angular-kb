@@ -1,3 +1,6 @@
+## 0.3.7
+ * [Bugfix] SAPI Client - snapshots
+
 ## 0.3.6
  * [Feature] SAPI Client - table snapshots support added
 

@@ -779,10 +779,36 @@
         });
       };
 
+      StorageService.prototype.createTableFromSnapshot = function(bucketId, snapshotId, name) {
+        if (name == null) {
+          name = null;
+        }
+        return this.createTableAsync(bucketId, {
+          snapshotId: snapshotId,
+          name: name
+        });
+      };
+
       StorageService.prototype.getTable = function(id) {
         return this.http({
           url: this.url('/storage/tables/' + id),
           method: 'GET'
+        });
+      };
+
+      StorageService.prototype.createTableSnapshot = function(tableId, description) {
+        if (description == null) {
+          description = null;
+        }
+        return this.http({
+          url: this.url("/storage/tables/" + tableId + "/snapshots"),
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          data: $.param({
+            description: description
+          })
         });
       };
 
@@ -791,6 +817,13 @@
           url: this.url("/storage/tables/" + tableId + "/snapshots"),
           method: 'GET',
           params: params
+        });
+      };
+
+      StorageService.prototype.getSnapshot = function(id) {
+        return this.http({
+          url: this.url("/storage/snapshots/" + id),
+          method: 'GET'
         });
       };
 
