@@ -1,3 +1,6 @@
+## 0.3.8
+ * [Feature] SAPI Client - table rollback from snapshot
+
 ## 0.3.7
  * [Bugfix] SAPI Client - snapshots
 

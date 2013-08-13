@@ -138,6 +138,17 @@
 				name: name
 			})
 
+		rollbackTableFromSnapshot: (tableId, snapshotId) ->
+			@http(
+				url: @url("/storage/tables/#{tableId}/rollback")
+				method: 'POST'
+				headers:
+					'Content-Type': 'application/x-www-form-urlencoded'
+				data: $.param(
+					snapshotId: snapshotId
+				)
+			)
+
 		getTable: (id) ->
 			@http(
 				url:  @url( '/storage/tables/' + id )

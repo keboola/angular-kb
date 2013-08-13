@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.3.7 - 2013-08-02
+ * @version v0.3.7 - 2013-08-13
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -786,6 +786,19 @@
         return this.createTableAsync(bucketId, {
           snapshotId: snapshotId,
           name: name
+        });
+      };
+
+      StorageService.prototype.rollbackTableFromSnapshot = function(tableId, snapshotId) {
+        return this.http({
+          url: this.url("/storage/tables/" + tableId + "/rollback"),
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          data: $.param({
+            snapshotId: snapshotId
+          })
         });
       };
 
