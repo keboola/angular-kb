@@ -1,3 +1,6 @@
+## 0.3.9
+ * [Feature] SAPI client - delete table rows
+
 ## 0.3.8
  * [Feature] SAPI Client - table rollback from snapshot
 
