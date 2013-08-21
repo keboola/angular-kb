@@ -232,6 +232,17 @@
 				method: 'DELETE'
 			)
 
+		deleteTableRows: (tableId, params) ->
+			@http(
+				url: @url "/storage/tables/#{tableId}/rows"
+				method: 'DELETE'
+				params: params
+			)
+
+		truncateTable: (tableId) ->
+			@deleteTableRows(tableId)
+
+
 		# aliases
 		createAliasTable: (bucketId, options) ->
 			@http(

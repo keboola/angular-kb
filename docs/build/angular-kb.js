@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.3.8 - 2013-08-13
+ * @version v0.3.8 - 2013-08-21
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -898,6 +898,18 @@
           url: this.url('/storage/tables/' + tableId + '/indexed-columns/' + columnName),
           method: 'DELETE'
         });
+      };
+
+      StorageService.prototype.deleteTableRows = function(tableId, params) {
+        return this.http({
+          url: this.url("/storage/tables/" + tableId + "/rows"),
+          method: 'DELETE',
+          params: params
+        });
+      };
+
+      StorageService.prototype.truncateTable = function(tableId) {
+        return this.deleteTableRows(tableId);
       };
 
       StorageService.prototype.createAliasTable = function(bucketId, options) {

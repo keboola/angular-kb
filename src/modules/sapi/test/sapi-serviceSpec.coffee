@@ -40,6 +40,19 @@ describe 'kb.sapi.service', ->
 			$httpBackend.flush()
 
 
+	describe 'table rows delete', ->
+
+		it 'should truncate table', ->
+			$httpBackend
+				.expectDELETE("#{sapiBaseUrl}/v2/storage/tables/in.c-tests.users/rows")
+				.respond(202)
+
+			sapiService.truncateTable('in.c-tests.users')
+
+			$httpBackend.flush()
+
+
+
 	describe 'table export', ->
 
 		it 'should accept options', ->
