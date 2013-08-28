@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.3.9 - 2013-08-21
+ * @version v0.3.9 - 2013-08-28
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -734,6 +734,13 @@
           path = '/';
         }
         return "" + this.consoleUrl + path + "?token=" + this.apiToken + "&endpoint=" + this.endpoint;
+      };
+
+      StorageService.prototype.index = function() {
+        return this.http({
+          url: this.url("/storage"),
+          method: 'GET'
+        });
       };
 
       StorageService.prototype.createBucket = function(stage, name, description) {

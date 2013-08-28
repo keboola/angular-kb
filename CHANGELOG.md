@@ -1,3 +1,6 @@
+## 0.3.10
+ * [Feature] SAPI client - index action added
+
 ## 0.3.9
  * [Feature] SAPI client - delete table rows
 

@@ -96,6 +96,12 @@
 		consoleSignedUrl: (path = '/') ->
 			"#{@consoleUrl}#{path}?token=#{@apiToken}&endpoint=#{@endpoint}"
 
+		index: ->
+			@http(
+				url: @url("/storage")
+				method: 'GET'
+			)
+
 		createBucket: (stage, name, description) ->
 			@http(
 				url: @url("/storage/buckets")
