@@ -1,3 +1,6 @@
+## 0.3.11
+ * [Feature] SAPI Client - getBuckets, getTables params added
+
 ## 0.3.10
  * [Feature] SAPI client - index action added
 

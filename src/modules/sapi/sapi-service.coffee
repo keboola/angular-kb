@@ -187,10 +187,11 @@
 			)
 			
 
-		getTables: ->
+		getTables: (params) ->
 			@http(
 				url:  @url( '/storage/tables/' )
 				method: 'GET'
+				params: params
 			 )
 
 		deleteTable: (id) ->
@@ -393,10 +394,11 @@
 			return promise
 
 
-		getBuckets: () ->
+		getBuckets: (params) ->
 			@http(
 				url: @url '/storage/buckets/'
 				method: 'GET'
+				params: params
 			)
 
 		getBucket: (id) ->
