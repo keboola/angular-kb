@@ -1,3 +1,6 @@
+## 0.3.12
+ * [Feature] SAPI Client - getBucketsWithTables params added
+
 ## 0.3.11
  * [Feature] SAPI Client - getBuckets, getTables params added
 

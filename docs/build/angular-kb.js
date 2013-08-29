@@ -1024,24 +1024,24 @@
         return this.$rootScope.$broadcast('storageError', data);
       };
 
-      StorageService.prototype.getBucketsWithTables = function() {
+      StorageService.prototype.getBucketsWithTables = function(tablesParams, bucketsParams) {
         var buckets, bucketsLoading, deferred, promise, storageService, tablesLoading, tmpBuckets, tmpTables;
+        if (tablesParams == null) {
+          tablesParams = null;
+        }
+        if (bucketsParams == null) {
+          bucketsParams = null;
+        }
         storageService = this;
         buckets = [];
         tmpBuckets = [];
         tmpTables = [];
-        bucketsLoading = this.http({
-          url: this.url('/storage/buckets/'),
-          method: 'GET'
-        }).success(function(data, status) {
+        bucketsLoading = this.getBuckets(bucketsParams).success(function(data, status) {
           return tmpBuckets = data;
         }).error(function() {
           return storageService.bucketsLoading = false;
         });
-        tablesLoading = this.http({
-          url: this.url('/storage/tables/'),
-          method: 'GET'
-        }).success(function(data) {
+        tablesLoading = this.getTables(tablesParams).success(function(data) {
           return tmpTables = data;
         });
         deferred = this.$q.defer();

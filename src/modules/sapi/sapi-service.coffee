@@ -340,17 +340,14 @@
 			@$rootScope.$broadcast('storageError', data)
 
 		# get buckets and table together
-		getBucketsWithTables: ->
+		getBucketsWithTables: (tablesParams = null, bucketsParams = null) ->
 			storageService = @
 			buckets = []
 			tmpBuckets = []
 			tmpTables = []
 
 			# load buckets
-			bucketsLoading = @http(
-				url: @url '/storage/buckets/'
-				method: 'GET'
-			 )
+			bucketsLoading = @getBuckets(bucketsParams)
 			.success (data, status) ->
 				tmpBuckets = data
 			.error( ->
@@ -358,10 +355,7 @@
 			)
 
 			# load tables in parallel
-			tablesLoading = @http(
-				url: @url '/storage/tables/'
-				method: 'GET'
-			)
+			tablesLoading = @getTables(tablesParams)
 			.success (data) ->
 				tmpTables = data
 
