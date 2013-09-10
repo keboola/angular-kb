@@ -1,3 +1,6 @@
+## 0.3.14
+ * [Bugfix] Angular-ui-bootstrap dependency added
+
 ## 0.3.13
  * [Feature] Exception handler, SAPI error handler, i18n added
 
