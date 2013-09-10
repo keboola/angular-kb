@@ -1,3 +1,6 @@
+## 0.3.15
+ * [Bugfix] Exception handler
+
 ## 0.3.14
  * [Bugfix] Angular-ui-bootstrap dependency added
 

@@ -47,10 +47,10 @@
         });
       };
       logger = new Logger();
-      (function(exception, cause) {
-        return logger.logException(exception, cause);
-      });
-      return $log.error.apply($log, arguments);
+      return function(exception, cause) {
+        logger.logException(exception, cause);
+        return $log.error.apply($log, arguments);
+      };
     }
   ]);
 
