@@ -36,6 +36,7 @@ angular.module('kb', [
 
 	'kb.sapi.sapiService'
 	'kb.sapi.eventsService'
+	'kb.sapi.errorHandler'
 
 	'kb.templates'
 ])

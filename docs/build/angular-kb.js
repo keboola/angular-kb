@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.3.12 - 2013-08-29
+ * @version v0.3.12 - 2013-09-10
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -9,7 +9,50 @@
 
   angular.module('kb.templates', []);
 
-  angular.module('kb', ['kb.config', 'kb.ui.inlineEdit', 'kb.ui.clickToggle', 'kb.ui.copyButton', 'kb.ui.nl2br', 'kb.ui.toggable', 'kb.ui.sapiEventsTable', 'kb.ui.loader', 'kb.ui.autoComplete', 'kb.ui.focus', 'kb.ui.tree', 'kb.ui.runButton', 'kb.ui.codemirror', 'kb.ui.datetime', 'kb.ui.duration', 'kb.ui.sapiConsoleHref', 'kb.utils.multipartUpload', 'kb.utils.csv', 'kb.utils.keyboardShortcuts', 'kb.utils.appVersion', 'kb.filters.date', 'kb.filters.filesize', 'kb.filters.webalize', 'kb.filters.duration', 'kb.sapi.sapiService', 'kb.sapi.eventsService', 'kb.templates']);
+  angular.module('kb', ['kb.config', 'kb.ui.inlineEdit', 'kb.ui.clickToggle', 'kb.ui.copyButton', 'kb.ui.nl2br', 'kb.ui.toggable', 'kb.ui.sapiEventsTable', 'kb.ui.loader', 'kb.ui.autoComplete', 'kb.ui.focus', 'kb.ui.tree', 'kb.ui.runButton', 'kb.ui.codemirror', 'kb.ui.datetime', 'kb.ui.duration', 'kb.ui.sapiConsoleHref', 'kb.utils.multipartUpload', 'kb.utils.csv', 'kb.utils.keyboardShortcuts', 'kb.utils.appVersion', 'kb.filters.date', 'kb.filters.filesize', 'kb.filters.webalize', 'kb.filters.duration', 'kb.sapi.sapiService', 'kb.sapi.eventsService', 'kb.sapi.errorHandler', 'kb.templates']);
+
+}).call(this);
+
+(function() {
+
+  angular.module("kb.exceptionHandler", []).factory("$exceptionHandler", [
+    "$window", "$log", function($window, $log) {
+      var Logger, logger;
+      Logger = function() {
+        return this.register();
+      };
+      Logger.prototype.register = function() {
+        return $window.onerror = jQuery.proxy(this.onError, this);
+      };
+      Logger.prototype.onError = function(errorMsg, file, lineNumber) {
+        return this.log({
+          message: errorMsg,
+          file: file,
+          lineNumber: lineNumber
+        });
+      };
+      Logger.prototype.log = function(data) {
+        return jQuery.ajax({
+          url: "/utils/errors",
+          method: "POST",
+          contentType: "application/json",
+          data: JSON.stringify(data),
+          dataType: "json"
+        });
+      };
+      Logger.prototype.logException = function(exception) {
+        return this.log({
+          message: exception.message,
+          stackTrace: exception.stack
+        });
+      };
+      logger = new Logger();
+      (function(exception, cause) {
+        return logger.logException(exception, cause);
+      });
+      return $log.error.apply($log, arguments);
+    }
+  ]);
 
 }).call(this);
 
@@ -485,6 +528,119 @@
       return removeDiacritics(string).toLowerCase().replace(/\ /g, '-').replace(/[^a-z0-9\-]/g, '');
     };
   });
+
+}).call(this);
+
+(function() {
+
+  angular.module("kb.i18n", [], [
+    "$provide", function($provide) {
+      var PLURAL_CATEGORY;
+      PLURAL_CATEGORY = {
+        ZERO: "zero",
+        ONE: "one",
+        TWO: "two",
+        FEW: "few",
+        MANY: "many",
+        OTHER: "other"
+      };
+      return $provide.value("$locale", {
+        DATETIME_FORMATS: {
+          MONTH: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+          SHORTMONTH: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+          DAY: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+          SHORTDAY: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+          AMPMS: ["AM", "PM"],
+          medium: "MMM d, y h:mm:ss a",
+          short: "M/d/yy h:mm a",
+          fullDate: "yyyy-MM-dd HH:mm",
+          longDate: "MMMM d, y",
+          mediumDate: "MMM d, y",
+          shortDate: "M/d/yy",
+          mediumTime: "h:mm:ss a",
+          shortTime: "h:mm a"
+        },
+        NUMBER_FORMATS: {
+          DECIMAL_SEP: ".",
+          GROUP_SEP: ",",
+          PATTERNS: [
+            {
+              minInt: 1,
+              minFrac: 0,
+              macFrac: 0,
+              posPre: "",
+              posSuf: "",
+              negPre: "-",
+              negSuf: "",
+              gSize: 3,
+              lgSize: 3,
+              maxFrac: 3
+            }, {
+              minInt: 1,
+              minFrac: 2,
+              macFrac: 0,
+              posPre: "¤",
+              posSuf: "",
+              negPre: "(¤",
+              negSuf: ")",
+              gSize: 3,
+              lgSize: 3,
+              maxFrac: 2
+            }
+          ],
+          CURRENCY_SYM: "$"
+        },
+        pluralCat: function(n) {
+          if (n === 1) {
+            returnPLURAL_CATEGORY.ONE;
+          }
+          return returnPLURAL_CATEGORY.OTHER;
+        },
+        id: "en-us"
+      });
+    }
+  ]);
+
+}).call(this);
+
+(function() {
+
+  angular.module("kb.sapi.errorHandler", ["ui.bootstrap.dialog"]).factory("kbSapiErrorHandler", [
+    "$dialog", function($dialog) {
+      var handler;
+      handler = void 0;
+      handler = {
+        remainingTimeText: function(estimatedEndTime) {
+          var minutes;
+          minutes = void 0;
+          minutes = Math.round((estimatedEndTime - new Date()) / (1000 * 60));
+          if (minutes > 0) {
+            return "after " + minutes + " minutes.";
+          } else {
+            return " in few minutes.";
+          }
+        },
+        handleError: function(errorResponse) {
+          var btns, dialog, errorMessage;
+          errorMessage = void 0;
+          errorMessage = errorResponse.message || errorResponse.error || "Unknown error during comunication with API";
+          if (errorResponse.status === "maintenance") {
+            errorMessage = errorResponse.reason;
+            errorMessage += ". Please repeat the action " + this.remainingTimeText(new Date(errorResponse.estimatedEndTime));
+          }
+          btns = [
+            {
+              label: "Close",
+              cssClass: "btn-danger"
+            }
+          ];
+          dialog = $dialog.messageBox("Application Error", errorMessage, btns);
+          return dialog.open();
+        }
+      };
+      return handler;
+    }
+  ]);
 
 }).call(this);
 

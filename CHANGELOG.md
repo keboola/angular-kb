@@ -1,3 +1,6 @@
+## 0.3.13
+ * [Feature] Exception handler, SAPI error handler, i18n added
+
 ## 0.3.12
  * [Feature] SAPI Client - getBucketsWithTables params added
 
