@@ -36,5 +36,13 @@ Before adding any directive please check that directive isn't already implemente
 * `grunt publishDocs`
 
 
+## Deployment to S3
+
+If you deploy to S3, be sure to set **Cache-Control** header for **index.html** file:
+
+	Cache-Control: no-cahe
+	
+This is set directly in S3, in AWS Console. If you do not set chache control, newer version will fail to update in browser.
+
 ## Release History
 See the [CHANGELOG](CHANGELOG.md).
