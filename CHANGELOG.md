@@ -1,3 +1,6 @@
+## 0.3.17
+ * [Bugfix] Exception handler
+
 ## 0.3.16
  * [Bugfix] Exception handler
 

@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.3.16 - 2013-09-25
+ * @version v0.3.17 - 2013-09-25
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -29,42 +29,41 @@
 
 (function() {
 
-  angular.module("kb.exceptionHandler.logger", []).factory("kb.Logger", [
-    "$window", "$http", function($window, $http) {
-      var Logger;
-      return Logger = (function() {
-        var logException;
+  angular.module("kb.exceptionHandler.logger", []).factory("kb.Logger", function() {
+    var Logger;
+    return Logger = (function() {
 
-        function Logger() {}
+      function Logger() {}
 
-        Logger.prototype.onError = function(errorMsg, file, lineNumber) {
-          return this.log({
-            message: errorMsg,
-            file: file,
-            lineNumber: lineNumber
-          });
-        };
+      Logger.prototype.onError = function(errorMsg, file, lineNumber) {
+        return this.log({
+          message: errorMsg,
+          file: file,
+          lineNumber: lineNumber
+        });
+      };
 
-        Logger.prototype.log = function(data) {
-          return $http({
-            url: "/utils/errors",
-            method: "POST",
-            data: data
-          });
-        };
+      Logger.prototype.log = function(data) {
+        return jQuery.ajax({
+          url: "/utils/errors",
+          method: "POST",
+          contentType: "application/json",
+          data: JSON.stringify(data),
+          dataType: "json"
+        });
+      };
 
-        logException = function(exception) {
-          return this.log({
-            message: exception.message,
-            stackTrace: exception.stack
-          });
-        };
+      Logger.prototype.logException = function(exception) {
+        return this.log({
+          message: exception.message,
+          stackTrace: exception.stack
+        });
+      };
 
-        return Logger;
+      return Logger;
 
-      })();
-    }
-  ]).factory("kbLogger", [
+    })();
+  }).factory("kbLogger", [
     "kb.Logger", function(Logger) {
       return new Logger();
     }
