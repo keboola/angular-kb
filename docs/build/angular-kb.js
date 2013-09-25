@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.3.15 - 2013-09-10
+ * @version v0.3.16 - 2013-09-25
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -15,42 +15,58 @@
 
 (function() {
 
-  angular.module("kb.exceptionHandler", []).factory("$exceptionHandler", [
-    "$window", "$log", function($window, $log) {
-      var Logger, logger;
-      Logger = function() {
-        return this.register();
-      };
-      Logger.prototype.register = function() {
-        return $window.onerror = jQuery.proxy(this.onError, this);
-      };
-      Logger.prototype.onError = function(errorMsg, file, lineNumber) {
-        return this.log({
-          message: errorMsg,
-          file: file,
-          lineNumber: lineNumber
-        });
-      };
-      Logger.prototype.log = function(data) {
-        return jQuery.ajax({
-          url: "/utils/errors",
-          method: "POST",
-          contentType: "application/json",
-          data: JSON.stringify(data),
-          dataType: "json"
-        });
-      };
-      Logger.prototype.logException = function(exception) {
-        return this.log({
-          message: exception.message,
-          stackTrace: exception.stack
-        });
-      };
-      logger = new Logger();
+  angular.module("kb.exceptionHandler", ["kb.exceptionHandler.logger"]).factory("$exceptionHandler", [
+    "$window", "$log", "kbLogger", function($window, $log, logger) {
+      $window.onerror = jQuery.proxy(logger.onError, logger);
       return function(exception, cause) {
         logger.logException(exception, cause);
         return $log.error.apply($log, arguments);
       };
+    }
+  ]);
+
+}).call(this);
+
+(function() {
+
+  angular.module("kb.exceptionHandler.logger", []).factory("kb.Logger", [
+    "$window", "$http", function($window, $http) {
+      var Logger;
+      return Logger = (function() {
+        var logException;
+
+        function Logger() {}
+
+        Logger.prototype.onError = function(errorMsg, file, lineNumber) {
+          return this.log({
+            message: errorMsg,
+            file: file,
+            lineNumber: lineNumber
+          });
+        };
+
+        Logger.prototype.log = function(data) {
+          return $http({
+            url: "/utils/errors",
+            method: "POST",
+            data: data
+          });
+        };
+
+        logException = function(exception) {
+          return this.log({
+            message: exception.message,
+            stackTrace: exception.stack
+          });
+        };
+
+        return Logger;
+
+      })();
+    }
+  ]).factory("kbLogger", [
+    "kb.Logger", function(Logger) {
+      return new Logger();
     }
   ]);
 
