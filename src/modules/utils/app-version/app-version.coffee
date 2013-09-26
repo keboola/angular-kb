@@ -3,7 +3,7 @@
 
 angular
 	.module('kb.utils.appVersion', [])
-	.provider('kbAppVersion', ->
+	.provider('kbAppVersion', ['$sceDelegateProvider', ($sceDelegateProvider) ->
 
 				version = 'v1'
 				basePath = '/'
@@ -15,6 +15,9 @@ angular
 
 				@setBasePath = (newBasePath) ->
 					basePath = newBasePath
+					$sceDelegateProvider.resourceUrlWhitelist([
+						basePath + '.*'
+					])
 					@
 
 				@versionUrl = (url) ->
@@ -22,9 +25,12 @@ angular
 
 				provider = @
 				# service factory function
-				@$get = ->
-					version: ->
-						version
-					versionUrl: (url) ->
-						provider.versionUrl(url)
-	)
+				@$get = ['$sce', ($sce) ->
+						version: ->
+							version
+						versionUrl: (url) ->
+							provider.versionUrl(url)
+				]
+
+				return
+	])

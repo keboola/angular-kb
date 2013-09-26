@@ -2345,33 +2345,38 @@
 
 (function() {
 
-  angular.module('kb.utils.appVersion', []).provider('kbAppVersion', function() {
-    var basePath, provider, version;
-    version = 'v1';
-    basePath = '/';
-    this.setVersion = function(newVersion) {
-      version = newVersion;
-      return this;
-    };
-    this.setBasePath = function(newBasePath) {
-      basePath = newBasePath;
-      return this;
-    };
-    this.versionUrl = function(url) {
-      return basePath + url + '?version=' + version;
-    };
-    provider = this;
-    return this.$get = function() {
-      return {
-        version: function() {
-          return version;
-        },
-        versionUrl: function(url) {
-          return provider.versionUrl(url);
-        }
+  angular.module('kb.utils.appVersion', []).provider('kbAppVersion', [
+    '$sceDelegateProvider', function($sceDelegateProvider) {
+      var basePath, provider, version;
+      version = 'v1';
+      basePath = '/';
+      this.setVersion = function(newVersion) {
+        version = newVersion;
+        return this;
       };
-    };
-  });
+      this.setBasePath = function(newBasePath) {
+        basePath = newBasePath;
+        $sceDelegateProvider.resourceUrlWhitelist([basePath + '.*']);
+        return this;
+      };
+      this.versionUrl = function(url) {
+        return basePath + url + '?version=' + version;
+      };
+      provider = this;
+      this.$get = [
+        '$sce', function($sce) {
+          return {
+            version: function() {
+              return version;
+            },
+            versionUrl: function(url) {
+              return provider.versionUrl(url);
+            }
+          };
+        }
+      ];
+    }
+  ]);
 
 }).call(this);
 
