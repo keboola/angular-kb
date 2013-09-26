@@ -33,21 +33,22 @@ describe 'inline edit', ->
 
 	it 'should be in static mode by default', ->
 		expect(elm.hasClass 'disabled').toBeFalsy()
-		expect(elm.find('.static').css 'display').not.toBe 'none'
-		expect(elm.find('.editing').css 'display').toBe 'none'
 
-	it 'should switch to editing model on click', ->
+		expect(elm.find('.static').hasClass('ng-hide')).toBeFalsy()
+		expect(elm.find('.editing').hasClass('ng-hide')).toBeTruthy()
+
+	it 'should switch to editing mode on click', ->
 		goToEditMode()
-		expect(elm.find('.static').css 'display').toBe 'none'
-		expect(elm.find('.editing').css 'display').not.toBe 'none'
+		expect(elm.find('.static').hasClass('ng-hide')).toBeTruthy()
+		expect(elm.find('.editing').hasClass('ng-hide')).toBeFalsy()
 
 	it 'should not switch to edit model when disabled', ->
 		$rootScope.edit.disabled = true
 		$rootScope.$digest()
 		goToEditMode()
 
-		expect(elm.find('.static').css 'display').not.toBe 'none'
-		expect(elm.find('.editing').css 'display').toBe 'none'
+		expect(elm.find('.static').hasClass('ng-hide')).toBeFalsy()
+		expect(elm.find('.editing').hasClass('ng-hide')).toBeTruthy()
 
 	it 'should be able change edit value', ->
 		newValue = 'changed value'

@@ -1,7 +1,6 @@
-
 ((angular) ->
 
-	app = angular.module('kbDocs', ['kb'])
+	app = angular.module('kbDocs', ['ngRoute', 'kb'])
 
 	app.value('kb.config',
 		ui:

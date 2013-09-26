@@ -1,3 +1,6 @@
+## 0.4.0
+ * [BC Break] Upgrade to Angular 1.2
+
 ## 0.3.17
  * [Bugfix] Exception handler
 
