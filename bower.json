@@ -17,8 +17,5 @@
   "main": [
     "./docs/build/angular-kb.js",
     "./docs/build/angular-kb.css"
-  ],
-  "resolutions": {
-    "angular": "1.2.0-rc.2"
-  }
+  ]
 }

@@ -1,3 +1,6 @@
+## 0.4.1
+ * [Bugfix] Bower resolutions removed
+
 ## 0.4.0
  * [BC Break] Upgrade to Angular 1.2
 
