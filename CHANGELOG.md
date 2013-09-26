@@ -1,3 +1,6 @@
+## 0.4.3
+ * [Bugfix] SCE whitelist
+
 ## 0.4.2
  * [Bugfix] SCE - allow loading templates from basePath. (Handled in app-version)
 

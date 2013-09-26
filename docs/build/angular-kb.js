@@ -2356,7 +2356,7 @@
       };
       this.setBasePath = function(newBasePath) {
         basePath = newBasePath;
-        $sceDelegateProvider.resourceUrlWhitelist([basePath + '.*']);
+        $sceDelegateProvider.resourceUrlWhitelist(['self', basePath + '.*']);
         return this;
       };
       this.versionUrl = function(url) {
