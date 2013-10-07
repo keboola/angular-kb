@@ -9,6 +9,8 @@ angular
 		swfPath = '/components/zeroclipboard/ZeroClipboard.swf' if !swfPath
 		clip = new ZeroClipboard(null,
 			moviePath: swfPath
+			allowScriptAccess: "always"
+			trustedDomains: ['*']
 		)
 
 		getTooltip = ->

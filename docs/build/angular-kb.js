@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.4.3 - 2013-09-26
+ * @version v0.4.3 - 2013-10-07
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -1713,7 +1713,9 @@
         swfPath = '/components/zeroclipboard/ZeroClipboard.swf';
       }
       clip = new ZeroClipboard(null, {
-        moviePath: swfPath
+        moviePath: swfPath,
+        allowScriptAccess: "always",
+        trustedDomains: ['*']
       });
       getTooltip = function() {
         return angular.element(clip.htmlBridge).data('tooltip');

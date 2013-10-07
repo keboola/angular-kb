@@ -1,3 +1,6 @@
+## 0.4.4
+ * [Bugfix] Copy button - trusted domains
+
 ## 0.4.3
  * [Bugfix] SCE whitelist
 
