@@ -1,3 +1,6 @@
+## 0.5.1
+ * [Bugfix] SCE wildcard fix
+
 ## 0.5.0
  * [Refactoring] Angular-ui-bootstrap upgraded to 0.6
 

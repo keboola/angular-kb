@@ -80,6 +80,7 @@
 
 				scope.cancel = ->
 					scope.isEditing = false
+
 					angular.element('body').unbind('.inlineEdit')
 					element.unbind('.inlineEdit')
 
@@ -93,8 +94,8 @@
 						# timeout ensures that when onSave is called, new scope value is already propagated
 						$timeout( ->
 							scope.onSave( { newValue: scope.editValue } )
+							scope.cancel()
 						)
-					scope.cancel()
 			]
 
 

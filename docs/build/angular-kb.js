@@ -1975,13 +1975,13 @@
               return scope.save = function() {
                 scope.value = scope.editValue;
                 if (angular.isFunction(scope.onSave)) {
-                  $timeout(function() {
-                    return scope.onSave({
+                  return $timeout(function() {
+                    scope.onSave({
                       newValue: scope.editValue
                     });
+                    return scope.cancel();
                   });
                 }
-                return scope.cancel();
               };
             }
           ]
@@ -2366,7 +2366,7 @@
       };
       this.setBasePath = function(newBasePath) {
         basePath = newBasePath;
-        $sceDelegateProvider.resourceUrlWhitelist(['self', basePath + '.*']);
+        $sceDelegateProvider.resourceUrlWhitelist(['self', basePath + '**']);
         return this;
       };
       this.versionUrl = function(url) {

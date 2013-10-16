@@ -17,7 +17,7 @@ angular
 					basePath = newBasePath
 					$sceDelegateProvider.resourceUrlWhitelist([
 						'self'
-						basePath + '.*'
+						basePath + '**'
 					])
 					@
 
