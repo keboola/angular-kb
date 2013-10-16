@@ -18,6 +18,7 @@
 		'kb.ui.copy-button'
 		'kb.ui.duration'
 		'kb.filter.filesize'
+		'kb.sapi.error-handler'
 	].sort()
 
 	app.config(($routeProvider) ->
@@ -34,7 +35,6 @@
 			redirectTo : modules[0]
 		)
 	)
-
 
 	app.controller('app', ($scope, $location) ->
 		$scope.modules = modules
@@ -192,6 +192,14 @@
 		$scope.edit =
 			value: ''
 			emptyValue: 'N/A'
+	)
+
+	app.controller('kb.sapi.error-handler', ($scope, kbSapiErrorHandler) ->
+		$scope.error = 
+			message: 'Error message text'
+
+		$scope.triggerError = (error) ->
+			kbSapiErrorHandler.handleError(error)
 	)
 
 

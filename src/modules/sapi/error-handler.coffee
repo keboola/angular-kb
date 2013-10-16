@@ -1,4 +1,4 @@
-angular.module("kb.sapi.errorHandler", ["ui.bootstrap.dialog"]).factory "kbSapiErrorHandler", ["$dialog", ($dialog) ->
+angular.module("kb.sapi.errorHandler", ["ui.bootstrap.modal", "ui.bootstrap.tpls"]).factory "kbSapiErrorHandler", ["$modal", ($modal) ->
   handler = undefined
   handler =
     remainingTimeText: (estimatedEndTime) ->
@@ -15,12 +15,29 @@ angular.module("kb.sapi.errorHandler", ["ui.bootstrap.dialog"]).factory "kbSapiE
       if errorResponse.status is "maintenance"
         errorMessage = errorResponse.reason
         errorMessage += ". Please repeat the action " + @remainingTimeText(new Date(errorResponse.estimatedEndTime))
-      btns = [
-        label: "Close"
-        cssClass: "btn-danger"
-      ]
-      dialog = $dialog.messageBox("Application Error", errorMessage, btns)
-      dialog.open()
+
+      modalInstance = $modal.open(
+        template: """
+          <div class="modal-header">
+            <h3>Application error</h3>
+          </div>
+          <div class="modal-body">
+            <p>{{ message }}</p>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-danger" ng-click="close()">Close</button>
+          </div>
+        """
+        resolve:
+          message: ->
+            errorMessage
+
+        controller: ["$scope", "$modalInstance", "message", ($scope, $modalInstance, message) ->
+          $scope.message = message
+          $scope.close = ->
+            $modalInstance.close()
+        ]
+      )
 
   handler
 ]

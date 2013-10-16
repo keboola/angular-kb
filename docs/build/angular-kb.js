@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.4.3 - 2013-10-07
+ * @version v0.4.3 - 2013-10-16
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -620,8 +620,8 @@
 
 (function() {
 
-  angular.module("kb.sapi.errorHandler", ["ui.bootstrap.dialog"]).factory("kbSapiErrorHandler", [
-    "$dialog", function($dialog) {
+  angular.module("kb.sapi.errorHandler", ["ui.bootstrap.modal", "ui.bootstrap.tpls"]).factory("kbSapiErrorHandler", [
+    "$modal", function($modal) {
       var handler;
       handler = void 0;
       handler = {
@@ -636,21 +636,29 @@
           }
         },
         handleError: function(errorResponse) {
-          var btns, dialog, errorMessage;
+          var errorMessage, modalInstance;
           errorMessage = void 0;
           errorMessage = errorResponse.message || errorResponse.error || "Unknown error during comunication with API";
           if (errorResponse.status === "maintenance") {
             errorMessage = errorResponse.reason;
             errorMessage += ". Please repeat the action " + this.remainingTimeText(new Date(errorResponse.estimatedEndTime));
           }
-          btns = [
-            {
-              label: "Close",
-              cssClass: "btn-danger"
-            }
-          ];
-          dialog = $dialog.messageBox("Application Error", errorMessage, btns);
-          return dialog.open();
+          return modalInstance = $modal.open({
+            template: "<div class=\"modal-header\">\n  <h3>Application error</h3>\n</div>\n<div class=\"modal-body\">\n  <p>{{ message }}</p>\n</div>\n<div class=\"modal-footer\">\n  <button class=\"btn btn-danger\" ng-click=\"close()\">Close</button>\n</div>",
+            resolve: {
+              message: function() {
+                return errorMessage;
+              }
+            },
+            controller: [
+              "$scope", "$modalInstance", "message", function($scope, $modalInstance, message) {
+                $scope.message = message;
+                return $scope.close = function() {
+                  return $modalInstance.close();
+                };
+              }
+            ]
+          });
         }
       };
       return handler;

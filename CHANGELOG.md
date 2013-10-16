@@ -1,3 +1,6 @@
+## 0.5.0
+ * [Refactoring] Angular-ui-bootstrap upgraded to 0.6
+
 ## 0.4.4
  * [Bugfix] Copy button - trusted domains
 
