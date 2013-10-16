@@ -2,7 +2,7 @@
 	"author": "https://github.com/keboola",
 	"name": "angular-kb",
 	"description": "KB - extensions library for AngularJS",
-	"version": "0.4.3",
+	"version": "0.5.0",
 	"engines": {
 		"node": ">=0.8.0"
 	},
