@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.5.1 - 2013-10-16
+ * @version v0.5.1 - 2013-10-20
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -1965,7 +1965,7 @@
               scope.cancel = function() {
                 scope.isEditing = false;
                 angular.element('body').unbind('.inlineEdit');
-                return element.unbind('.inlineEdit');
+                element.unbind('.inlineEdit');
               };
               scope.$on('$destroy', function() {
                 if (tooltip) {
@@ -1975,13 +1975,13 @@
               return scope.save = function() {
                 scope.value = scope.editValue;
                 if (angular.isFunction(scope.onSave)) {
-                  return $timeout(function() {
-                    scope.onSave({
+                  $timeout(function() {
+                    return scope.onSave({
                       newValue: scope.editValue
                     });
-                    return scope.cancel();
                   });
                 }
+                return scope.cancel();
               };
             }
           ]
@@ -2113,7 +2113,7 @@
             return "" + sapiService.consoleUrl + (path()) + "?endpoint=" + sapiService.endpoint;
           };
           return scope.submit = function() {
-            return element.find('form').submit();
+            element.find('form').submit();
           };
         }
       };

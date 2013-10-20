@@ -29,5 +29,6 @@ angular.module( 'kb.ui.sapiConsoleHref', ['kb.sapi.sapiService'])
 
 			scope.submit = ->
 				element.find('form').submit()
+				return
 
 	])

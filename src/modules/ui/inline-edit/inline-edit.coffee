@@ -1,8 +1,4 @@
-
-
 ((angular) ->
-
-
 	module = angular.module('kb.ui.inlineEdit', [])
 
 	inlineEditFactory = (templateUrl) ->
@@ -16,7 +12,6 @@
 				editTitle: '@'
 			templateUrl: templateUrl
 			controller: ["$scope", "$element", "$attrs", "$timeout", (scope, element, attrs, $timeout) ->
-
 				element.addClass 'form-inline'
 				element.addClass 'kb-inline-edit'
 				element.addClass element[0].tagName.toLowerCase()
@@ -67,15 +62,15 @@
 
 					element.bind('keyup.inlineEdit', (e) ->
 						# save on enter
-						scope.$apply( scope.save ) if e.keyCode == 13 && element.get(0).tagName.toLocaleLowerCase() != 'kb-inline-edit-textarea'
+						scope.$apply(scope.save) if e.keyCode == 13 && element.get(0).tagName.toLocaleLowerCase() != 'kb-inline-edit-textarea'
 
 						# close on escape
-						scope.$apply( scope.cancel ) if e.keyCode == 27
+						scope.$apply(scope.cancel) if e.keyCode == 27
 						false
 					)
 
-					$timeout( ->
-						element.find( ':input' ).not('button').focus()
+					$timeout(->
+						element.find(':input').not('button').focus()
 					)
 
 				scope.cancel = ->
@@ -83,6 +78,7 @@
 
 					angular.element('body').unbind('.inlineEdit')
 					element.unbind('.inlineEdit')
+					return
 
 				scope.$on('$destroy', ->
 					tooltip.destroy() if tooltip
@@ -90,12 +86,14 @@
 
 				scope.save = ->
 					scope.value = scope.editValue
-					if angular.isFunction( scope.onSave )
+					if angular.isFunction(scope.onSave)
 						# timeout ensures that when onSave is called, new scope value is already propagated
-						$timeout( ->
-							scope.onSave( { newValue: scope.editValue } )
-							scope.cancel()
+						$timeout(->
+							scope.onSave(
+								newValue: scope.editValue
+							)
 						)
+					scope.cancel()
 			]
 
 
@@ -105,10 +103,8 @@
 	.directive('kbInlineEdit', inlineEditFactory("kb/ui/inline-edit/templates/text.html"))
 	.directive('kbInlineEditDatetime', inlineEditFactory("kb/ui/inline-edit/templates/datetime.html"))
 	.directive('kbInlineEditTextarea', inlineEditFactory("kb/ui/inline-edit/templates/textarea.html"))
-	.directive( 'kbInlineEditSelect', ->
-		config = inlineEditFactory("kb/ui/inline-edit/templates/select.html")()
-		config.scope.options = '='
-		config
-	)
-
-)(window.angular)
+	.directive('kbInlineEditSelect', ->
+			config = inlineEditFactory("kb/ui/inline-edit/templates/select.html")()
+			config.scope.options = '='
+			config
+		))(window.angular)
