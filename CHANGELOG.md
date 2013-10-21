@@ -1,3 +1,7 @@
+## 0.5.2
+ * [Bugfix] [:isecdom] Referencing DOM nodes in Angular expressions is disallowed
+ * [Feature] Confirm dialog directive added
+
 ## 0.5.1
  * [Bugfix] SCE wildcard fix
 
