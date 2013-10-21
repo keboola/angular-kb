@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.5.1 - 2013-10-20
+ * @version v0.5.1 - 2013-10-21
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -9,7 +9,7 @@
 
   angular.module('kb.templates', []);
 
-  angular.module('kb', ['kb.config', 'kb.ui.inlineEdit', 'kb.ui.clickToggle', 'kb.ui.copyButton', 'kb.ui.nl2br', 'kb.ui.toggable', 'kb.ui.sapiEventsTable', 'kb.ui.loader', 'kb.ui.autoComplete', 'kb.ui.focus', 'kb.ui.tree', 'kb.ui.runButton', 'kb.ui.codemirror', 'kb.ui.datetime', 'kb.ui.duration', 'kb.ui.sapiConsoleHref', 'kb.utils.multipartUpload', 'kb.utils.csv', 'kb.utils.keyboardShortcuts', 'kb.utils.appVersion', 'kb.filters.date', 'kb.filters.filesize', 'kb.filters.webalize', 'kb.filters.duration', 'kb.sapi.sapiService', 'kb.sapi.eventsService', 'kb.sapi.errorHandler', 'kb.templates']);
+  angular.module('kb', ['kb.config', 'kb.ui.inlineEdit', 'kb.ui.clickToggle', 'kb.ui.copyButton', 'kb.ui.nl2br', 'kb.ui.toggable', 'kb.ui.sapiEventsTable', 'kb.ui.loader', 'kb.ui.autoComplete', 'kb.ui.focus', 'kb.ui.tree', 'kb.ui.runButton', 'kb.ui.codemirror', 'kb.ui.datetime', 'kb.ui.duration', 'kb.ui.sapiConsoleHref', 'kb.ui.confirm', 'kb.utils.multipartUpload', 'kb.utils.csv', 'kb.utils.keyboardShortcuts', 'kb.utils.appVersion', 'kb.filters.date', 'kb.filters.filesize', 'kb.filters.webalize', 'kb.filters.duration', 'kb.sapi.sapiService', 'kb.sapi.eventsService', 'kb.sapi.errorHandler', 'kb.templates']);
 
 }).call(this);
 
@@ -1713,6 +1713,80 @@
 
 (function() {
 
+  angular.module('kb.ui.confirm', ['kb.config', 'ui.bootstrap.modal']).factory('kbConfirm', [
+    '$modal', function($modal) {
+      var confirm, defaultParams;
+      defaultParams = {
+        header: '',
+        message: '',
+        cancelButton: {
+          label: 'Cancel',
+          type: ''
+        },
+        confirmButton: {
+          label: 'Confirm',
+          type: 'primary'
+        }
+      };
+      confirm = {
+        confirm: function(params) {
+          return $modal.open({
+            templateUrl: "kb/ui/confirm/templates/confirm.html",
+            resolve: {
+              params: function() {
+                return jQuery.extend(true, {}, defaultParams, params);
+              }
+            },
+            controller: [
+              '$scope', '$modalInstance', 'params', function($scope, $modalInstance, params) {
+                $scope.params = params;
+                $scope.close = function() {
+                  return $modalInstance.dismiss();
+                };
+                return $scope.confirm = function() {
+                  return $modalInstance.close();
+                };
+              }
+            ]
+          });
+        }
+      };
+      return confirm;
+    }
+  ]).directive('kbConfirm', [
+    'kbConfirm', '$parse', function(kbConfirm, $parse) {
+      return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+          var action;
+          action = $parse(attrs['onConfirm']);
+          element.on('click', function() {
+            var modal, params;
+            params = {
+              header: attrs.header,
+              message: attrs.message,
+              confirmButton: {}
+            };
+            if (attrs.confirmLabel !== '') {
+              params.confirmButton.label = attrs.confirmLabel;
+            }
+            if (attrs.confirmType !== '') {
+              params.confirmButton.type = attrs.confirmType;
+            }
+            modal = kbConfirm.confirm(params);
+            return modal.result.then(function() {
+              return action(scope);
+            });
+          });
+        }
+      };
+    }
+  ]);
+
+}).call(this);
+
+(function() {
+
   angular.module('kb.ui.copyButton', ['kb.config']).directive('kbCopyButton', [
     '$timeout', 'kb.config', function($timeout, config) {
       var clip, getTooltip, swfPath, _ref, _ref1;
@@ -3159,6 +3233,19 @@
 }).call(this);
 
 angular.module("kb.templates").run(["$templateCache", function($templateCache) {
+
+  $templateCache.put("kb/ui/confirm/templates/confirm.html",
+    "<div class=\"modal-header\">\n" +
+    "    <h3>{{ params.header }}</h3>\n" +
+    "</div>\n" +
+    "<div class=\"modal-body\">\n" +
+    "    <p>{{ params.message }}</p>\n" +
+    "</div>\n" +
+    "<div class=\"modal-footer\">\n" +
+    "    <button class=\"btn\" ng-click=\"close()\">{{ params.cancelButton.label }}</button>\n" +
+    "    <button class=\"btn btn-{{ params.confirmButton.type}}\" ng-click=\"confirm()\">{{ params.confirmButton.label }}</button>\n" +
+    "</div>"
+  );
 
   $templateCache.put("kb/ui/inline-edit/templates/datetime.html",
     "<span class=\"static\" ng-hide=\"isEditing\" ng-click=\"edit()\"><kb-datetime datetime=\"value\"></kb-datetime></span>\n" +

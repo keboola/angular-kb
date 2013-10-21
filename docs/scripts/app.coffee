@@ -19,6 +19,7 @@
 		'kb.ui.duration'
 		'kb.filter.filesize'
 		'kb.sapi.error-handler'
+		'kb.ui.confirm'
 	].sort()
 
 	app.config(($routeProvider) ->
@@ -200,6 +201,43 @@
 
 		$scope.triggerError = (error) ->
 			kbSapiErrorHandler.handleError(error)
+	)
+
+	app.controller('kb.ui.confirm', ($scope, kbConfirm, $timeout) ->
+
+		$scope.buttonTypes = [
+			'primary'
+			'danger'
+			'success'
+			'inverse'
+			'info'
+		]
+		$scope.params =
+			header: 'Confirm header'
+			message: 'Confirm message'
+			confirmButton:
+				type: 'primary'
+
+		$scope.result = null
+
+		$scope.confirm = (params) ->
+			$scope.result = null
+			modal = kbConfirm.confirm(params)
+			modal.result.then(() ->
+				$scope.showResult 'Confirmed!'
+			, () ->
+				$scope.showResult 'Canceled!'
+			)
+
+		$scope.showResult = (message) ->
+			$scope.result = message
+			$timeout(->
+				$scope.result = null
+			, 2000)
+
+		$scope.onConfirm = ->
+			$scope.showResult 'Confirmed!'
+
 	)
 
 

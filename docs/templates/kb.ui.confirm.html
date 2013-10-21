@@ -1,0 +1,57 @@
+<div class="bs-docs-example">
+
+    <div class="row-fluid">
+        <div class="span6">
+            <div class="control-group">
+                <label class="control-label" >Confirm header</label>
+                <div class="controls">
+                    <input ng-model="params.header"/>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" >Confirm message</label>
+                <div class="controls">
+                    <input ng-model="params.message"/>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" >Confirm button label</label>
+                <div class="controls">
+                    <input ng-model="params.confirmButton.label" placeholder="Default will be used"/>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" >Confirm button type</label>
+                <div class="controls">
+                    <select ng-options="label for label in buttonTypes" ng-model="params.confirmButton.type"></select>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <button class="btn" ng-click="confirm(params)">
+                        Confirm using service
+                    </button>
+                    <button
+                            class="btn"
+                            kb-confirm
+                            header="{{ params.header }}"
+                            message="{{ params.message }}"
+                            confirm-label="{{ params.confirmButton.label }}"
+                            confirm-type="{{ params.confirmButton.type }}"
+                            on-confirm="onConfirm()"
+                            >
+                        Confirm using directive
+                    </button>
+                    <span ng-show="result">
+                        {{ result }}
+                    </span>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
