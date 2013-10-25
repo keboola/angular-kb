@@ -1,3 +1,6 @@
+## 0.5.3
+ * [Bugfix] sapi events published attribute deprecated, migrated to created
+
 ## 0.5.2
  * [Bugfix] [:isecdom] Referencing DOM nodes in Angular expressions is disallowed
  * [Feature] Confirm dialog directive added
