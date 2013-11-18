@@ -1,3 +1,6 @@
+## 0.5.4
+ * [Feature] Exception handler - log complete href of current page
+
 ## 0.5.3
  * [Bugfix] sapi events published attribute deprecated, migrated to created
 

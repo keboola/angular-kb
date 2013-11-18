@@ -1,5 +1,5 @@
 angular.module("kb.exceptionHandler.logger", [])
-	.factory("kb.Logger", ->
+	.factory("kb.Logger", ["$window", ($window)->
 
 		# Logs errors to server
 		class Logger
@@ -12,6 +12,12 @@ angular.module("kb.exceptionHandler.logger", [])
 
 
 			log: (data) ->
+				extendedData = angular.extend({}, data,
+					href: $window.location?.href
+				)
+				@logRaw(extendedData)
+
+			logRaw: (data) ->
 				jQuery.ajax
 					url: "/utils/errors"
 					method: "POST"
@@ -24,7 +30,7 @@ angular.module("kb.exceptionHandler.logger", [])
 					message: exception.message
 					stackTrace: exception.stack
 
-	)
+	])
 	.factory("kbLogger", ["kb.Logger", (Logger) ->
 		new Logger()
 	])

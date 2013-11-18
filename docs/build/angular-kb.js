@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.5.3 - 2013-10-25
+ * @version v0.5.3 - 2013-11-18
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -29,41 +29,51 @@
 
 (function() {
 
-  angular.module("kb.exceptionHandler.logger", []).factory("kb.Logger", function() {
-    var Logger;
-    return Logger = (function() {
+  angular.module("kb.exceptionHandler.logger", []).factory("kb.Logger", [
+    "$window", function($window) {
+      var Logger;
+      return Logger = (function() {
 
-      function Logger() {}
+        function Logger() {}
 
-      Logger.prototype.onError = function(errorMsg, file, lineNumber) {
-        return this.log({
-          message: errorMsg,
-          file: file,
-          lineNumber: lineNumber
-        });
-      };
+        Logger.prototype.onError = function(errorMsg, file, lineNumber) {
+          return this.log({
+            message: errorMsg,
+            file: file,
+            lineNumber: lineNumber
+          });
+        };
 
-      Logger.prototype.log = function(data) {
-        return jQuery.ajax({
-          url: "/utils/errors",
-          method: "POST",
-          contentType: "application/json",
-          data: JSON.stringify(data),
-          dataType: "json"
-        });
-      };
+        Logger.prototype.log = function(data) {
+          var extendedData, _ref;
+          extendedData = angular.extend({}, data, {
+            href: (_ref = $window.location) != null ? _ref.href : void 0
+          });
+          return this.logRaw(extendedData);
+        };
 
-      Logger.prototype.logException = function(exception) {
-        return this.log({
-          message: exception.message,
-          stackTrace: exception.stack
-        });
-      };
+        Logger.prototype.logRaw = function(data) {
+          return jQuery.ajax({
+            url: "/utils/errors",
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(data),
+            dataType: "json"
+          });
+        };
 
-      return Logger;
+        Logger.prototype.logException = function(exception) {
+          return this.log({
+            message: exception.message,
+            stackTrace: exception.stack
+          });
+        };
 
-    })();
-  }).factory("kbLogger", [
+        return Logger;
+
+      })();
+    }
+  ]).factory("kbLogger", [
     "kb.Logger", function(Logger) {
       return new Logger();
     }
