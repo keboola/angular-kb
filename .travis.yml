@@ -6,6 +6,8 @@ before_install:
 - npm install -g grunt-cli
 - npm install -g bower
 - npm install
+- bower --version
+- bower cache clean
 - bower install --dev
 script: grunt
 notifications:
