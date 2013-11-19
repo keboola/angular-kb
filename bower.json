@@ -3,6 +3,7 @@
   "version": "0.5.4",
   "dependencies": {
     "angular": "~1.2.0",
+    "angular-sanitize": "~1.2.0",
     "jquery": "~1.9.1",
     "underscore": "~1.4.4",
     "bootstrap": "~2.3.1",

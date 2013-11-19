@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.5.4 - 2013-11-18
+ * @version v0.5.4 - 2013-11-19
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -1723,7 +1723,7 @@
 
 (function() {
 
-  angular.module('kb.ui.confirm', ['kb.config', 'ui.bootstrap.modal']).factory('kbConfirm', [
+  angular.module('kb.ui.confirm', ['kb.config', 'ui.bootstrap.modal', 'ngSanitize']).factory('kbConfirm', [
     '$modal', function($modal) {
       var confirm, defaultParams;
       defaultParams = {
@@ -3249,7 +3249,7 @@ angular.module("kb.templates").run(["$templateCache", function($templateCache) {
     "    <h3>{{ params.header }}</h3>\n" +
     "</div>\n" +
     "<div class=\"modal-body\">\n" +
-    "    <p>{{ params.message }}</p>\n" +
+    "    <p ng-bind-html=\"params.message\"></p>\n" +
     "</div>\n" +
     "<div class=\"modal-footer\">\n" +
     "    <button class=\"btn\" ng-click=\"close()\">{{ params.cancelButton.label }}</button>\n" +

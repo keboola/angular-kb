@@ -1,3 +1,6 @@
+## 0.5.5
+ * [Feature] kbConfirm - basic whitelisted HTML elements allowed in message
+
 ## 0.5.4
  * [Feature] Exception handler - log complete href of current page
 

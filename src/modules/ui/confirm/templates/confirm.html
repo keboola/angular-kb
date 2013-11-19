@@ -2,7 +2,7 @@
     <h3>{{ params.header }}</h3>
 </div>
 <div class="modal-body">
-    <p>{{ params.message }}</p>
+    <p ng-bind-html="params.message"></p>
 </div>
 <div class="modal-footer">
     <button class="btn" ng-click="close()">{{ params.cancelButton.label }}</button>

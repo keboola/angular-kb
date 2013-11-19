@@ -1,7 +1,7 @@
 
 
 angular
-.module( 'kb.ui.confirm', ['kb.config', 'ui.bootstrap.modal'])
+.module( 'kb.ui.confirm', ['kb.config', 'ui.bootstrap.modal', 'ngSanitize'])
 .factory('kbConfirm', ['$modal', ($modal) ->
 	defaultParams =
 		header: ''
