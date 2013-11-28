@@ -20,6 +20,7 @@
 		'kb.filter.filesize'
 		'kb.sapi.error-handler'
 		'kb.ui.confirm'
+		'kb.ui.sapiConsoleHref'
 	].sort()
 
 	app.config(($routeProvider) ->
@@ -237,6 +238,16 @@
 
 		$scope.onConfirm = ->
 			$scope.showResult 'Confirmed!'
+
+	)
+
+	app.controller('kb.ui.sapiConsoleHref', ($scope, kbSapiService) ->
+
+		$scope.form =
+			token: ''
+
+		$scope.useToken = (token) ->
+			kbSapiService.apiToken = token
 
 	)
 

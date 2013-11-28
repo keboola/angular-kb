@@ -3,34 +3,19 @@
 	<div class="row-fluid">
 		<div class="span3">
 			<div class="control-group">
-				<label class="control-label" >Edit value</label>
+				<label class="control-label" >Storage API Token</label>
 				<div class="controls">
-					<input ng-model="textEditValue"/>
+					<input ng-model="form.token"/>
 				</div>
 			</div>
-			<div class="control-group">
-				<label class="control-label" >Placeholder</label>
-				<div class="controls">
-					<input ng-model="textEditPlaceholder"/>
-				</div>
-			</div>
-			<div class="control-group">
-				<label class="control-label" >Edit tooltip</label>
-				<div class="controls">
-					<input ng-model="textEditTitle"/>
-				</div>
-			</div>
-			<div class="control-group">
-				<div class="controls">
-					<label class="checkbox">
-						<input type="checkbox" ng-model="textEditDisabled" />Disabled
-					</label>
-				</div>
-			</div>
+
+
 		</div>
 		<div class="span9">
-			<strong>kb-inline-edit</strong>:<br/>
-			<kb-inline-edit value="textEditValue" edit-title="{{ textEditTitle }}" disabled="textEditDisabled" placeholder="{{ textEditPlaceholder }}"></kb-inline-edit>
+            <kb-sapi-console-href>
+                <i class="icon-table"></i>
+                Storage API Console
+            </kb-sapi-console-href>
 		</div>
 	</div>
 </div>

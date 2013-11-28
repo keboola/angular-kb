@@ -1,3 +1,6 @@
+## 0.5.6
+ * [Bugfix] Angular 1.2.3 compatibility ($sce)
+
 ## 0.5.5
  * [Feature] kbConfirm - basic whitelisted HTML elements allowed in message
 

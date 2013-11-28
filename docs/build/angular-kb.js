@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.5.5 - 2013-11-19
+ * @version v0.5.5 - 2013-11-28
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -2179,7 +2179,7 @@
 (function() {
 
   angular.module('kb.ui.sapiConsoleHref', ['kb.sapi.sapiService']).directive('kbSapiConsoleHref', [
-    "kbSapiService", function(sapiService) {
+    "kbSapiService", "$sce", function(sapiService, $sce) {
       return {
         restrict: 'E',
         transclude: true,
@@ -2194,7 +2194,7 @@
           };
           scope.sapiService = sapiService;
           scope.url = function() {
-            return "" + sapiService.consoleUrl + (path()) + "?endpoint=" + sapiService.endpoint;
+            return $sce.trustAsResourceUrl("" + sapiService.consoleUrl + (path()) + "?endpoint=" + sapiService.endpoint);
           };
           return scope.submit = function() {
             element.find('form').submit();

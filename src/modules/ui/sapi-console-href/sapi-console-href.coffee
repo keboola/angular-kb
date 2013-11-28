@@ -5,7 +5,7 @@
 ###
 
 angular.module( 'kb.ui.sapiConsoleHref', ['kb.sapi.sapiService'])
-	.directive('kbSapiConsoleHref', [ "kbSapiService", (sapiService) ->
+	.directive('kbSapiConsoleHref', [ "kbSapiService", "$sce", (sapiService, $sce) ->
 		restrict: 'E'
 		transclude: true
 		scope:
@@ -25,7 +25,7 @@ angular.module( 'kb.ui.sapiConsoleHref', ['kb.sapi.sapiService'])
 			scope.sapiService = sapiService
 
 			scope.url = ->
-				"#{sapiService.consoleUrl}#{path()}?endpoint=#{sapiService.endpoint}"
+				$sce.trustAsResourceUrl("#{sapiService.consoleUrl}#{path()}?endpoint=#{sapiService.endpoint}")
 
 			scope.submit = ->
 				element.find('form').submit()
