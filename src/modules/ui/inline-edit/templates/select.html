@@ -1,13 +1,19 @@
-<span class="static" ng-hide="isEditing" ng-click="edit()">
+<span class="static" ng-hide="isEditing" ng-click="edit()" tooltip="{{ tooltipTitle }}">
 	{{ value }}
 	<span class="placeholder" ng-show="!value">{{ placeholder }}</span>
 </span>
-<div ng-show="isEditing" class="input-append editing">
-	<select ng-options="value for value in options" ng-model="editValue"></select>
-	<button class="btn btn-success" ng-click="save()">
-				<i class="icon-ok" title="save"></i>
-		</button>
-		<button class="btn" ng-click="cancel()">
-			<i class="icon-remove" title="Cancel"></i>
-		</button>
+<div ng-show="isEditing" class="editing">
+    <div class="input-group">
+        <select ng-options="value for value in options" class="form-control" ng-model="editValue"></select>
+
+        <span class="input-group-btn">
+            <button class="btn btn-success" ng-click="save()">
+                    <i class="glyphicon glyphicon-ok" title="save"></i>
+            </button>
+            <button class="btn" ng-click="cancel()">
+                <i class="glyphicon glyphicon-remove" title="Cancel"></i>
+            </button>
+        </span>
+
+    </div>
 </div>

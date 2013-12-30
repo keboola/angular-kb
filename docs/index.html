@@ -8,10 +8,9 @@
     <meta name="author" content="">
 
     <!-- Le styles -->
-    <link href="components/bootstrap/docs/assets/css/bootstrap.css" rel="stylesheet">
+    <link href="components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
     <link href="build/angular-kb.css" rel="stylesheet">
     <link href="styles/app.css" rel="stylesheet">
-    <link href="components/bootstrap/docs/assets/css/bootstrap-responsive.css" rel="stylesheet">
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -26,35 +25,34 @@
 		<img style="position: absolute; top: 0; right: 0; border: 0; z-index: 1050" src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png" alt="Fork me on GitHub">
 	</a>
 
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
+    </div>
+
+    <div class="navbar navbar-default navbar-static-top" role="navigation">
         <div class="container">
 
-			<a class="brand pull-left" href="/">
-				<img src="img/logo.png" class="logo">
-				Keboola Angular Library
-			</a>
-         
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">
+                    <img src="img/logo.png" class="logo">
+                    Keboola Angular Library
+                </a>
+            </div>
+
         </div>
-      </div>
     </div>
 
     <div class="container">
 
-		<div class="row-fluid">
-		  <div class="span2">
-			  <div class="well well-small">
-				  <ul class="nav nav-list">
-					  <li class="nav-header">Components</li>
-					  <li ng-cloak ng-repeat="module in modules" ng-class="{'active': module == currentModule}">
-						  <a ng-click="openModule(module)">
-							{{ module }}
-						  </a>
-					  </li>
-				  </ul>
-			   </div>
+		<div class="row">
+		  <div class="col-md-3">
+              <ul class="nav nav-pills nav-stacked">
+                  <li ng-cloak ng-repeat="module in modules" ng-class="{'active': module == currentModule}">
+                      <a ng-click="openModule(module)">
+                        {{ module }}
+                      </a>
+                  </li>
+              </ul>
 		  </div>
-		  <div class="span10">
+		  <div class="col-md-9">
 			  	<h1 ng-cloak>{{ currentModule }}</h1>
 				<div ng-view></div>
 		  </div>
@@ -66,14 +64,13 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="components/jquery/jquery.js"></script>
-  	<script src="components/bootstrap/docs/assets/js/bootstrap.js"></script>
+  	<script src="components/bootstrap/js/tooltip.js"></script>
   	<script src="components/angular/angular.js"></script>
   	<script src="components/angular-route/angular-route.js"></script>
   	<script src="components/angular-sanitize/angular-sanitize.js"></script>
 	<script src="components/zeroclipboard/ZeroClipboard.js"></script>
 	<script src="components/underscore/underscore.js"></script>
 	<script src="components/angular-ui-bootstrap-bower/ui-bootstrap-tpls.js"></script>
-	<script src="libs/angular-modal/modal.js"></script>
   	<script src="build/angular-kb.js"></script>
     <script src="scripts/app.js"></script>
 

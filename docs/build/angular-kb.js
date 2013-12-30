@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.5.6 - 2013-11-28
+ * @version v0.5.6 - 2013-12-30
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -654,7 +654,7 @@
             errorMessage += ". Please repeat the action " + this.remainingTimeText(new Date(errorResponse.estimatedEndTime));
           }
           return modalInstance = $modal.open({
-            template: "<div class=\"modal-header\">\n  <h3>Application error</h3>\n</div>\n<div class=\"modal-body\">\n  <p>{{ message }}</p>\n</div>\n<div class=\"modal-footer\">\n  <button class=\"btn btn-danger\" ng-click=\"close()\">Close</button>\n</div>",
+            template: "<div class=\"modal-header\">\n  <h4 class=\"modal-title\">Application error</h4>\n</div>\n<div class=\"modal-body\">\n  <p>{{ message }}</p>\n</div>\n<div class=\"modal-footer\">\n  <button class=\"btn btn-danger\" ng-click=\"close()\">Close</button>\n</div>",
             resolve: {
               message: function() {
                 return errorMessage;
@@ -1795,11 +1795,17 @@
 
 }).call(this);
 
+
+/*
+  Requires: components/bootstrap/js/tooltip.js
+*/
+
+
 (function() {
 
   angular.module('kb.ui.copyButton', ['kb.config']).directive('kbCopyButton', [
     '$timeout', 'kb.config', function($timeout, config) {
-      var clip, getTooltip, swfPath, _ref, _ref1;
+      var clip, swfPath, _ref, _ref1;
       swfPath = (_ref = config['ui']) != null ? (_ref1 = _ref['copy-button']) != null ? _ref1['swfPath'] : void 0 : void 0;
       if (!swfPath) {
         swfPath = '/components/zeroclipboard/ZeroClipboard.swf';
@@ -1809,23 +1815,16 @@
         allowScriptAccess: "always",
         trustedDomains: ['*']
       });
-      getTooltip = function() {
-        return angular.element(clip.htmlBridge).data('tooltip');
-      };
-      clip.on('complete', function(client, text) {
-        var tooltip;
-        tooltip = getTooltip();
-        tooltip.options.title = angular.element(this).attr('copy-message');
-        return tooltip.show();
+      clip.on('complete', function() {
+        angular.element(clip.htmlBridge).attr('data-original-title', angular.element(this).attr('copy-message'));
+        return angular.element(clip.htmlBridge).tooltip('show');
       });
       clip.on('load', function(client) {
         return angular.element(client.htmlBridge).tooltip();
       });
-      clip.on('mouseover', function(client) {
-        var tooltip;
-        tooltip = getTooltip();
-        tooltip.options.title = angular.element(this).attr('title');
-        return tooltip.show();
+      clip.on('mouseover', function() {
+        angular.element(clip.htmlBridge).attr('data-original-title', angular.element(this).attr('title'));
+        return angular.element(clip.htmlBridge).tooltip('show');
       });
       return {
         restrict: 'E',
@@ -1859,7 +1858,7 @@
 
 (function() {
 
-  angular.module('kb.ui.datetime', []).directive('kbDatetime', [
+  angular.module('kb.ui.datetime', ['ui.bootstrap.tooltip', 'ui.bootstrap.tpls']).directive('kbDatetime', [
     "$filter", function($filter) {
       var R_ISO8601_STR, dateFilter;
       dateFilter = $filter('date');
@@ -1872,9 +1871,9 @@
           datetime: '=',
           emptyValue: '@'
         },
-        template: "<span ng-cloak ng-class=\"{'muted': isEmpty()}\">\n	{{ formattedValue() }}\n	<i class=\"kb-datetime icon-time\" ng-show=\"isDatetime()\"></i>\n</span>",
+        template: "<span ng-cloak ng-class=\"{'muted': isEmpty()}\">\n	{{ formattedValue() }}\n	<i class=\"kb-datetime glyphicon glyphicon-time\" tooltip=\"{{ tooltipTitle }}\" ng-show=\"isDatetime()\"></i>\n</span>",
         link: function(scope, element, attrs) {
-          var setTooltipTitle, tooltip;
+          scope.tooltipTitle = '';
           scope.resolveEmptyValue = function() {
             if (!scope.emptyValue) {
               return 'N/A';
@@ -1884,16 +1883,11 @@
           scope.isEmpty = function() {
             return !scope.datetime;
           };
-          tooltip = element.find('i').tooltip().data('tooltip');
-          setTooltipTitle = function() {
-            element.removeAttr('data-original-title');
-            return tooltip.options.title = scope.isDatetime() ? "Original time: " + scope.datetime : "";
-          };
           scope.isDatetime = function() {
             return !!(scope.datetime && scope.datetime.match(R_ISO8601_STR));
           };
-          scope.$watch('datetime', function(newValue) {
-            return setTooltipTitle();
+          scope.$watch('datetime', function() {
+            return scope.tooltipTitle = scope.isDatetime() ? "Original time: " + scope.datetime : "";
           });
           return scope.formattedValue = function() {
             if (scope.isEmpty()) {
@@ -1984,23 +1978,16 @@
           templateUrl: templateUrl,
           controller: [
             "$scope", "$element", "$attrs", "$timeout", function(scope, element, attrs, $timeout) {
-              var resolveTooltip, setTooltipTitle, tooltip;
+              var resolveTooltip;
               element.addClass('form-inline');
               element.addClass('kb-inline-edit');
               element.addClass(element[0].tagName.toLowerCase());
-              element.tooltip({
-                title: scope.editTitle
-              });
-              tooltip = element.data('tooltip');
-              setTooltipTitle = function(title) {
-                element.removeAttr('data-original-title');
-                return tooltip.options.title = title;
-              };
+              scope.tooltipTitle = '';
               resolveTooltip = function() {
                 if (scope.isEditing || scope.disabled) {
-                  return setTooltipTitle('');
+                  return scope.tooltipTitle = '';
                 } else {
-                  return setTooltipTitle(scope.editTitle);
+                  return scope.tooltipTitle = scope.editTitle;
                 }
               };
               scope.$watch('disabled', function(disabled) {
@@ -2051,11 +2038,6 @@
                 angular.element('body').unbind('.inlineEdit');
                 element.unbind('.inlineEdit');
               };
-              scope.$on('$destroy', function() {
-                if (tooltip) {
-                  return tooltip.destroy();
-                }
-              });
               return scope.save = function() {
                 scope.value = scope.editValue;
                 if (angular.isFunction(scope.onSave)) {
@@ -2089,7 +2071,7 @@
   angular.module('kb.ui.loader', []).directive('kbLoader', function() {
     return {
       restrict: 'E',
-      template: "<a kb-loader class=\"kb-loader\">\n	<i class=\"icon-refresh\"> </i>\n</a>",
+      template: "<a kb-loader class=\"kb-loader\">\n	<i class=\"glyphicon glyphicon-refresh\"> </i>\n</a>",
       replace: true,
       link: function(scope, element, attrs) {
         var icon;
@@ -2145,21 +2127,21 @@
   angular.module('kb.ui.runButton', ['kb.ui.loader']).directive('kbRunButton', function() {
     return {
       restrict: 'E',
-      template: "<a class=\"btn run-transformation kb-loader\">\n	<i  class=\"icon-play\"> </i>\n</a>",
+      template: "<button class=\"btn run-transformation kb-loader\">\n	<i  class=\"glyphicon glyphicon-play\"> </i>\n</button>",
       replace: true,
       link: function(scope, element, attrs) {
         var icon;
         icon = element.find('i');
         return scope.$watch(attrs.isRunning, function(newValue) {
           element.removeClass('running');
-          icon.removeClass('icon-refresh');
-          icon.removeClass('icon-play');
+          icon.removeClass('glyphicon-refresh');
+          icon.removeClass('glyphicon-play');
           icon.removeClass('loading');
           if (newValue) {
             element.addClass('running');
-            return icon.addClass('icon-refresh loading');
+            return icon.addClass('glyphicon-refresh loading');
           } else {
-            return icon.addClass('icon-play');
+            return icon.addClass('glyphicon-play');
           }
         });
       }
@@ -3246,7 +3228,7 @@ angular.module("kb.templates").run(["$templateCache", function($templateCache) {
 
   $templateCache.put("kb/ui/confirm/templates/confirm.html",
     "<div class=\"modal-header\">\n" +
-    "    <h3>{{ params.header }}</h3>\n" +
+    "    <h4 class=\"modal-title\">{{ params.header }}</h4>\n" +
     "</div>\n" +
     "<div class=\"modal-body\">\n" +
     "    <p ng-bind-html=\"params.message\"></p>\n" +
@@ -3268,39 +3250,53 @@ angular.module("kb.templates").run(["$templateCache", function($templateCache) {
   );
 
   $templateCache.put("kb/ui/inline-edit/templates/select.html",
-    "<span class=\"static\" ng-hide=\"isEditing\" ng-click=\"edit()\">\n" +
+    "<span class=\"static\" ng-hide=\"isEditing\" ng-click=\"edit()\" tooltip=\"{{ tooltipTitle }}\">\n" +
     "\t{{ value }}\n" +
     "\t<span class=\"placeholder\" ng-show=\"!value\">{{ placeholder }}</span>\n" +
     "</span>\n" +
-    "<div ng-show=\"isEditing\" class=\"input-append editing\">\n" +
-    "\t<select ng-options=\"value for value in options\" ng-model=\"editValue\"></select>\n" +
-    "\t<button class=\"btn btn-success\" ng-click=\"save()\">\n" +
-    "\t\t\t\t<i class=\"icon-ok\" title=\"save\"></i>\n" +
-    "\t\t</button>\n" +
-    "\t\t<button class=\"btn\" ng-click=\"cancel()\">\n" +
-    "\t\t\t<i class=\"icon-remove\" title=\"Cancel\"></i>\n" +
-    "\t\t</button>\n" +
+    "<div ng-show=\"isEditing\" class=\"editing\">\n" +
+    "    <div class=\"input-group\">\n" +
+    "        <select ng-options=\"value for value in options\" class=\"form-control\" ng-model=\"editValue\"></select>\n" +
+    "\n" +
+    "        <span class=\"input-group-btn\">\n" +
+    "            <button class=\"btn btn-success\" ng-click=\"save()\">\n" +
+    "                    <i class=\"glyphicon glyphicon-ok\" title=\"save\"></i>\n" +
+    "            </button>\n" +
+    "            <button class=\"btn\" ng-click=\"cancel()\">\n" +
+    "                <i class=\"glyphicon glyphicon-remove\" title=\"Cancel\"></i>\n" +
+    "            </button>\n" +
+    "        </span>\n" +
+    "\n" +
+    "    </div>\n" +
     "</div>"
   );
 
   $templateCache.put("kb/ui/inline-edit/templates/text.html",
-    "<span class=\"static\" ng-hide=\"isEditing\" ng-click=\"edit()\">\n" +
+    "<span class=\"static\" ng-hide=\"isEditing\" ng-click=\"edit()\" tooltip=\"{{ tooltipTitle }}\">\n" +
     "\t{{ value }}\n" +
     "\t <a class=\"placeholder\" ng-show=\"!value\">\n" +
     "\t\t\t<i class=\"icon-edit\"></i>\n" +
     "\t\t\t{{ placeholder }}\n" +
     "\t\t</a>\n" +
     "</span>\n" +
-    "<div ng-show=\"isEditing\" class=\"input-append editing\">\n" +
-    "\t<input type=\"text\" ng-model=\"editValue\" placeholder=\"{{ placeholder }}\"/><button\n" +
-    "\t\t\tclass=\"btn btn-success\" ng-click=\"save()\">\n" +
-    "\t\t\t\t<i class=\"icon-ok\" title=\"save\"></i></button><button\n" +
-    "\t\tclass=\"btn\" ng-click=\"cancel()\"><i class=\"icon-remove\" title=\"Cancel\"></i></button>\n" +
+    "<div ng-show=\"isEditing\" class=\"editing\">\n" +
+    "    <div class=\"input-group\">\n" +
+    "        <input type=\"text\" ng-model=\"editValue\" class=\"form-control\" placeholder=\"{{ placeholder }}\"/>\n" +
+    "\n" +
+    "        <div class=\"input-group-btn\">\n" +
+    "            <button class=\"btn btn-success\" ng-click=\"save()\">\n" +
+    "                <i class=\"glyphicon glyphicon-ok\" title=\"save\"></i>\n" +
+    "            </button>\n" +
+    "            <button class=\"btn\" ng-click=\"cancel()\">\n" +
+    "                <i class=\"glyphicon glyphicon-remove\" title=\"Cancel\"></i>\n" +
+    "            </button>\n" +
+    "        </div>\n" +
+    "    </div>\n" +
     "</div>"
   );
 
   $templateCache.put("kb/ui/inline-edit/templates/textarea.html",
-    "<span class=\"static\" ng-hide=\"isEditing\" ng-click=\"edit()\">\n" +
+    "<span class=\"static\" ng-hide=\"isEditing\" ng-click=\"edit()\" tooltip=\"{{ tooltipTitle }}\">\n" +
     "\t\t<span kb-nl2br=\"value\"></span>\n" +
     "\t\t<a class=\"placeholder\" ng-show=\"!value\">\n" +
     "\t\t\t<i class=\"icon-edit\"></i>\n" +

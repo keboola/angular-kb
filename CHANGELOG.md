@@ -1,3 +1,6 @@
+## 0.6.0
+ * [BC Break] Migrated to Bootstrap 3
+
 ## 0.5.6
  * [Bugfix] Angular 1.2.3 compatibility ($sce)
 

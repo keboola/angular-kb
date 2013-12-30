@@ -8,7 +8,7 @@ files = [
   	JASMINE,
   	JASMINE_ADAPTER,
 	'docs/components/jquery/jquery.js',
-	'docs/components/bootstrap/docs/assets/js/bootstrap.js',
+	'docs/components/bootstrap/docs/assets/js/tooltip.js',
 	'docs/components/angular/angular.js',
 	'docs/components/angular-mocks/angular-mocks.js',
 	'docs/components/angular-route/angular-route.js',

@@ -1,4 +1,6 @@
-
+###
+  Requires: components/bootstrap/js/tooltip.js
+###
 
 angular
 	.module( 'kb.ui.copyButton', ['kb.config'])
@@ -13,21 +15,16 @@ angular
 			trustedDomains: ['*']
 		)
 
-		getTooltip = ->
-			angular.element(clip.htmlBridge).data('tooltip')
-
-		clip.on 'complete', (client, text) ->
-			tooltip = getTooltip()
-			tooltip.options.title = angular.element(@).attr 'copy-message'
-			tooltip.show()
+		clip.on 'complete', ->
+			angular.element(clip.htmlBridge).attr('data-original-title', angular.element(@).attr 'copy-message')
+			angular.element(clip.htmlBridge).tooltip 'show'
 
 		clip.on 'load', (client) ->
 			angular.element(client.htmlBridge).tooltip()
 
-		clip.on 'mouseover', (client) ->
-			tooltip = getTooltip()
-			tooltip.options.title = angular.element(@).attr 'title'
-			tooltip.show()
+		clip.on 'mouseover',  ->
+			angular.element(clip.htmlBridge).attr('data-original-title', angular.element(@).attr 'title')
+			angular.element(clip.htmlBridge).tooltip 'show'
 
 		return {
 			restrict: 'E'
@@ -42,7 +39,6 @@ angular
 			link: (scope, element) ->
 
 				copyElement = element.find('.kb-copy-button')
-
 				clip.glue(copyElement)
 
 				scope.$on('$destroy', ->

@@ -19,7 +19,7 @@ angular.module("kb.sapi.errorHandler", ["ui.bootstrap.modal", "ui.bootstrap.tpls
       modalInstance = $modal.open(
         template: """
           <div class="modal-header">
-            <h3>Application error</h3>
+            <h4 class="modal-title">Application error</h4>
           </div>
           <div class="modal-body">
             <p>{{ message }}</p>

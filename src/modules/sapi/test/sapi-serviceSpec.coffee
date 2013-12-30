@@ -52,7 +52,6 @@ describe 'kb.sapi.service', ->
 			$httpBackend.flush()
 
 
-
 	describe 'table export', ->
 
 		it 'should accept options', ->
@@ -195,7 +194,7 @@ describe 'kb.sapi.service', ->
 			expect(errorCallback).toHaveBeenCalled()
 
 			errorHandlerArgs = job = errorCallback.mostRecentCall.args
-			expect(errorHandlerArgs[0]).toBe errorResponse
+			expect(errorHandlerArgs[0]).toEqual errorResponse
 
 
 		it 'should timeout after max attempts cout', ->

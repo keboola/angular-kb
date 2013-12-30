@@ -16,20 +16,13 @@
 				element.addClass 'kb-inline-edit'
 				element.addClass element[0].tagName.toLowerCase()
 
-				element.tooltip(
-					title: scope.editTitle
-				)
-				tooltip = element.data('tooltip')
-
-				setTooltipTitle = (title) ->
-					element.removeAttr('data-original-title')
-					tooltip.options.title = title
+				scope.tooltipTitle = ''
 
 				resolveTooltip = ->
 					if scope.isEditing || scope.disabled
-						setTooltipTitle('')
+						scope.tooltipTitle = ''
 					else
-						setTooltipTitle(scope.editTitle)
+						scope.tooltipTitle = scope.editTitle
 
 				scope.$watch('disabled', (disabled) ->
 					if disabled
@@ -79,10 +72,6 @@
 					angular.element('body').unbind('.inlineEdit')
 					element.unbind('.inlineEdit')
 					return
-
-				scope.$on('$destroy', ->
-					tooltip.destroy() if tooltip
-				)
 
 				scope.save = ->
 					scope.value = scope.editValue

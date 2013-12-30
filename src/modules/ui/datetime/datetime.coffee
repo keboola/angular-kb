@@ -4,7 +4,7 @@
 ###
 
 angular
-	.module( 'kb.ui.datetime', [])
+	.module( 'kb.ui.datetime', ['ui.bootstrap.tooltip', 'ui.bootstrap.tpls'])
 	.directive('kbDatetime', ["$filter", ($filter) ->
 
 		dateFilter = $filter('date')
@@ -20,10 +20,12 @@ angular
 			template: """
 				<span ng-cloak ng-class="{'muted': isEmpty()}">
 					{{ formattedValue() }}
-					<i class="kb-datetime icon-time" ng-show="isDatetime()"></i>
+					<i class="kb-datetime glyphicon glyphicon-time" tooltip="{{ tooltipTitle }}" ng-show="isDatetime()"></i>
 				</span>
 			"""
 			link: (scope, element, attrs) ->
+
+				scope.tooltipTitle = ''
 
 				scope.resolveEmptyValue = ->
 					return 'N/A' if !scope.emptyValue
@@ -32,20 +34,11 @@ angular
 				scope.isEmpty = ->
 					!scope.datetime
 
-				tooltip = element.find('i')
-										.tooltip()
-										.data('tooltip')
-
-				setTooltipTitle = ->
-			        element.removeAttr('data-original-title')
-			        tooltip.options.title = if scope.isDatetime() then "Original time: " + scope.datetime else ""
-
-
 				scope.isDatetime = ->
 					!!(scope.datetime && scope.datetime.match(R_ISO8601_STR))
 
-				scope.$watch('datetime', (newValue) ->
-					setTooltipTitle()
+				scope.$watch('datetime', () ->
+					scope.tooltipTitle = if scope.isDatetime() then "Original time: " + scope.datetime else ""
 				)
 
 				scope.formattedValue = ->

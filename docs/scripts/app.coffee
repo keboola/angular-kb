@@ -210,7 +210,7 @@
 			'primary'
 			'danger'
 			'success'
-			'inverse'
+			'warning'
 			'info'
 		]
 		$scope.params =

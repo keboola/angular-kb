@@ -4,7 +4,7 @@ angular.module('kb.ui.loader', [])
 		restrict: 'E'
 		template: """
 			<a kb-loader class="kb-loader">
-				<i class="icon-refresh"> </i>
+				<i class="glyphicon glyphicon-refresh"> </i>
 			</a>
 		"""
 		replace: true

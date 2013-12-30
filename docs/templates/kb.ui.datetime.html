@@ -16,18 +16,14 @@
 			</tr>
 			<tr>
 				<td>
-					<div class="control-group">
-						<label class="control-label" >Value</label>
-						<div class="controls">
-							<input type="text" ng-model="editTime" />
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label" >Empty value</label>
-						<div class="controls">
-							<input type="text" ng-model="editEmptyValue" />
-						</div>
-					</div>
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Date" ng-model="editTime" />
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Empty Value" ng-model="editEmptyValue" />
+                        </div>
+                    </form>
 				</td>
 				<td>
 					<kb-datetime datetime="editTime" empty-value="{{ editEmptyValue }}"></kb-datetime>
