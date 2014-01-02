@@ -1,3 +1,6 @@
+## 0.6.1
+ * [Bugfix] Confirm dialog cancel button styling
+
 ## 0.6.0
  * [BC Break] Migrated to Bootstrap 3
 
