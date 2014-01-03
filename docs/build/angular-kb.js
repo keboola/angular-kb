@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.6.1 - 2014-01-02
+ * @version v0.6.2 - 2014-01-03
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -1952,7 +1952,7 @@
       return function(scope, element) {
         return $timeout(function() {
           return element.focus();
-        });
+        }, 50);
       };
     }
   ]);
