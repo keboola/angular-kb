@@ -1,3 +1,6 @@
+## 0.6.3
+ * [Feature] SAPI error modal - show exception ID
+
 ## 0.6.2
  * [Bugfix] Focus inside modal
 

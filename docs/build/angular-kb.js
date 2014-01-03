@@ -654,10 +654,13 @@
             errorMessage += ". Please repeat the action " + this.remainingTimeText(new Date(errorResponse.estimatedEndTime));
           }
           return modalInstance = $modal.open({
-            template: "<div class=\"modal-header\">\n  <h4 class=\"modal-title\">Application error</h4>\n</div>\n<div class=\"modal-body\">\n  <p>{{ message }}</p>\n</div>\n<div class=\"modal-footer\">\n  <button class=\"btn btn-danger\" ng-click=\"close()\">Close</button>\n</div>",
+            template: "<div class=\"modal-header\">\n<h4 class=\"modal-title\">Application error</h4>\n</div>\n<div class=\"modal-body\">\n<p>{{ message }}</p>\n<p ng-show=\"exceptionId\">\nException ID: <strong>{{ exceptionId }}</strong>\n</p>\n</div>\n<div class=\"modal-footer\">\n<button class=\"btn btn-danger\" ng-click=\"close()\">Close</button>\n</div>",
             resolve: {
               message: function() {
                 return errorMessage;
+              },
+              exceptionId: function() {
+                return errorResponse.exceptionId;
               }
             },
             controller: [
