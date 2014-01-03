@@ -38,8 +38,9 @@ angular.module("kb.sapi.errorHandler", ["ui.bootstrap.modal", "ui.bootstrap.tpls
 						exceptionId: ->
 							errorResponse.exceptionId
 
-					controller: ["$scope", "$modalInstance", "message", ($scope, $modalInstance, message) ->
+					controller: ["$scope", "$modalInstance", "message", "exceptionId", ($scope, $modalInstance, message, exceptionId) ->
 						$scope.message = message
+						$scope.exceptionId = exceptionId
 						$scope.close = ->
 							$modalInstance.close()
 					]

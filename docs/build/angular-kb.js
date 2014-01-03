@@ -664,8 +664,9 @@
               }
             },
             controller: [
-              "$scope", "$modalInstance", "message", function($scope, $modalInstance, message) {
+              "$scope", "$modalInstance", "message", "exceptionId", function($scope, $modalInstance, message, exceptionId) {
                 $scope.message = message;
+                $scope.exceptionId = exceptionId;
                 return $scope.close = function() {
                   return $modalInstance.close();
                 };
