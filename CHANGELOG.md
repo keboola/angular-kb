@@ -1,3 +1,6 @@
+## 0.6.2
+ * [Bugfix] Focus inside modal
+
 ## 0.6.1
  * [Bugfix] Confirm dialog cancel button styling
 

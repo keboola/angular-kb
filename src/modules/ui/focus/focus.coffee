@@ -8,4 +8,5 @@ angular
 		(scope, element) ->
 			$timeout ->
 				element.focus()
+			, 50 # focus inside modal fix
 	])
