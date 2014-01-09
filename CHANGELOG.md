@@ -1,5 +1,10 @@
+## 0.6.5
+ * [Bugfix] Inline edit buttons styling
+ * [Bugfix] Sapi events table - removed $bsModal dependency
+
 ## 0.6.4
  * [Bugfix] SAPI error modal - exception id
+
 ## 0.6.3
  * [Feature] SAPI error modal - show exception ID
 

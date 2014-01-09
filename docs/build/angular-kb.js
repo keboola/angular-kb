@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.6.4 - 2014-01-03
+ * @version v0.6.4 - 2014-01-09
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -2131,7 +2131,7 @@
   angular.module('kb.ui.runButton', ['kb.ui.loader']).directive('kbRunButton', function() {
     return {
       restrict: 'E',
-      template: "<button class=\"btn run-transformation kb-loader\">\n	<i  class=\"glyphicon glyphicon-play\"> </i>\n</button>",
+      template: "<button class=\"btn btn-default run-transformation kb-loader\">\n	<i  class=\"glyphicon glyphicon-play\"> </i>\n</button>",
       replace: true,
       link: function(scope, element, attrs) {
         var icon;
@@ -2217,7 +2217,7 @@
       },
       template: templates.table,
       controller: [
-        "$scope", "$element", "$bsModal", "$compile", "$timeout", function($scope, $element, $bsModal, $compile, $timeout) {
+        "$scope", "$element", "$compile", "$timeout", function($scope, $element, $compile, $timeout) {
           var loadNewEvents, timeoutId;
           timeoutId = null;
           $scope.selectedEvent = null;
@@ -3249,7 +3249,7 @@ angular.module("kb.templates").run(["$templateCache", function($templateCache) {
     "\t<input type=\"text\" ng-model=\"editValue\" /><button\n" +
     "\t\t\tclass=\"btn btn-success\" ng-click=\"save()\">\n" +
     "\t\t\t\t<i class=\"icon-ok\" title=\"save\"></i></button><button\n" +
-    "\t\tclass=\"btn\" ng-click=\"cancel()\"><i class=\"icon-remove\" title=\"Cancel\"></i></button>\n" +
+    "\t\tclass=\"btn btn-default\" ng-click=\"cancel()\"><i class=\"icon-remove\" title=\"Cancel\"></i></button>\n" +
     "</div>"
   );
 
@@ -3266,7 +3266,7 @@ angular.module("kb.templates").run(["$templateCache", function($templateCache) {
     "            <button class=\"btn btn-success\" ng-click=\"save()\">\n" +
     "                    <i class=\"glyphicon glyphicon-ok\" title=\"save\"></i>\n" +
     "            </button>\n" +
-    "            <button class=\"btn\" ng-click=\"cancel()\">\n" +
+    "            <button class=\"btn btn-default\" ng-click=\"cancel()\">\n" +
     "                <i class=\"glyphicon glyphicon-remove\" title=\"Cancel\"></i>\n" +
     "            </button>\n" +
     "        </span>\n" +
@@ -3291,7 +3291,7 @@ angular.module("kb.templates").run(["$templateCache", function($templateCache) {
     "            <button class=\"btn btn-success\" ng-click=\"save()\">\n" +
     "                <i class=\"glyphicon glyphicon-ok\" title=\"save\"></i>\n" +
     "            </button>\n" +
-    "            <button class=\"btn\" ng-click=\"cancel()\">\n" +
+    "            <button class=\"btn btn-default\" ng-click=\"cancel()\">\n" +
     "                <i class=\"glyphicon glyphicon-remove\" title=\"Cancel\"></i>\n" +
     "            </button>\n" +
     "        </div>\n" +
@@ -3312,7 +3312,7 @@ angular.module("kb.templates").run(["$templateCache", function($templateCache) {
     "\t</textarea>\n" +
     "\t<div class=\"form-actions\">\n" +
     "\t\t\t\t<button class=\"btn btn-primary\" ng-click=\"save()\">Save</button>\n" +
-    "\t\t\t\t<button class=\"btn\" ng-click=\"cancel()\">Cancel</button>\n" +
+    "\t\t\t\t<button class=\"btn btn-default\" ng-click=\"cancel()\">Cancel</button>\n" +
     "\t</div>\n" +
     "</div>"
   );
