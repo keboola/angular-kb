@@ -131,7 +131,7 @@ angular
 			restrict: 'E'
 			replace: true
 			scope:
-				events: '=' # StorageEventsService
+				events: '=' # StorageEventsServicegrunt
 				autoReload: '='
 			template: templates.table
 			controller: [ "$scope", "$element", "$compile", "$timeout", ($scope, $element, $compile, $timeout) ->

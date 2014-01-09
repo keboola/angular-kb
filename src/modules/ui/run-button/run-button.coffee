@@ -4,7 +4,7 @@ angular.module('kb.ui.runButton', ['kb.ui.loader'])
 	.directive('kbRunButton', ->
 			restrict: 'E'
 			template: """
-				<button class="btn run-transformation kb-loader">
+				<button class="btn btn-default run-transformation kb-loader">
 					<i  class="glyphicon glyphicon-play"> </i>
 				</button>
 			"""
