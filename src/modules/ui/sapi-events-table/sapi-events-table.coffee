@@ -134,7 +134,7 @@ angular
 				events: '=' # StorageEventsService
 				autoReload: '='
 			template: templates.table
-			controller: [ "$scope", "$element", "$bsModal", "$compile", "$timeout", ($scope, $element, $bsModal, $compile, $timeout) ->
+			controller: [ "$scope", "$element", "$compile", "$timeout", ($scope, $element, $compile, $timeout) ->
 
 				timeoutId = null
 
