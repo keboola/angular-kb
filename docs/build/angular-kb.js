@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.6.5 - 2014-01-09
+ * @version v0.6.5 - 2014-01-13
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -9,7 +9,7 @@
 
   angular.module('kb.templates', []);
 
-  angular.module('kb', ['kb.config', 'kb.ui.inlineEdit', 'kb.ui.clickToggle', 'kb.ui.copyButton', 'kb.ui.nl2br', 'kb.ui.toggable', 'kb.ui.sapiEventsTable', 'kb.ui.loader', 'kb.ui.autoComplete', 'kb.ui.focus', 'kb.ui.tree', 'kb.ui.runButton', 'kb.ui.codemirror', 'kb.ui.datetime', 'kb.ui.duration', 'kb.ui.sapiConsoleHref', 'kb.ui.confirm', 'kb.utils.multipartUpload', 'kb.utils.csv', 'kb.utils.keyboardShortcuts', 'kb.utils.appVersion', 'kb.filters.date', 'kb.filters.filesize', 'kb.filters.webalize', 'kb.filters.duration', 'kb.sapi.sapiService', 'kb.sapi.eventsService', 'kb.sapi.errorHandler', 'kb.templates']);
+  angular.module('kb', ['kb.config', 'kb.ui.inlineEdit', 'kb.ui.clickToggle', 'kb.ui.copyButton', 'kb.ui.nl2br', 'kb.ui.sapiEventsTable', 'kb.ui.loader', 'kb.ui.autoComplete', 'kb.ui.focus', 'kb.ui.tree', 'kb.ui.runButton', 'kb.ui.codemirror', 'kb.ui.datetime', 'kb.ui.duration', 'kb.ui.sapiConsoleHref', 'kb.ui.confirm', 'kb.utils.multipartUpload', 'kb.utils.csv', 'kb.utils.keyboardShortcuts', 'kb.utils.appVersion', 'kb.filters.date', 'kb.filters.filesize', 'kb.filters.webalize', 'kb.filters.duration', 'kb.sapi.sapiService', 'kb.sapi.eventsService', 'kb.sapi.errorHandler', 'kb.templates']);
 
 }).call(this);
 
@@ -2315,59 +2315,6 @@
           });
         }
       ]
-    };
-  });
-
-}).call(this);
-
-
-/*
-  Toggable element ang group
-  Based on http://twitter.github.com/bootstrap/javascript.html#collapse styles
-*/
-
-
-(function() {
-
-  angular.module('kb.ui.toggable', []).directive('kbToggableGroup', function() {
-    return {
-      restrict: 'E',
-      transclude: true,
-      replace: true,
-      template: "<div class=\"accordion kb-toggable\" ng-transclude>\n</div>"
-    };
-  }).directive('kbToggable', function() {
-    return {
-      restrict: 'E',
-      replace: true,
-      transclude: true,
-      scope: {
-        title: '@header',
-        opened: '='
-      },
-      template: "			<div class=\"accordion-group\">\n				<div class=\"accordion-heading\">\n				<a class=\"accordion-toggle\">\n					<span class=\"toggle-arrow-wrap\"><i class=\"toggle-arrow\"></i></span> {{ title }}\n				</a>\n			</div>\n			<div class=\"accordion-body collapse\">\n				<div class=\"accordion-inner\" ng-transclude></div>\n			</div>\n</div>",
-      link: function(scope, element) {
-        var elements, opened, title, toggle;
-        title = element.find('.accordion-toggle');
-        elements = element.find('.accordion-body,.accordion-heading');
-        opened = false;
-        scope.$watch('opened', function(openedNewValue) {
-          opened = openedNewValue;
-          return toggle();
-        });
-        toggle = function() {
-          elements.removeClass('in');
-          if (opened) {
-            return elements.addClass('in');
-          }
-        };
-        return title.bind('click', function() {
-          return scope.$apply(function() {
-            opened = !opened;
-            return toggle();
-          });
-        });
-      }
     };
   });
 

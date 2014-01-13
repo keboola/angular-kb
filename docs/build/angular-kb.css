@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.6.5 - 2014-01-09
+ * @version v0.6.5 - 2014-01-13
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */
@@ -183,33 +183,6 @@
 
 .kb-sapi-events-table .table-events tr {
 	cursor: pointer;
-}
-
-.kb-toggable .accordion-heading .toggle-arrow-wrap {
-	width: 10px;
-	display: inline-block;;
-}
-
-.kb-toggable .accordion-heading .toggle-arrow {
-	width: 0;
-	height: 0;
-	display: inline-block;
-	vertical-align: top;
-	border-left: 5px solid #08C;
-	border-top: 5px solid transparent;
-	border-bottom: 5px solid transparent;
-	border-right: 0;
-	content: "";
-	margin-top: 4px;
-}
-
-.kb-toggable .accordion-heading.in .toggle-arrow {
-	border-left: 5px solid transparent;
-	border-top: 5px solid #08C;;
-	border-right: 5px solid transparent;
-	border-bottom: 0;
-	margin-left: -3px;
-	margin-top: 7px;
 }
 
 .kb-tree .kb-tree-node {

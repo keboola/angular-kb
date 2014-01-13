@@ -1,3 +1,6 @@
+## 0.7.0
+ * [BC Break] kb.toggable removed, use [https://github.com/keboola/angular-kb-accordion] instead
+
 ## 0.6.5
  * [Bugfix] Inline edit buttons styling
  * [Bugfix] Sapi events table - removed $bsModal dependency

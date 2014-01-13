@@ -12,7 +12,6 @@
 		'kb.ui.inline-edit'
 		'kb.ui.datetime'
 		'kb.ui.tree'
-		'kb.ui.toggable'
 		'kb.ui.run-button'
 		'kb.ui.loader'
 		'kb.ui.copy-button'
@@ -67,12 +66,6 @@
 			$timeout( ->
 				$scope.isRunning = false
 			, 1000)
-	)
-
-	app.controller('kb.ui.toggable', ($scope) ->
-		$scope.opened = true
-		$scope.toggableData =
-			content: 'some content'
 	)
 
 	app.controller('kb.ui.tree', ($scope) ->

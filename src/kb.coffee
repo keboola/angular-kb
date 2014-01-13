@@ -12,7 +12,6 @@ angular.module('kb', [
 	'kb.ui.clickToggle'
 	'kb.ui.copyButton'
 	'kb.ui.nl2br'
-	'kb.ui.toggable'
 	'kb.ui.sapiEventsTable'
 	'kb.ui.loader'
 	'kb.ui.autoComplete'
