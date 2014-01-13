@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.6.5 - 2014-01-13
+ * @version v0.7.0 - 2014-01-13
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
