@@ -1,3 +1,6 @@
+## 0.8.0
+ * [BC Break] angular-ui-bootstrap-bower upgraded to 0.10.0
+
 ## 0.7.0
  * [BC Break] kb.toggable removed, use [https://github.com/keboola/angular-kb-accordion] instead
 
