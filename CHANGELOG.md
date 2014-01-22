@@ -1,3 +1,6 @@
+## 0.8.1
+ * [Performance] SAPI events table optimization
+
 ## 0.8.0
  * [BC Break] angular-ui-bootstrap-bower upgraded to 0.10.0
 
