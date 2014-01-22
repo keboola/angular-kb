@@ -22,14 +22,14 @@ angular
 						 	<div ng-show="events.events.length && events.loaded && !selectedEvent">
 						 		<table class="table table-striped table-events">
 						 			<tbody>
-						 				<tr ng-repeat="event in events.events | orderBy:'id':true" ng-class="eventClass(event)" ng-click="eventDetail(event)" title="Event id: {{ event.id }}">
+						 				<tr ng-repeat="event in events.events | orderBy:'id':true track by event.id" ng-class="eventClass(event)" ng-click="eventDetail(event)" title="Event id: {{ event.id }}">
 						 					<td class="created">{{ event.created | date:'MMM d, HH:mm:ss' }}</td>
 						 					<td>{{ feedMessage(event) }}</td>
 						 				</tr>
 						 			</tbody>
 						 		</table>
 						 		<div class="list-more" ng-show="events.hasOlderEvents">
-						 			<button ng-click="events.loadOlderEvents()" class="btn btn-large" ng-disabled="events.olderEventsLoading">More..</button>
+						 			<button ng-click="events.loadOlderEvents()" class="btn btn-default btn-large" ng-disabled="events.olderEventsLoading">More..</button>
 						 		</div>
 						 	</div>
 						 	<div ng-show="!events.events.length && events.loaded">
