@@ -670,8 +670,8 @@ angular.module('kb.utils.csv', [])
 				data.forEach (row) ->
 					columns = []
 					row.forEach (column) ->
-						return if column == null
-						columns.push('"' + column.replace(/"/g, '""') + '"')
+						string = if column == null then "" else column.toString()
+						columns.push('"' + string.replace(/"/g, '""') + '"')
 					rows.push(columns.join(','))
 				rows.join('\n')
 		}

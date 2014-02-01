@@ -1,3 +1,6 @@
+## 0.8.2
+ * [Bugfix] kbCsv.create drops "null" values from arrays
+
 ## 0.8.1
  * [Performance] SAPI events table optimization
 

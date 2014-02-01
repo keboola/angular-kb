@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.8.1 - 2014-01-22
+ * @version v0.8.1 - 2014-02-01
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -3082,10 +3082,9 @@
           var columns;
           columns = [];
           row.forEach(function(column) {
-            if (column === null) {
-              return;
-            }
-            return columns.push('"' + column.replace(/"/g, '""') + '"');
+            var string;
+            string = column === null ? "" : column.toString();
+            return columns.push('"' + string.replace(/"/g, '""') + '"');
           });
           return rows.push(columns.join(','));
         });
