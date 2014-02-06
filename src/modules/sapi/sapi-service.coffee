@@ -560,13 +560,11 @@
 			)
 
 		# files
-		getFiles: (limit = 100, offset = 0) ->
+		getFiles: (params) ->
 			@http(
 				url: @url '/storage/files'
 				method: 'GET'
-				params:
-					limit: limit
-					offset: offset
+				params: params
 			)
 
 		prepareFileUpload: (params) ->

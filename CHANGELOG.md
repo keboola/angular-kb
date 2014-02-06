@@ -1,3 +1,6 @@
+## 0.9.0
+ * [Feature] SAPI service, list files params hashmap added
+
 ## 0.8.2
  * [Bugfix] kbCsv.create drops "null" values from arrays
 

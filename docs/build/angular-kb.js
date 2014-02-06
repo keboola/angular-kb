@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.8.2 - 2014-02-01
+ * @version v0.8.2 - 2014-02-06
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -1468,20 +1468,11 @@
         });
       };
 
-      StorageService.prototype.getFiles = function(limit, offset) {
-        if (limit == null) {
-          limit = 100;
-        }
-        if (offset == null) {
-          offset = 0;
-        }
+      StorageService.prototype.getFiles = function(params) {
         return this.http({
           url: this.url('/storage/files'),
           method: 'GET',
-          params: {
-            limit: limit,
-            offset: offset
-          }
+          params: params
         });
       };
 
