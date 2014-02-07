@@ -1,7 +1,22 @@
-<span class="static" ng-hide="isEditing" ng-click="edit()"><kb-datetime datetime="value"></kb-datetime></span>
-<div ng-show="isEditing" class="input-append editing">
-	<input type="text" ng-model="editValue" /><button
-			class="btn btn-success" ng-click="save()">
-				<i class="icon-ok" title="save"></i></button><button
-		class="btn btn-default" ng-click="cancel()"><i class="icon-remove" title="Cancel"></i></button>
+<span class="static" ng-hide="isEditing" ng-click="edit()" tooltip="{{ tooltipTitle }}">
+	<kb-datetime datetime="value"></kb-datetime>
+	 <a class="placeholder" ng-show="!value">
+         <i class="icon-edit"></i>
+         {{ placeholder }}
+     </a>
+</span>
+<div ng-show="isEditing" class="editing">
+    <div class="input-group">
+        <input type="text" ng-model="editValue" class="form-control" placeholder="{{ placeholder }}"/>
+
+        <div class="input-group-btn">
+            <button class="btn btn-success" ng-click="save()">
+                <i class="glyphicon glyphicon-ok" title="save"></i>
+            </button>
+            <button class="btn btn-default" ng-click="cancel()">
+                <i class="glyphicon glyphicon-remove" title="Cancel"></i>
+            </button>
+        </div>
+    </div>
 </div>
+

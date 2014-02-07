@@ -1,3 +1,6 @@
+## 0.9.1
+ * [Bugfix] Inline edit - select and datetime
+
 ## 0.9.0
  * [BC Break] SAPI service, list files params hashmap added
 

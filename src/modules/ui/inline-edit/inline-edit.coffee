@@ -12,7 +12,6 @@
 				editTitle: '@'
 			templateUrl: templateUrl
 			controller: ["$scope", "$element", "$attrs", "$timeout", (scope, element, attrs, $timeout) ->
-				element.addClass 'form-inline'
 				element.addClass 'kb-inline-edit'
 				element.addClass element[0].tagName.toLowerCase()
 

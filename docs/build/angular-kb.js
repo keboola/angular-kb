@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.9.0 - 2014-02-06
+ * @version v0.9.0 - 2014-02-07
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -1974,7 +1974,6 @@
           controller: [
             "$scope", "$element", "$attrs", "$timeout", function(scope, element, attrs, $timeout) {
               var resolveTooltip;
-              element.addClass('form-inline');
               element.addClass('kb-inline-edit');
               element.addClass(element[0].tagName.toLowerCase());
               scope.tooltipTitle = '';
@@ -3181,13 +3180,28 @@ angular.module("kb.templates").run(["$templateCache", function($templateCache) {
   );
 
   $templateCache.put("kb/ui/inline-edit/templates/datetime.html",
-    "<span class=\"static\" ng-hide=\"isEditing\" ng-click=\"edit()\"><kb-datetime datetime=\"value\"></kb-datetime></span>\n" +
-    "<div ng-show=\"isEditing\" class=\"input-append editing\">\n" +
-    "\t<input type=\"text\" ng-model=\"editValue\" /><button\n" +
-    "\t\t\tclass=\"btn btn-success\" ng-click=\"save()\">\n" +
-    "\t\t\t\t<i class=\"icon-ok\" title=\"save\"></i></button><button\n" +
-    "\t\tclass=\"btn btn-default\" ng-click=\"cancel()\"><i class=\"icon-remove\" title=\"Cancel\"></i></button>\n" +
-    "</div>"
+    "<span class=\"static\" ng-hide=\"isEditing\" ng-click=\"edit()\" tooltip=\"{{ tooltipTitle }}\">\n" +
+    "\t<kb-datetime datetime=\"value\"></kb-datetime>\n" +
+    "\t <a class=\"placeholder\" ng-show=\"!value\">\n" +
+    "         <i class=\"icon-edit\"></i>\n" +
+    "         {{ placeholder }}\n" +
+    "     </a>\n" +
+    "</span>\n" +
+    "<div ng-show=\"isEditing\" class=\"editing\">\n" +
+    "    <div class=\"input-group\">\n" +
+    "        <input type=\"text\" ng-model=\"editValue\" class=\"form-control\" placeholder=\"{{ placeholder }}\"/>\n" +
+    "\n" +
+    "        <div class=\"input-group-btn\">\n" +
+    "            <button class=\"btn btn-success\" ng-click=\"save()\">\n" +
+    "                <i class=\"glyphicon glyphicon-ok\" title=\"save\"></i>\n" +
+    "            </button>\n" +
+    "            <button class=\"btn btn-default\" ng-click=\"cancel()\">\n" +
+    "                <i class=\"glyphicon glyphicon-remove\" title=\"Cancel\"></i>\n" +
+    "            </button>\n" +
+    "        </div>\n" +
+    "    </div>\n" +
+    "</div>\n" +
+    "\n"
   );
 
   $templateCache.put("kb/ui/inline-edit/templates/select.html",
