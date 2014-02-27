@@ -336,7 +336,7 @@
 			 )
 
 		errorHandler: (data, status, headers, config) =>
-
+			return if _.isEmpty data # load canceled usually
 			@$rootScope.$broadcast('storageError', data)
 
 		# get buckets and table together
