@@ -1,3 +1,6 @@
+## 0.9.2
+ * [Bugfix] SAPI service - don't throw request cancelled errors
+
 ## 0.9.1
  * [Bugfix] Inline edit - select and datetime
 
