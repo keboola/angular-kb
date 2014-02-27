@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.9.1 - 2014-02-07
+ * @version v0.9.2 - 2014-02-27
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -1214,6 +1214,9 @@
       };
 
       StorageService.prototype.errorHandler = function(data, status, headers, config) {
+        if (_.isEmpty(data)) {
+          return;
+        }
         return this.$rootScope.$broadcast('storageError', data);
       };
 
