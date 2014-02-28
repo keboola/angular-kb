@@ -1,3 +1,6 @@
+## 0.9.3
+ * [Bugfix] SAPI events table - events auto reload fix
+
 ## 0.9.2
  * [Bugfix] SAPI service - don't throw request cancelled errors
 

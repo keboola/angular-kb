@@ -207,11 +207,19 @@ angular
 
 				loadNewEvents = ->
 					timeoutId = $timeout(( ->
-						$scope.events.loadNewEvents()
-						if $scope.autoReload
-							loadNewEvents()
-						else
-							timeoutId = null
+
+						resolveReload = ->
+							if $scope.autoReload
+								loadNewEvents()
+							else
+								timeoutId = null
+
+						$scope.events
+							.loadNewEvents()
+							.success(resolveReload)
+							.error(resolveReload)
+
+
 					), 1000)
 
 				$scope.$watch('autoReload', (autoReload) ->

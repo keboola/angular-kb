@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.9.2 - 2014-02-27
+ * @version v0.9.2 - 2014-02-28
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -2293,12 +2293,15 @@
           });
           loadNewEvents = function() {
             return timeoutId = $timeout((function() {
-              $scope.events.loadNewEvents();
-              if ($scope.autoReload) {
-                return loadNewEvents();
-              } else {
-                return timeoutId = null;
-              }
+              var resolveReload;
+              resolveReload = function() {
+                if ($scope.autoReload) {
+                  return loadNewEvents();
+                } else {
+                  return timeoutId = null;
+                }
+              };
+              return $scope.events.loadNewEvents().success(resolveReload).error(resolveReload);
             }), 1000);
           };
           return $scope.$watch('autoReload', function(autoReload) {
