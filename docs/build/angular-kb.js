@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.9.3 - 2014-02-28
+ * @version v0.9.3 - 2014-03-03
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -726,7 +726,7 @@
         var eventsService;
         eventsService = this;
         return this._load(params).success(function(events) {
-          eventsService.events = eventsService.events.concat(events);
+          eventsService.events = eventsService.uniqEvents(eventsService.events.concat(events));
           if (!eventsService.events.length) {
             return eventsService.hasOlderEvents = false;
           }
@@ -755,7 +755,13 @@
           sinceId: newest.id
         }).success(function(events) {
           eventsService.newEventsLoading = false;
-          return eventsService.events = eventsService.events.concat(events);
+          return eventsService.events = eventsService.uniqEvents(eventsService.events.concat(events));
+        });
+      };
+
+      StorageEventsService.prototype.uniqEvents = function(events) {
+        return _.uniq(events, function(event) {
+          return event.id;
         });
       };
 
@@ -770,7 +776,7 @@
           maxId: oldest.id
         }).success(function(events) {
           eventsService.olderEventsLoading = false;
-          eventsService.events = eventsService.events.concat(events);
+          eventsService.events = eventsService.uniqEvents(eventsService.events.concat(events));
           if (!events.length) {
             return eventsService.hasOlderEvents = false;
           }

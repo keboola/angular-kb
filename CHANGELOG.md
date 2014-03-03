@@ -1,3 +1,6 @@
+## 0.9.4
+ * [Bugfix] SAPI events table - unique events
+
 ## 0.9.3
  * [Bugfix] SAPI events table - events auto reload fix
 

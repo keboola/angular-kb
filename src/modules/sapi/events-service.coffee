@@ -31,7 +31,7 @@
 			eventsService = @
 			@_load(params)
 				.success (events) ->
-					eventsService.events = eventsService.events.concat( events )
+					eventsService.events = eventsService.uniqEvents(eventsService.events.concat( events ))
 					eventsService.hasOlderEvents = false if !eventsService.events.length
 
 		refresh: ->
@@ -53,8 +53,11 @@
 				sinceId: newest.id
 			).success (events) ->
 				eventsService.newEventsLoading = false
-				eventsService.events = eventsService.events.concat( events )
+				eventsService.events = eventsService.uniqEvents(eventsService.events.concat( events ))
 
+		uniqEvents: (events) ->
+			_.uniq events, (event) ->
+				event.id
 
 		loadOlderEvents: ->
 			eventsService = @
@@ -66,7 +69,7 @@
 				maxId: oldest.id
 			).success (events) ->
 				eventsService.olderEventsLoading = false
-				eventsService.events = eventsService.events.concat( events )
+				eventsService.events = eventsService.uniqEvents(eventsService.events.concat( events ))
 				eventsService.hasOlderEvents = false if !events.length
 
 		_load: (params) ->
