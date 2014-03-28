@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.9.4 - 2014-03-03
+ * @version v0.9.4 - 2014-03-28
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -2169,15 +2169,22 @@
         restrict: 'E',
         transclude: true,
         scope: {
-          path: '@'
+          path: '@',
+          token: '@'
         },
-        template: "<form action=\"{{ url() }}\" method=\"post\" class=\"kb-sapi-console-href\" target=\"_blank\">\n	<a ng-click=\"submit()\" ng-transclude></a>\n	<input type=\"hidden\" name=\"token\" value=\"{{ sapiService.apiToken }}\" />\n</form>",
+        template: "<form action=\"{{ url() }}\" method=\"post\" class=\"kb-sapi-console-href\" target=\"_blank\">\n	<a ng-click=\"submit()\" ng-transclude></a>\n	<input type=\"hidden\" name=\"token\" value=\"{{ getToken() }}\" />\n</form>",
         link: function(scope, element) {
           var path;
           path = function() {
             return scope.path || "/";
           };
-          scope.sapiService = sapiService;
+          scope.getToken = function() {
+            if (scope.token) {
+              return scope.token;
+            } else {
+              return sapiService.apiToken;
+            }
+          };
           scope.url = function() {
             return $sce.trustAsResourceUrl("" + sapiService.consoleUrl + (path()) + "?endpoint=" + sapiService.endpoint);
           };

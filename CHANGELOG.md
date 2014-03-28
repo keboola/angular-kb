@@ -1,3 +1,6 @@
+## 0.9.5
+ * [Feature] kb.ui.sapiConsoleHref - different token than registered in SAPI service can be set
+
 ## 0.9.4
  * [Bugfix] SAPI events table - unique events
 
