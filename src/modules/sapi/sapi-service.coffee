@@ -9,6 +9,12 @@
 		'kb.utils.multipartUpload'
 	])
 	.factory( "kbSapiService", [
+			'kbSapiServiceFactory'
+			(kbSapiServiceFactory) ->
+				kbSapiServiceFactory()
+	])
+
+	 .factory("kbSapiServiceFactory", [
 			'$http'
 			'$rootScope'
 			'kbCsv'
@@ -16,9 +22,8 @@
 			'$q'
 			'$timeout'
 			($http, $rootScope, csv, multipartUpload, $q, $timeout) ->
-				new StorageService($http, $rootScope, csv, multipartUpload, $q, $timeout)
+				return -> new StorageService($http, $rootScope, csv, multipartUpload, $q, $timeout)
 	])
-
 
 	# SAPI Token
 	class Token

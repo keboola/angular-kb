@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.9.5 - 2014-03-28
+ * @version v0.9.5 - 2014-05-21
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -819,8 +819,14 @@
   (function(angular) {
     var StorageService, Token;
     angular.module('kb.sapi.sapiService', ['kb.utils.csv', 'kb.utils.multipartUpload']).factory("kbSapiService", [
+      'kbSapiServiceFactory', function(kbSapiServiceFactory) {
+        return kbSapiServiceFactory();
+      }
+    ]).factory("kbSapiServiceFactory", [
       '$http', '$rootScope', 'kbCsv', 'kbMultipartUpload', '$q', '$timeout', function($http, $rootScope, csv, multipartUpload, $q, $timeout) {
-        return new StorageService($http, $rootScope, csv, multipartUpload, $q, $timeout);
+        return function() {
+          return new StorageService($http, $rootScope, csv, multipartUpload, $q, $timeout);
+        };
       }
     ]);
     Token = (function() {

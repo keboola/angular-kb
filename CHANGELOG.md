@@ -1,3 +1,6 @@
+## 0.9.6 (2014-05-21)
+ * [Feature] SAPI service factory added. Multiple instances of Storage API client can be created
+
 ## 0.9.5
  * [Feature] kb.ui.sapiConsoleHref - different token than registered in SAPI service can be set
 
