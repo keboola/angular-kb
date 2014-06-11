@@ -1,3 +1,6 @@
+## 0.9.7 (2014-06-11)
+ * [Feature] kb.ui.focus - can be triggered by expression
+
 ## 0.9.6 (2014-05-21)
  * [Feature] SAPI service factory added. Multiple instances of Storage API client can be created
 

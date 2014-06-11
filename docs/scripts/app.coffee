@@ -20,6 +20,7 @@
 		'kb.sapi.error-handler'
 		'kb.ui.confirm'
 		'kb.ui.sapiConsoleHref'
+		'kb.ui.focus'
 	].sort()
 
 	app.config(($routeProvider) ->
@@ -242,6 +243,11 @@
 		$scope.useToken = (token) ->
 			kbSapiService.apiToken = token
 
+	)
+
+	app.controller('kb.ui.focus', ($scope) ->
+		$scope.focus =
+			checked: false
 	)
 
 

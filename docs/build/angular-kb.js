@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.9.6 - 2014-05-21
+ * @version v0.9.6 - 2014-06-11
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -1958,11 +1958,23 @@
 (function() {
 
   angular.module('kb.ui.focus', []).directive('kbFocus', [
-    "$timeout", function($timeout) {
-      return function(scope, element) {
-        return $timeout(function() {
-          return element.focus();
-        }, 50);
+    "$timeout", "$parse", function($timeout, $parse) {
+      return function(scope, element, attrs) {
+        var focusElement;
+        focusElement = function() {
+          return $timeout(function() {
+            return element.focus();
+          }, 50);
+        };
+        if (!attrs.kbFocus) {
+          focusElement();
+          return;
+        }
+        return scope.$watch(attrs.kbFocus, function(value) {
+          if (value) {
+            return focusElement();
+          }
+        });
       };
     }
   ]);
