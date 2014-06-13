@@ -23,7 +23,7 @@ angular
 						 		<table class="table table-striped table-events">
 						 			<tbody>
 						 				<tr ng-repeat="event in events.events | orderBy:'id':true track by event.id" ng-class="eventClass(event)" ng-click="eventDetail(event)" title="Event id: {{ event.id }}">
-						 					<td class="created">{{ event.created | date:'MMM d, HH:mm:ss' }}</td>
+						 					<td class="created">{{ event.created | date:'fullDate' }}</td>
 						 					<td>{{ feedMessage(event) }}</td>
 						 				</tr>
 						 			</tbody>

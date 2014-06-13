@@ -1,3 +1,6 @@
+## 0.9.8 (2014-06-13)
+ * [Bugfix] Sapi events table - date format
+
 ## 0.9.7 (2014-06-11)
  * [Feature] kb.ui.focus - can be triggered by expression
 
