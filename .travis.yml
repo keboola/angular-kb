@@ -1,14 +1,12 @@
 ---
 language: node_js
 node_js:
-- 0.8
+- 0.10
 before_install:
-- npm install -g grunt-cli
-- npm install -g bower
-- npm install
+- time npm install -g grunt-cli bower
+- time npm install
 - bower --version
-- bower cache clean
-- bower install --dev
+- time bower install --dev
 script: grunt
 notifications:
   hipchat:
