@@ -1,3 +1,6 @@
+## 0.10.0 (2014-06-24)
+ * [BC Break] Major dependencies upgrade
+
 ## 0.9.8 (2014-06-13)
  * [Bugfix] Sapi events table - date format
 
