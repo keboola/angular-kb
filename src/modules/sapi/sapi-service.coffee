@@ -107,7 +107,7 @@
 				method: 'GET'
 			)
 
-		createBucket: (stage, name, description) ->
+		createBucket: (stage, name, description, backend='mysql') ->
 			@http(
 				url: @url("/storage/buckets")
 				method: 'POST'
@@ -117,6 +117,7 @@
 					name: name
 					stage: stage
 					description: description
+          backend: backend
 				)
 			)
 

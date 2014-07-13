@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.9.8 - 2014-06-24
+ * @version v0.10.0 - 2014-07-13
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -948,7 +948,10 @@
         });
       };
 
-      StorageService.prototype.createBucket = function(stage, name, description) {
+      StorageService.prototype.createBucket = function(stage, name, description, backend) {
+        if (backend == null) {
+          backend = 'mysql';
+        }
         return this.http({
           url: this.url("/storage/buckets"),
           method: 'POST',
@@ -958,7 +961,9 @@
           data: $.param({
             name: name,
             stage: stage,
-            description: description
+            description: description({
+              backend: backend
+            })
           })
         });
       };
