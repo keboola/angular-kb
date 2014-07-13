@@ -961,9 +961,8 @@
           data: $.param({
             name: name,
             stage: stage,
-            description: description({
-              backend: backend
-            })
+            description: description,
+            backend: backend
           })
         });
       };
