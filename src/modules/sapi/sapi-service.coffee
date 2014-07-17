@@ -573,6 +573,12 @@
 				params: params
 			)
 
+		deleteFile: (fileId) ->
+			@http(
+				url:  @url '/storage/files/' + fileId
+				method: 'DELETE'
+			)
+
 		prepareFileUpload: (params) ->
 			@http(
 				url: @url '/storage/files/prepare'

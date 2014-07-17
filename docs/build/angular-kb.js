@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.11.1 - 2014-07-13
+ * @version v0.11.1 - 2014-07-17
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -1492,6 +1492,13 @@
           url: this.url('/storage/files'),
           method: 'GET',
           params: params
+        });
+      };
+
+      StorageService.prototype.deleteFile = function(fileId) {
+        return this.http({
+          url: this.url('/storage/files/' + fileId),
+          method: 'DELETE'
         });
       };
 

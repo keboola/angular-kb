@@ -1,3 +1,6 @@
+## 0.11.2 (2014-07-17)
+ * [Feat] SAPI service - delete file
+
 ## 0.10.0 (2014-06-24)
  * [BC Break] Major dependencies upgrade
 
