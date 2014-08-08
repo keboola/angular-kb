@@ -62,6 +62,9 @@
 
 	app.controller('kb.ui.run-button', ($scope, $timeout) ->
 		$scope.isRunning = false
+		$scope.isDisabled = false
+		$scope.switch = ->
+			$scope.isDisabled = !$scope.isDisabled
 		$scope.run = ->
 			$scope.isRunning = true
 			$timeout( ->

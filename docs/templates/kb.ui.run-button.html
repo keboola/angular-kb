@@ -1,4 +1,5 @@
 <div class="bs-docs-example">
-
-	<kb-run-button is-running="isRunning" ng-click="run(); $event.preventDefault()"></kb-run-button>
+	<kb-run-button is-running="isRunning" is-disabled="isDisabled" ng-click="run(); $event.preventDefault()"></kb-run-button>
 </div>
+<button class="btn btn-primary" ng-show="isDisabled" ng-click="switch()">Enable</button>
+<button class="btn btn-primary" ng-show="!isDisabled" ng-click="switch()">Disable</button>

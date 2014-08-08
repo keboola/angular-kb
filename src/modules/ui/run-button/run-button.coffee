@@ -11,6 +11,12 @@ angular.module('kb.ui.runButton', ['kb.ui.loader'])
 			replace: true
 			link: (scope, element, attrs) ->
 				icon = element.find('i')
+				scope.$watch(attrs.isDisabled, (newValue) ->
+					if (newValue)
+						element.addClass('disabled')
+					else
+						element.removeClass('disabled')
+				)
 				scope.$watch(attrs.isRunning, (newValue) ->
 					element.removeClass('running')
 					icon.removeClass('glyphicon-refresh')

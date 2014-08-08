@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.11.1 - 2014-07-17
+ * @version v0.11.1 - 2014-08-08
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -2164,6 +2164,13 @@
       link: function(scope, element, attrs) {
         var icon;
         icon = element.find('i');
+        scope.$watch(attrs.isDisabled, function(newValue) {
+          if (newValue) {
+            return element.addClass('disabled');
+          } else {
+            return element.removeClass('disabled');
+          }
+        });
         return scope.$watch(attrs.isRunning, function(newValue) {
           element.removeClass('running');
           icon.removeClass('glyphicon-refresh');
