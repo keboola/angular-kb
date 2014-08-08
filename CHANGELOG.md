@@ -1,3 +1,6 @@
+## 0.11.3 (2014-08-08)
+ * [Feat] Option to disable kb-run-button.
+
 ## 0.11.2 (2014-07-17)
  * [Feat] SAPI service - delete file
 
