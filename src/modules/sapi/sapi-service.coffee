@@ -485,6 +485,15 @@
 
 			return promise
 
+		# return table data as an array of objects (headers and data combined)
+		tableDataArray: (tableId, options = {}, callback = null) ->
+			return tableData(tableId, options, callback).then((response) ->
+				result = []
+				angular.forEach(response.data, (line) ->
+					result.push(_.object(response.header, line))
+				)
+				return result
+			)
 
 		# tokens
 		getTokens: ->

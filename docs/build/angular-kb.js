@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.11.3 - 2014-08-08
+ * @version v0.11.3 - 2014-08-22
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -1399,6 +1399,23 @@
           return promise;
         };
         return promise;
+      };
+
+      StorageService.prototype.tableDataArray = function(tableId, options, callback) {
+        if (options == null) {
+          options = {};
+        }
+        if (callback == null) {
+          callback = null;
+        }
+        return tableData(tableId, options, callback).then(function(response) {
+          var result;
+          result = [];
+          angular.forEach(response.data, function(line) {
+            return result.push(_.object(response.header, line));
+          });
+          return result;
+        });
       };
 
       StorageService.prototype.getTokens = function() {
