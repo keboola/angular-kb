@@ -1408,7 +1408,7 @@
         if (callback == null) {
           callback = null;
         }
-        return tableData(tableId, options, callback).then(function(response) {
+        return this.tableData(tableId, options, callback).then(function(response) {
           var result;
           result = [];
           angular.forEach(response.data, function(line) {
