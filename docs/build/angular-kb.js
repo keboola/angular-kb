@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.12.1 - 2014-08-22
+ * @version v0.12.1 - 2014-09-02
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -3246,7 +3246,7 @@ angular.module("kb.templates").run(["$templateCache", function($templateCache) {
     "    <p ng-bind-html=\"params.message\"></p>\n" +
     "</div>\n" +
     "<div class=\"modal-footer\">\n" +
-    "    <button class=\"btn btn-default\" ng-click=\"close()\">{{ params.cancelButton.label }}</button>\n" +
+    "    <button class=\"btn btn-default\" ng-click=\"close()\" kb-focus>{{ params.cancelButton.label }}</button>\n" +
     "    <button class=\"btn btn-{{ params.confirmButton.type}}\" ng-click=\"confirm()\">{{ params.confirmButton.label }}</button>\n" +
     "</div>"
   );

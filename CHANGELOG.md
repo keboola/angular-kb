@@ -1,3 +1,6 @@
+## 0.12.2 (2014-09-02)
+ * [Feat] `kb.confirm` - focus cancel button
+
 ## 0.11.3 (2014-08-08)
  * [Feat] Option to disable kb-run-button.
 
