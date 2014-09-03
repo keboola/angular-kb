@@ -4,7 +4,7 @@ angular.module('kb.ui.loader', [])
 		restrict: 'E'
 		template: """
 			<a kb-loader class="kb-loader">
-				<i class="glyphicon glyphicon-refresh"> </i>
+				<i class="fa fa-refresh"> </i>
 			</a>
 		"""
 		replace: true
@@ -12,7 +12,7 @@ angular.module('kb.ui.loader', [])
 			icon = element.find('i')
 
 			scope.$watch(attrs.isLoading, (newValue) ->
-				icon.removeClass('loading')
-				icon.addClass('loading') if newValue
+				icon.removeClass('fa-spin')
+				icon.addClass('fa-spin') if newValue
 			)
 	)

@@ -9,10 +9,10 @@ describe 'loader', ->
 			$compile(element)($rootScope)
 
 			$rootScope.$digest()
-			expect(element.find('i').hasClass('loading')).toBe(false)
+			expect(element.find('i').hasClass('fa-spin')).toBe(false)
 
 			$rootScope.loaderLoading = true
 			$rootScope.$digest()
-			expect(element.find('i').hasClass('loading')).toBe(true)
+			expect(element.find('i').hasClass('fa-spin')).toBe(true)
 	)
 

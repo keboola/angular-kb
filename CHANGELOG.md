@@ -1,3 +1,6 @@
+## 0.13.0 (2014-09-03)
+ * [Refactor] Use all icons from font awesome
+
 ## 0.12.2 (2014-09-02)
  * [Feat] `kb.confirm` - focus cancel button
 

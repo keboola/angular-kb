@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.12.2 - 2014-09-02
+ * @version v0.13.0 - 2014-09-03
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -1909,7 +1909,7 @@
           datetime: '=',
           emptyValue: '@'
         },
-        template: "<span ng-cloak ng-class=\"{'muted': isEmpty()}\">\n	{{ formattedValue() }}\n	<i class=\"kb-datetime glyphicon glyphicon-time\" tooltip=\"{{ tooltipTitle }}\" ng-show=\"isDatetime()\"></i>\n</span>",
+        template: "<span ng-cloak ng-class=\"{'muted': isEmpty()}\">\n	{{ formattedValue() }}\n	<i class=\"kb-datetime fa fa-clock-o\" tooltip=\"{{ tooltipTitle }}\" ng-show=\"isDatetime()\"></i>\n</span>",
         link: function(scope, element, attrs) {
           scope.tooltipTitle = '';
           scope.resolveEmptyValue = function() {
@@ -2120,15 +2120,15 @@
   angular.module('kb.ui.loader', []).directive('kbLoader', function() {
     return {
       restrict: 'E',
-      template: "<a kb-loader class=\"kb-loader\">\n	<i class=\"glyphicon glyphicon-refresh\"> </i>\n</a>",
+      template: "<a kb-loader class=\"kb-loader\">\n	<i class=\"fa fa-refresh\"> </i>\n</a>",
       replace: true,
       link: function(scope, element, attrs) {
         var icon;
         icon = element.find('i');
         return scope.$watch(attrs.isLoading, function(newValue) {
-          icon.removeClass('loading');
+          icon.removeClass('fa-spin');
           if (newValue) {
-            return icon.addClass('loading');
+            return icon.addClass('fa-spin');
           }
         });
       }
@@ -2176,7 +2176,7 @@
   angular.module('kb.ui.runButton', ['kb.ui.loader']).directive('kbRunButton', function() {
     return {
       restrict: 'E',
-      template: "<button class=\"btn btn-default run-transformation kb-loader\">\n	<i  class=\"glyphicon glyphicon-play\"> </i>\n</button>",
+      template: "<button class=\"btn btn-default run-transformation kb-loader\">\n	<i  class=\"fa fa-play\"> </i>\n</button>",
       replace: true,
       link: function(scope, element, attrs) {
         var icon;
@@ -2190,14 +2190,14 @@
         });
         return scope.$watch(attrs.isRunning, function(newValue) {
           element.removeClass('running');
-          icon.removeClass('glyphicon-refresh');
-          icon.removeClass('glyphicon-play');
-          icon.removeClass('loading');
+          icon.removeClass('fa-refresh');
+          icon.removeClass('fa-play');
+          icon.removeClass('fa-spin');
           if (newValue) {
             element.addClass('running');
-            return icon.addClass('glyphicon-refresh loading');
+            return icon.addClass('fa-refresh fa-spin');
           } else {
-            return icon.addClass('glyphicon-play');
+            return icon.addClass('fa-play');
           }
         });
       }
@@ -2264,7 +2264,7 @@
     successEvents = ['storage.tableImportDone'];
     infoEvents = ['storage.tableExported'];
     templates = {
-      table: "<div class=\"kb-sapi-events-table\">\n	<div ng-show=\"events.events.length && events.loaded && !selectedEvent\">\n		<table class=\"table table-striped table-events\">\n			<tbody>\n				<tr ng-repeat=\"event in events.events | orderBy:'id':true track by event.id\" ng-class=\"eventClass(event)\" ng-click=\"eventDetail(event)\" title=\"Event id: {{ event.id }}\">\n					<td class=\"created\">{{ event.created | date:'fullDate' }}</td>\n					<td>{{ feedMessage(event) }}</td>\n				</tr>\n			</tbody>\n		</table>\n		<div class=\"list-more\" ng-show=\"events.hasOlderEvents\">\n			<button ng-click=\"events.loadOlderEvents()\" class=\"btn btn-default btn-large\" ng-disabled=\"events.olderEventsLoading\">More..</button>\n		</div>\n	</div>\n	<div ng-show=\"!events.events.length && events.loaded\">\n		<div class=\"well\">\n			There are no events yet.\n		</div>\n	</div>\n	<div ng-show=\"!events.loaded\">\n		<div class=\"well\">\n			<i class=\"icon-refresh loading\"></i>\n			Loading events...\n		</div>\n	</div>\n							 <div class=\"event-detail\" ng-show=\"selectedEvent\">\n										 <a ng-click=\"leaveEventDetail()\">\n											<i class=\"icon-chevron-left\"></i> Back to events list\n										 </a>\n							 			<h3>Event detail</h3>\n									 <div class=\"well message\" ng-class=\"eventClass(selectedEvent)\">\n												{{ selectedEvent.message }}\n											</div>\n\n											<p class=\"well\" ng-show=\"selectedEvent.description\">\n												{{ selectedEvent.description }}\n											</p>\n									 \n											<div class=\"tab-pane active\" id=\"tableOverview\">\n												<table class=\"table\">\n													<tbody>\n														<tr>\n														<td>ID</td>\n														<td>{{ selectedEvent.id }}</td>\n														</tr>\n														<tr>\n														<td>Created</td>\n														<td><kb-datetime datetime=\"selectedEvent.created\"></kb-datetime></td>\n														</tr>\n														<tr>\n														<td>Component</td>\n														<td>{{ selectedEvent.component }}</td>\n														</tr>\n														<tr>\n															<td>Configuration ID</td>\n															<td>{{ selectedEvent.configurationId || \"N/A\" }}</td>\n														</tr>\n														<tr>\n														<td>Run ID</td>\n														<td>{{ selectedEvent.runId || \"N/A\" }}</td>\n														</tr>\n													</tbody>\n												</table>\n											</div>\n\n											<div ng-show=\"selectedEvent.attachments.length\">\n												<h3>Attachments</h3>\n												<ul>\n													<li ng-repeat=\"attachment in selectedEvent.attachments\">\n														<a href=\"{{ attachment.url }}\">\n															{{ attachment.uploadType }} ({{ attachment.sizeBytes | kbfilesize}})\n														</a>\n													</li>\n												</ul>\n											</div>\n									 \n											<div ng-show=\"selectedEvent.params\">\n												<h3>Parameters</h3>\n												<kb-tree data=\"selectedEvent.params\"></kb-tree>\n											</div>\n									 \n											<div ng-show=\"selectedEvent.performance\">\n												<h3>Performance</h3>\n												<kb-tree data=\"selectedEvent.performance\"></kb-tree>\n											</div>\n									 \n											<div ng-show=\"selectedEvent.results\">\n												<h3>Results</h3>\n												<kb-tree data=\"selectedEvent.results\"></kb-tree>\n											</div>\n									 \n											<div ng-show=\"selectedEvent.context\">\n												<h3>Context</h3>\n												<kb-tree data=\"selectedEvent.context\"></kb-tree>\n											</div>\n\n										 <a ng-click=\"leaveEventDetail()\">\n										 	<i class=\"icon-chevron-left\"></i> Back to events list\n										 </a>\n							 </div>\n</div>"
+      table: "<div class=\"kb-sapi-events-table\">\n	<div ng-show=\"events.events.length && events.loaded && !selectedEvent\">\n		<table class=\"table table-striped table-events\">\n			<tbody>\n				<tr ng-repeat=\"event in events.events | orderBy:'id':true track by event.id\" ng-class=\"eventClass(event)\" ng-click=\"eventDetail(event)\" title=\"Event id: {{ event.id }}\">\n					<td class=\"created\">{{ event.created | date:'fullDate' }}</td>\n					<td>{{ feedMessage(event) }}</td>\n				</tr>\n			</tbody>\n		</table>\n		<div class=\"list-more\" ng-show=\"events.hasOlderEvents\">\n			<button ng-click=\"events.loadOlderEvents()\" class=\"btn btn-default btn-large\" ng-disabled=\"events.olderEventsLoading\">More..</button>\n		</div>\n	</div>\n	<div ng-show=\"!events.events.length && events.loaded\">\n		<div class=\"well\">\n			There are no events yet.\n		</div>\n	</div>\n	<div ng-show=\"!events.loaded\">\n		<div class=\"well\">\n			<i class=\"fa fa-refresh fa-spin\"></i>\n			Loading events...\n		</div>\n	</div>\n							 <div class=\"event-detail\" ng-show=\"selectedEvent\">\n										 <a ng-click=\"leaveEventDetail()\">\n											<i class=\"fa fa-chevron-left\"></i> Back to events list\n										 </a>\n							 			<h3>Event detail</h3>\n									 <div class=\"well message\" ng-class=\"eventClass(selectedEvent)\">\n												{{ selectedEvent.message }}\n											</div>\n\n											<p class=\"well\" ng-show=\"selectedEvent.description\">\n												{{ selectedEvent.description }}\n											</p>\n									 \n											<div class=\"tab-pane active\" id=\"tableOverview\">\n												<table class=\"table\">\n													<tbody>\n														<tr>\n														<td>ID</td>\n														<td>{{ selectedEvent.id }}</td>\n														</tr>\n														<tr>\n														<td>Created</td>\n														<td><kb-datetime datetime=\"selectedEvent.created\"></kb-datetime></td>\n														</tr>\n														<tr>\n														<td>Component</td>\n														<td>{{ selectedEvent.component }}</td>\n														</tr>\n														<tr>\n															<td>Configuration ID</td>\n															<td>{{ selectedEvent.configurationId || \"N/A\" }}</td>\n														</tr>\n														<tr>\n														<td>Run ID</td>\n														<td>{{ selectedEvent.runId || \"N/A\" }}</td>\n														</tr>\n													</tbody>\n												</table>\n											</div>\n\n											<div ng-show=\"selectedEvent.attachments.length\">\n												<h3>Attachments</h3>\n												<ul>\n													<li ng-repeat=\"attachment in selectedEvent.attachments\">\n														<a href=\"{{ attachment.url }}\">\n															{{ attachment.uploadType }} ({{ attachment.sizeBytes | kbfilesize}})\n														</a>\n													</li>\n												</ul>\n											</div>\n									 \n											<div ng-show=\"selectedEvent.params\">\n												<h3>Parameters</h3>\n												<kb-tree data=\"selectedEvent.params\"></kb-tree>\n											</div>\n									 \n											<div ng-show=\"selectedEvent.performance\">\n												<h3>Performance</h3>\n												<kb-tree data=\"selectedEvent.performance\"></kb-tree>\n											</div>\n									 \n											<div ng-show=\"selectedEvent.results\">\n												<h3>Results</h3>\n												<kb-tree data=\"selectedEvent.results\"></kb-tree>\n											</div>\n									 \n											<div ng-show=\"selectedEvent.context\">\n												<h3>Context</h3>\n												<kb-tree data=\"selectedEvent.context\"></kb-tree>\n											</div>\n\n										 <a ng-click=\"leaveEventDetail()\">\n										 	<i class=\"fa fa-chevron-left\"></i> Back to events list\n										 </a>\n							 </div>\n</div>"
     };
     deprecatedAuthorizationText = "Deprecated authorization method used.";
     return config = {
@@ -2320,12 +2320,12 @@
               case "storage.tableImportError":
               case "storage.tableImportDone":
                 return {
-                  icon: "icon-arrow-up",
+                  icon: "fa fa-arrow-up",
                   tooltip: "Import action"
                 };
               case "storage.tableExported":
                 return {
-                  icon: "icon-arrow-down",
+                  icon: "fa fa-arrow-down",
                   tooltip: "Export action"
                 };
               default:
@@ -3255,7 +3255,7 @@ angular.module("kb.templates").run(["$templateCache", function($templateCache) {
     "<span class=\"static\" ng-hide=\"isEditing\" ng-click=\"edit()\" tooltip=\"{{ tooltipTitle }}\">\n" +
     "\t<kb-datetime datetime=\"value\"></kb-datetime>\n" +
     "\t <a class=\"placeholder\" ng-show=\"!value\">\n" +
-    "         <i class=\"icon-edit\"></i>\n" +
+    "         <i class=\"fa fa-pencil-square-o\"></i>\n" +
     "         {{ placeholder }}\n" +
     "     </a>\n" +
     "</span>\n" +
@@ -3265,10 +3265,10 @@ angular.module("kb.templates").run(["$templateCache", function($templateCache) {
     "\n" +
     "        <div class=\"input-group-btn\">\n" +
     "            <button class=\"btn btn-success\" ng-click=\"save()\">\n" +
-    "                <i class=\"glyphicon glyphicon-ok\" title=\"save\"></i>\n" +
+    "                <i class=\"fa fa-check\" title=\"save\"></i>\n" +
     "            </button>\n" +
     "            <button class=\"btn btn-default\" ng-click=\"cancel()\">\n" +
-    "                <i class=\"glyphicon glyphicon-remove\" title=\"Cancel\"></i>\n" +
+    "                <i class=\"fa fa-times\" title=\"Cancel\"></i>\n" +
     "            </button>\n" +
     "        </div>\n" +
     "    </div>\n" +
@@ -3287,10 +3287,10 @@ angular.module("kb.templates").run(["$templateCache", function($templateCache) {
     "\n" +
     "        <span class=\"input-group-btn\">\n" +
     "            <button class=\"btn btn-success\" ng-click=\"save()\">\n" +
-    "                    <i class=\"glyphicon glyphicon-ok\" title=\"save\"></i>\n" +
+    "                    <i class=\"fa fa-check\" title=\"save\"></i>\n" +
     "            </button>\n" +
     "            <button class=\"btn btn-default\" ng-click=\"cancel()\">\n" +
-    "                <i class=\"glyphicon glyphicon-remove\" title=\"Cancel\"></i>\n" +
+    "                <i class=\"fa fa-times\" title=\"Cancel\"></i>\n" +
     "            </button>\n" +
     "        </span>\n" +
     "\n" +
@@ -3302,7 +3302,7 @@ angular.module("kb.templates").run(["$templateCache", function($templateCache) {
     "<span class=\"static\" ng-hide=\"isEditing\" ng-click=\"edit()\" tooltip=\"{{ tooltipTitle }}\">\n" +
     "\t{{ value }}\n" +
     "\t <a class=\"placeholder\" ng-show=\"!value\">\n" +
-    "\t\t\t<i class=\"icon-edit\"></i>\n" +
+    "\t\t\t<i class=\"fa fa-pencil-square-o\"></i>\n" +
     "\t\t\t{{ placeholder }}\n" +
     "\t\t</a>\n" +
     "</span>\n" +
@@ -3312,10 +3312,10 @@ angular.module("kb.templates").run(["$templateCache", function($templateCache) {
     "\n" +
     "        <div class=\"input-group-btn\">\n" +
     "            <button class=\"btn btn-success\" ng-click=\"save()\">\n" +
-    "                <i class=\"glyphicon glyphicon-ok\" title=\"save\"></i>\n" +
+    "                <i class=\"fa fa-check\" title=\"save\"></i>\n" +
     "            </button>\n" +
     "            <button class=\"btn btn-default\" ng-click=\"cancel()\">\n" +
-    "                <i class=\"glyphicon glyphicon-remove\" title=\"Cancel\"></i>\n" +
+    "                <i class=\"fa fa-times\" title=\"Cancel\"></i>\n" +
     "            </button>\n" +
     "        </div>\n" +
     "    </div>\n" +
@@ -3326,7 +3326,7 @@ angular.module("kb.templates").run(["$templateCache", function($templateCache) {
     "<span class=\"static\" ng-hide=\"isEditing\" ng-click=\"edit()\" tooltip=\"{{ tooltipTitle }}\">\n" +
     "\t\t<span kb-nl2br=\"value\"></span>\n" +
     "\t\t<a class=\"placeholder\" ng-show=\"!value\">\n" +
-    "\t\t\t<i class=\"icon-edit\"></i>\n" +
+    "\t\t\t<i class=\"fa fa-pencil-square-o\"></i>\n" +
     "\t\t\t{{ placeholder }}\n" +
     "\t\t</a>\n" +
     "</span>\n" +

@@ -5,7 +5,7 @@ angular.module('kb.ui.runButton', ['kb.ui.loader'])
 			restrict: 'E'
 			template: """
 				<button class="btn btn-default run-transformation kb-loader">
-					<i  class="glyphicon glyphicon-play"> </i>
+					<i  class="fa fa-play"> </i>
 				</button>
 			"""
 			replace: true
@@ -19,13 +19,13 @@ angular.module('kb.ui.runButton', ['kb.ui.loader'])
 				)
 				scope.$watch(attrs.isRunning, (newValue) ->
 					element.removeClass('running')
-					icon.removeClass('glyphicon-refresh')
-					icon.removeClass('glyphicon-play')
-					icon.removeClass('loading')
+					icon.removeClass('fa-refresh')
+					icon.removeClass('fa-play')
+					icon.removeClass('fa-spin')
 					if newValue
 						element.addClass('running')
-						icon.addClass('glyphicon-refresh loading')
+						icon.addClass('fa-refresh fa-spin')
 					else
-						icon.addClass('glyphicon-play')
+						icon.addClass('fa-play')
 				)
 		)

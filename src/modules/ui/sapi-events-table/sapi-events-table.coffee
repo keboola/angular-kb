@@ -39,13 +39,13 @@ angular
 						 	</div>
 						 	<div ng-show="!events.loaded">
 						 		<div class="well">
-						 			<i class="icon-refresh loading"></i>
+						 			<i class="fa fa-refresh fa-spin"></i>
 						 			Loading events...
 						 		</div>
 						 	</div>
 							 <div class="event-detail" ng-show="selectedEvent">
 										 <a ng-click="leaveEventDetail()">
-											<i class="icon-chevron-left"></i> Back to events list
+											<i class="fa fa-chevron-left"></i> Back to events list
 										 </a>
 							 			<h3>Event detail</h3>
 									 <div class="well message" ng-class="eventClass(selectedEvent)">
@@ -115,7 +115,7 @@ angular
 											</div>
 
 										 <a ng-click="leaveEventDetail()">
-										 	<i class="icon-chevron-left"></i> Back to events list
+										 	<i class="fa fa-chevron-left"></i> Back to events list
 										 </a>
 							 </div>
 						 </div>
@@ -177,10 +177,10 @@ angular
 				$scope.eventType = (event) ->
 					switch event.event
 						when "storage.tableImportError", "storage.tableImportDone"
-							icon: "icon-arrow-up"
+							icon: "fa fa-arrow-up"
 							tooltip: "Import action"
 						when "storage.tableExported"
-							icon: "icon-arrow-down"
+							icon: "fa fa-arrow-down"
 							tooltip: "Export action"
 						else
 							icon: ""

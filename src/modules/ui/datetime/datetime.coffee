@@ -20,7 +20,7 @@ angular
 			template: """
 				<span ng-cloak ng-class="{'muted': isEmpty()}">
 					{{ formattedValue() }}
-					<i class="kb-datetime glyphicon glyphicon-time" tooltip="{{ tooltipTitle }}" ng-show="isDatetime()"></i>
+					<i class="kb-datetime fa fa-clock-o" tooltip="{{ tooltipTitle }}" ng-show="isDatetime()"></i>
 				</span>
 			"""
 			link: (scope, element, attrs) ->
