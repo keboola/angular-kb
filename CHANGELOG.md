@@ -1,3 +1,6 @@
+## 0.13.1 (2014-09-03)
+ * [Refactor] Bootstrap update to 3.2.0
+
 ## 0.13.0 (2014-09-03)
  * [Refactor] Use all icons from font awesome
 
