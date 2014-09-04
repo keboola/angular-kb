@@ -1,3 +1,6 @@
+## 0.13.2 (2013-09-04)
+ * [Feat] `kb.ui.check` directive added
+
 ## 0.13.1 (2014-09-03)
  * [Refactor] Bootstrap update to 3.2.0
 

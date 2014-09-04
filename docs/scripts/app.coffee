@@ -21,6 +21,7 @@
 		'kb.ui.confirm'
 		'kb.ui.sapiConsoleHref'
 		'kb.ui.focus'
+		'kb.ui.check'
 	].sort()
 
 	app.config(($routeProvider) ->
@@ -250,6 +251,11 @@
 
 	app.controller('kb.ui.focus', ($scope) ->
 		$scope.focus =
+			checked: false
+	)
+
+	app.controller('kb.ui.check', ($scope) ->
+		$scope.check =
 			checked: false
 	)
 

@@ -23,6 +23,7 @@ angular.module('kb', [
 	'kb.ui.duration'
 	'kb.ui.sapiConsoleHref'
 	'kb.ui.confirm'
+	'kb.ui.check'
 
 	'kb.utils.multipartUpload'
 	'kb.utils.csv'

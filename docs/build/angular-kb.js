@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.13.1 - 2014-09-03
+ * @version v0.13.1 - 2014-09-04
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -9,7 +9,7 @@
 
   angular.module('kb.templates', []);
 
-  angular.module('kb', ['kb.config', 'kb.ui.inlineEdit', 'kb.ui.clickToggle', 'kb.ui.copyButton', 'kb.ui.nl2br', 'kb.ui.sapiEventsTable', 'kb.ui.loader', 'kb.ui.autoComplete', 'kb.ui.focus', 'kb.ui.tree', 'kb.ui.runButton', 'kb.ui.codemirror', 'kb.ui.datetime', 'kb.ui.duration', 'kb.ui.sapiConsoleHref', 'kb.ui.confirm', 'kb.utils.multipartUpload', 'kb.utils.csv', 'kb.utils.keyboardShortcuts', 'kb.utils.appVersion', 'kb.filters.date', 'kb.filters.filesize', 'kb.filters.webalize', 'kb.filters.duration', 'kb.sapi.sapiService', 'kb.sapi.eventsService', 'kb.sapi.errorHandler', 'kb.templates']);
+  angular.module('kb', ['kb.config', 'kb.ui.inlineEdit', 'kb.ui.clickToggle', 'kb.ui.copyButton', 'kb.ui.nl2br', 'kb.ui.sapiEventsTable', 'kb.ui.loader', 'kb.ui.autoComplete', 'kb.ui.focus', 'kb.ui.tree', 'kb.ui.runButton', 'kb.ui.codemirror', 'kb.ui.datetime', 'kb.ui.duration', 'kb.ui.sapiConsoleHref', 'kb.ui.confirm', 'kb.ui.check', 'kb.utils.multipartUpload', 'kb.utils.csv', 'kb.utils.keyboardShortcuts', 'kb.utils.appVersion', 'kb.filters.date', 'kb.filters.filesize', 'kb.filters.webalize', 'kb.filters.duration', 'kb.sapi.sapiService', 'kb.sapi.eventsService', 'kb.sapi.errorHandler', 'kb.templates']);
 
 }).call(this);
 
@@ -1666,6 +1666,27 @@
           options.change = changeHandler;
         }
         return element.autocomplete(options);
+      }
+    };
+  });
+
+}).call(this);
+
+(function() {
+
+  angular.module('kb.ui.check', []).directive('kbCheck', function() {
+    return {
+      restrict: 'E',
+      require: 'ngModel',
+      template: "<i class=\"fa\" \"></i>",
+      link: function(scope, element, attrs, ngModel) {
+        return ngModel.$render = function() {
+          var i;
+          i = element.find('i');
+          i.removeClass('fa-check');
+          i.removeClass('fa-times');
+          return i.addClass(ngModel.$viewValue ? 'fa-check' : 'fa-times');
+        };
       }
     };
   });
