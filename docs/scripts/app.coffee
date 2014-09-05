@@ -22,6 +22,7 @@
 		'kb.ui.sapiConsoleHref'
 		'kb.ui.focus'
 		'kb.ui.check'
+		'kb.ui.search-filter'
 	].sort()
 
 	app.config(($routeProvider) ->
@@ -257,6 +258,16 @@
 	app.controller('kb.ui.check', ($scope) ->
 		$scope.check =
 			checked: false
+	)
+
+	app.controller('kb.ui.search-filter', ($scope) ->
+		$scope.search =
+			q: ''
+
+		$scope.countryFilter = ''
+		$scope.countries = ["Afghanistan","Albania","Algeria","Andorra","Angola","Anguilla","Antigua &amp; Barbuda","Argentina","Armenia","Aruba","Australia","Austria","Azerbaijan","Bahamas"
+		,"Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bermuda","Bhutan","Bolivia","Bosnia &amp; Herzegovina","Botswana","Brazil","British Virgin Islands"
+		,"Brunei","Bulgaria","Burkina Faso","Burundi"]
 	)
 
 

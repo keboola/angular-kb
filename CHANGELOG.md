@@ -1,3 +1,6 @@
+## 0.13.3 (2013-09-04)
+ * [Feat] `kb.ui.searchFilter` directive added
+
 ## 0.13.2 (2013-09-04)
  * [Feat] `kb.ui.check` directive added
 

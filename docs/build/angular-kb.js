@@ -9,7 +9,7 @@
 
   angular.module('kb.templates', []);
 
-  angular.module('kb', ['kb.config', 'kb.ui.inlineEdit', 'kb.ui.clickToggle', 'kb.ui.copyButton', 'kb.ui.nl2br', 'kb.ui.sapiEventsTable', 'kb.ui.loader', 'kb.ui.autoComplete', 'kb.ui.focus', 'kb.ui.tree', 'kb.ui.runButton', 'kb.ui.codemirror', 'kb.ui.datetime', 'kb.ui.duration', 'kb.ui.sapiConsoleHref', 'kb.ui.confirm', 'kb.ui.check', 'kb.utils.multipartUpload', 'kb.utils.csv', 'kb.utils.keyboardShortcuts', 'kb.utils.appVersion', 'kb.filters.date', 'kb.filters.filesize', 'kb.filters.webalize', 'kb.filters.duration', 'kb.sapi.sapiService', 'kb.sapi.eventsService', 'kb.sapi.errorHandler', 'kb.templates']);
+  angular.module('kb', ['kb.config', 'kb.ui.inlineEdit', 'kb.ui.clickToggle', 'kb.ui.copyButton', 'kb.ui.nl2br', 'kb.ui.sapiEventsTable', 'kb.ui.loader', 'kb.ui.autoComplete', 'kb.ui.focus', 'kb.ui.tree', 'kb.ui.runButton', 'kb.ui.codemirror', 'kb.ui.datetime', 'kb.ui.duration', 'kb.ui.sapiConsoleHref', 'kb.ui.confirm', 'kb.ui.check', 'kb.ui.searchFilter', 'kb.utils.multipartUpload', 'kb.utils.csv', 'kb.utils.keyboardShortcuts', 'kb.utils.appVersion', 'kb.filters.date', 'kb.filters.filesize', 'kb.filters.webalize', 'kb.filters.duration', 'kb.sapi.sapiService', 'kb.sapi.eventsService', 'kb.sapi.errorHandler', 'kb.templates']);
 
 }).call(this);
 
@@ -2405,6 +2405,28 @@
 
 (function() {
 
+  angular.module('kb.ui.searchFilter', []).directive('kbSearchFilter', [
+    function() {
+      return {
+        templateUrl: "kb/ui/search-filter/templates/search-filter.html",
+        restrict: 'E',
+        scope: {
+          query: '='
+        },
+        transclude: true,
+        link: function(scope) {
+          return scope.remove = function() {
+            return scope.query = '';
+          };
+        }
+      };
+    }
+  ]);
+
+}).call(this);
+
+(function() {
+
   angular.module('kb.ui.tree', []).directive('kbTreeNode', [
     "$compile", function($compile) {
       var directive, leafTemplate, nodeTemplate;
@@ -3358,6 +3380,16 @@ angular.module("kb.templates").run(["$templateCache", function($templateCache) {
     "\t\t\t\t<button class=\"btn btn-primary\" ng-click=\"save()\">Save</button>\n" +
     "\t\t\t\t<button class=\"btn btn-default\" ng-click=\"cancel()\">Cancel</button>\n" +
     "\t</div>\n" +
+    "</div>"
+  );
+
+  $templateCache.put("kb/ui/search-filter/templates/search-filter.html",
+    "<div class=\"form-group form-group-sm search-filter has-feedback\">\n" +
+    "    <div class=\"input-group\">\n" +
+    "        <input class=\"form-control search\" type=\"text\" placeholder=\"Search...\" ng-model=\"query\" />\n" +
+    "        <div class=\"input-group-addon\" ng-if=\"query\" ng-click=\"remove()\"><span class=\"fa fa-fw fa-times\"></span></div>\n" +
+    "        <div class=\"input-group-addon\" ng-if=\"!query\"><span class=\"fa fa-fw fa-search\"></span></div>\n" +
+    "    </div>\n" +
     "</div>"
   );
 
