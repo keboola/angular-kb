@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.13.4 - 2014-09-17
+ * @version v0.13.5 - 2014-09-17
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -1656,6 +1656,17 @@
             'Content-Type': 'application/x-www-form-urlencoded'
           },
           data: $.param(configuration)
+        });
+      };
+
+      StorageService.prototype.updateComponentConfiguration = function(componentId, configurationId, data) {
+        return this.http({
+          url: this.url("/storage/components/" + componentId + "/configs/" + configurationId),
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          data: $.param(data)
         });
       };
 
