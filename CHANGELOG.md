@@ -1,3 +1,6 @@
+## 0.13.4 (2013-09-17)
+ * [Feat] `kb.sapi.sapiService` - component configurations methods added
+
 ## 0.13.3 (2013-09-04)
  * [Feat] `kb.ui.searchFilter` directive added
 

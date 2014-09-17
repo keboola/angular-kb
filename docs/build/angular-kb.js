@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.13.3 - 2014-09-04
+ * @version v0.13.3 - 2014-09-17
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -1631,6 +1631,39 @@
           url: this.url('/storage/tickets'),
           method: 'POST'
         }).error(this.errorHandler);
+      };
+
+      StorageService.prototype.getComponents = function(params) {
+        return this.http({
+          url: this.url('/storage/components'),
+          method: 'GET',
+          params: params
+        }).error(this.errorHandler);
+      };
+
+      StorageService.prototype.deleteComponentConfiguration = function(componentId, configurationId) {
+        return this.http({
+          url: this.url("/storage/components/" + componentId + "/configs/" + configurationId),
+          method: 'DELETE'
+        });
+      };
+
+      StorageService.prototype.addComponentConfiguration = function(componentId, configuration) {
+        return this.http({
+          url: this.url("/storage/components/" + componentId + "/configs"),
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          data: $.param(configuration)
+        });
+      };
+
+      StorageService.prototype.getComponentConfiguration = function(componentId, configurationId) {
+        return this.http({
+          url: this.url("/storage/components/" + componentId + "/configs/" + configurationId),
+          method: 'GET'
+        });
       };
 
       return StorageService;

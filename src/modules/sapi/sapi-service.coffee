@@ -693,4 +693,34 @@
 				method: 'POST'
 			).error(@errorHandler)
 
+		# components
+		getComponents: (params) ->
+			@http(
+				url: @url '/storage/components'
+				method: 'GET'
+				params: params
+			).error(@errorHandler)
+
+		deleteComponentConfiguration: (componentId, configurationId) ->
+			@http(
+				url: @url "/storage/components/#{componentId}/configs/#{configurationId}"
+				method: 'DELETE'
+			)
+
+		addComponentConfiguration: (componentId, configuration) ->
+			@http(
+				url: @url "/storage/components/#{componentId}/configs"
+				method: 'POST'
+				headers:
+					'Content-Type': 'application/x-www-form-urlencoded'
+				data: $.param(configuration)
+			)
+
+		getComponentConfiguration: (componentId, configurationId) ->
+			@http(
+				url: @url "/storage/components/#{componentId}/configs/#{configurationId}"
+				method: 'GET'
+			)
+
+
 )(window.angular)
