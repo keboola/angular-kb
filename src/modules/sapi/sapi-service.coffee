@@ -716,6 +716,15 @@
 				data: $.param(configuration)
 			)
 
+		updateComponentConfiguration: (componentId, configurationId, data) ->
+			@http(
+				url: @url "/storage/components/#{componentId}/configs/#{configurationId}"
+				method: 'PUT'
+				headers:
+					'Content-Type': 'application/x-www-form-urlencoded'
+				data: $.param(data)
+			)
+
 		getComponentConfiguration: (componentId, configurationId) ->
 			@http(
 				url: @url "/storage/components/#{componentId}/configs/#{configurationId}"

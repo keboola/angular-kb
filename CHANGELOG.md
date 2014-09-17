@@ -1,3 +1,6 @@
+## 0.13.5 (2013-09-17)
+ * [Feat] `kb.sapi.sapiService` - component configuration update method
+
 ## 0.13.4 (2013-09-17)
  * [Feat] `kb.sapi.sapiService` - component configurations methods added
 
