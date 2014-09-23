@@ -1,13 +1,17 @@
-## 0.13.5 (2013-09-17)
+## 0.13.6 (2014-09-23)
+ * [Feat] `kb.ui.sapiComponentIcon` - directive added
+ * [Feat] `kb.ui.focus` - focus can be applied to parent elements, first input is then focused.
+
+## 0.13.5 (2014-09-17)
  * [Feat] `kb.sapi.sapiService` - component configuration update method
 
-## 0.13.4 (2013-09-17)
+## 0.13.4 (2014-09-17)
  * [Feat] `kb.sapi.sapiService` - component configurations methods added
 
-## 0.13.3 (2013-09-04)
+## 0.13.3 (2014-09-04)
  * [Feat] `kb.ui.searchFilter` directive added
 
-## 0.13.2 (2013-09-04)
+## 0.13.2 (2014-09-04)
  * [Feat] `kb.ui.check` directive added
 
 ## 0.13.1 (2014-09-03)
@@ -18,6 +22,7 @@
 
 ## 0.12.2 (2014-09-02)
  * [Feat] `kb.confirm` - focus cancel button
+
 
 ## 0.11.3 (2014-08-08)
  * [Feat] Option to disable kb-run-button.
