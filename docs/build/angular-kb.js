@@ -9,7 +9,7 @@
 
   angular.module('kb.templates', []);
 
-  angular.module('kb', ['kb.config', 'kb.ui.inlineEdit', 'kb.ui.clickToggle', 'kb.ui.copyButton', 'kb.ui.nl2br', 'kb.ui.sapiEventsTable', 'kb.ui.loader', 'kb.ui.autoComplete', 'kb.ui.focus', 'kb.ui.tree', 'kb.ui.runButton', 'kb.ui.codemirror', 'kb.ui.datetime', 'kb.ui.duration', 'kb.ui.sapiConsoleHref', 'kb.ui.confirm', 'kb.ui.check', 'kb.ui.searchFilter', 'kb.utils.multipartUpload', 'kb.utils.csv', 'kb.utils.keyboardShortcuts', 'kb.utils.appVersion', 'kb.filters.date', 'kb.filters.filesize', 'kb.filters.webalize', 'kb.filters.duration', 'kb.sapi.sapiService', 'kb.sapi.eventsService', 'kb.sapi.errorHandler', 'kb.templates']);
+  angular.module('kb', ['kb.config', 'kb.ui.inlineEdit', 'kb.ui.clickToggle', 'kb.ui.copyButton', 'kb.ui.nl2br', 'kb.ui.sapiEventsTable', 'kb.ui.loader', 'kb.ui.autoComplete', 'kb.ui.focus', 'kb.ui.tree', 'kb.ui.runButton', 'kb.ui.codemirror', 'kb.ui.datetime', 'kb.ui.duration', 'kb.ui.sapiConsoleHref', 'kb.ui.sapiComponentIcon', 'kb.ui.confirm', 'kb.ui.check', 'kb.ui.searchFilter', 'kb.utils.multipartUpload', 'kb.utils.csv', 'kb.utils.keyboardShortcuts', 'kb.utils.appVersion', 'kb.filters.date', 'kb.filters.filesize', 'kb.filters.webalize', 'kb.filters.duration', 'kb.sapi.sapiService', 'kb.sapi.eventsService', 'kb.sapi.errorHandler', 'kb.templates']);
 
 }).call(this);
 
@@ -2274,6 +2274,46 @@
       }
     };
   });
+
+}).call(this);
+
+
+/*
+  Link to SAPI Console
+  params:
+  	component: component hashmap from https://connection.keboola.com/v2/storage
+*/
+
+
+(function() {
+
+  angular.module('kb.ui.sapiComponentIcon', []).directive('kbSapiComponentIcon', [
+    function() {
+      return {
+        template: "<span ng-if=\"hasIcon()\">\n	<img ng-src=\"{{ url() }}\" width=\"{{ width }}\" height=\"{{ height }}\"/>\n</span>\n<span ng-if=\"!hasIcon()\" class='kb-default'>\n	<i class=\"fa {{ defaultIconClass[component.type] }}\" style=\"font-size: {{ size - 5 }}px; height: {{ size }}px; position: relative; top: 5px\"></i>\n</span>",
+        restrict: 'E',
+        scope: {
+          component: '=',
+          size: '@'
+        },
+        link: function(scope, element) {
+          element.addClass('kb-sapi-component-icon');
+          scope.defaultIconClass = {
+            extractor: 'fa-cloud-download',
+            writer: 'fa-cloud-upload',
+            transformation: 'fa-cogs',
+            other: 'fa-cogs'
+          };
+          scope.hasIcon = function() {
+            return !!scope.component["ico" + scope.size];
+          };
+          return scope.url = function() {
+            return scope.component["ico" + scope.size];
+          };
+        }
+      };
+    }
+  ]);
 
 }).call(this);
 

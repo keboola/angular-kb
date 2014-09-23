@@ -22,6 +22,7 @@ angular.module('kb', [
 	'kb.ui.datetime'
 	'kb.ui.duration'
 	'kb.ui.sapiConsoleHref'
+	'kb.ui.sapiComponentIcon'
 	'kb.ui.confirm'
 	'kb.ui.check'
 	'kb.ui.searchFilter'

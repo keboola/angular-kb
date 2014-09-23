@@ -23,6 +23,7 @@
 		'kb.ui.focus'
 		'kb.ui.check'
 		'kb.ui.search-filter'
+		'kb.ui.sapiComponentIcon'
 	].sort()
 
 	app.config(($routeProvider) ->
@@ -268,6 +269,15 @@
 		$scope.countries = ["Afghanistan","Albania","Algeria","Andorra","Angola","Anguilla","Antigua &amp; Barbuda","Argentina","Armenia","Aruba","Australia","Austria","Azerbaijan","Bahamas"
 		,"Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bermuda","Bhutan","Bolivia","Bosnia &amp; Herzegovina","Botswana","Brazil","British Virgin Islands"
 		,"Brunei","Bulgaria","Burkina Faso","Burundi"]
+	)
+
+	app.controller('kb.ui.sapiComponentIcon', ($scope, $http) ->
+		$scope.components = []
+
+		$http.get('https://connection.keboola.com/v2/storage').success((response) ->
+			$scope.components = response.components
+		)
+
 	)
 
 
