@@ -5,7 +5,6 @@ angular.module('kb.ui.searchFilter', [])
 		restrict: 'E'
 		scope:
 			query: '='
-		transclude: true
 		link: (scope) ->
 			scope.remove = () ->
 				scope.query = ''

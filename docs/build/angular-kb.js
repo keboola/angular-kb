@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.13.5 - 2014-09-17
+ * @version v0.13.5 - 2014-09-23
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -2056,7 +2056,13 @@
         var focusElement;
         focusElement = function() {
           return $timeout(function() {
-            return element.focus();
+            var input;
+            input = element.find(':input').first();
+            if (!input.length) {
+              return element.focus();
+            } else {
+              return input.focus();
+            }
           }, 50);
         };
         if (!attrs.kbFocus) {
@@ -2457,7 +2463,6 @@
         scope: {
           query: '='
         },
-        transclude: true,
         link: function(scope) {
           return scope.remove = function() {
             return scope.query = '';
@@ -3430,7 +3435,7 @@ angular.module("kb.templates").run(["$templateCache", function($templateCache) {
   $templateCache.put("kb/ui/search-filter/templates/search-filter.html",
     "<div class=\"form-group form-group-sm search-filter has-feedback\">\n" +
     "    <div class=\"input-group\">\n" +
-    "        <input class=\"form-control search\" type=\"text\" placeholder=\"Search...\" ng-model=\"query\" />\n" +
+    "        <input class=\"form-control search\" type=\"text\" kb-focus=\"focus\" placeholder=\"Search...\" ng-model=\"query\" />\n" +
     "        <div class=\"input-group-addon\" ng-if=\"query\" ng-click=\"remove()\"><span class=\"fa fa-fw fa-times\"></span></div>\n" +
     "        <div class=\"input-group-addon\" ng-if=\"!query\"><span class=\"fa fa-fw fa-search\"></span></div>\n" +
     "    </div>\n" +

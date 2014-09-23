@@ -9,7 +9,11 @@ angular
 
 			focusElement = ->
 				$timeout ->
-					element.focus()
+					input = element.find(':input').first()
+					if !input.length
+						element.focus()
+					else
+						input.focus()
 				, 50 # focus inside modal fix
 
 			if !attrs.kbFocus
