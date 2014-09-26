@@ -1,3 +1,6 @@
+## 0.13.7 (2014-09-26)
+ * [Fix] `kb.ui.searchFilter` - fixed query detection
+
 ## 0.13.6 (2014-09-23)
  * [Feat] `kb.ui.sapiComponentIcon` - directive added
  * [Feat] `kb.ui.focus` - focus can be applied to parent elements, first input is then focused.

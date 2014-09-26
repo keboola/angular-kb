@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.13.6 - 2014-09-23
+ * @version v0.13.6 - 2014-09-26
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -2504,8 +2504,11 @@
           query: '='
         },
         link: function(scope) {
-          return scope.remove = function() {
+          scope.remove = function() {
             return scope.query = '';
+          };
+          return scope.hasQuery = function() {
+            return !!scope.query;
           };
         }
       };
@@ -3476,8 +3479,8 @@ angular.module("kb.templates").run(["$templateCache", function($templateCache) {
     "<div class=\"form-group form-group-sm search-filter has-feedback\">\n" +
     "    <div class=\"input-group\">\n" +
     "        <input class=\"form-control search\" type=\"text\" kb-focus=\"focus\" placeholder=\"Search...\" ng-model=\"query\" />\n" +
-    "        <div class=\"input-group-addon\" ng-if=\"query\" ng-click=\"remove()\"><span class=\"fa fa-fw fa-times\"></span></div>\n" +
-    "        <div class=\"input-group-addon\" ng-if=\"!query\"><span class=\"fa fa-fw fa-search\"></span></div>\n" +
+    "        <div class=\"input-group-addon\" ng-if=\"hasQuery()\" ng-click=\"remove()\"><span class=\"fa fa-fw fa-times\"></span></div>\n" +
+    "        <div class=\"input-group-addon\" ng-if=\"!hasQuery()\"><span class=\"fa fa-fw fa-search\"></span></div>\n" +
     "    </div>\n" +
     "</div>"
   );

@@ -6,6 +6,9 @@ angular.module('kb.ui.searchFilter', [])
 		scope:
 			query: '='
 		link: (scope) ->
-			scope.remove = () ->
+			scope.remove = ->
 				scope.query = ''
+
+			scope.hasQuery = ->
+				!!scope.query
 	]
