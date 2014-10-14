@@ -5,7 +5,7 @@ angular.module('kb.ui.urlize', [])
       #pattern = new RegExp("(https?|ftp)://(-\.)?([^\s/?\.#-]+\.?)+(/[^\s]*)?$", "g")
       patternString = #"^" +
         # protocol identifier
-        "(?:(?:https?|ftp)://)?" +
+        "(?:(?:https?|ftp)://)" +
         # user:pass authentication
         "(?:\\S+(?::\\S*)?@)?" +
         "(?:" +
@@ -40,9 +40,16 @@ angular.module('kb.ui.urlize', [])
         http = ""
         if not (/^https?\:\/\//).test(url)
           http = "http://"
-        element.append(angular.element('<a href="' + http + url + '" target="_blank">' + url + '</a>'))
+        a = angular.element('<a target="_blank"></a>')
+        a.attr("href",http + url);
+        a.text(url)
+        element.append(a)
+        #element.append(angular.element('<a href="' + http + url + '" target="_blank">' + url + '</a>'))
+
       pushText = (element, text) ->
-        element.append(text)
+        e = angular.element("<span></span>")
+        e.text(text)
+        element.append(e)
 
       pattern = new RegExp(patternString, "g")
       parseUrlsToElement = (element, content) ->

@@ -2519,14 +2519,36 @@
 
 (function() {
 
-  angular.module('kb.ui.tree', []).directive('kbTreeNode', [
+  angular.module('kb.ui.tree', []).directive('kbTree', [
+    "$compile", function($compile) {
+      var directive, template;
+      template = "<div class=\"kb-tree\">\n  <kb-tree-node data=\"data\"></kb-tree-node>\n</div>";
+      return directive = {
+        restrict: 'E',
+        transclude: true,
+        scope: {
+          data: '='
+        },
+        link: function(scope, element) {
+          return scope.$watch('data', function() {
+            var domElement, link;
+            domElement = angular.element(template);
+            link = $compile(domElement);
+            link(scope);
+            return element.html(null).append(domElement);
+          });
+        }
+      };
+    }
+  ]).directive('kbTreeNode', [
     "$compile", function($compile) {
       var directive, leafTemplate, nodeTemplate;
-      nodeTemplate = "<div class=\"kb-tree-node\">\n	<div ng-repeat=\"(key, value) in data\">\n		<span class=\"key\">{{ key }}:</span>\n		<kb-tree-node data=\"value\"></kb-tree-node\">\n	</div>\n</div>";
-      leafTemplate = "<span class=\"value\">\n	{{ data }}\n</span>";
+      nodeTemplate = "<div class=\"kb-tree-node\">\n  <div ng-repeat=\"(key, value) in data\">\n    <span class=\"key\">{{ key }}:</span>\n    <kb-tree-node data=\"value\"></kb-tree-node\">\n  </div>\n</div>";
+      leafTemplate = "<kb-urlize content=\"data\" class=\"value\">\n</kb-urlize>";
       directive = {
         restrict: 'E',
         replace: true,
+        transclude: true,
         scope: {
           data: '='
         },
@@ -2543,26 +2565,6 @@
       };
       return directive;
     }
-  ]).directive('kbTree', [
-    "$compile", function($compile) {
-      var directive, template;
-      template = "<div class=\"kb-tree\">\n	<kb-tree-node data=\"data\"></kb-tree-node>\n</div>";
-      return directive = {
-        restrict: 'E',
-        scope: {
-          data: '='
-        },
-        link: function(scope, element) {
-          return scope.$watch('data', function() {
-            var domElement, link;
-            domElement = angular.element(template);
-            link = $compile(domElement);
-            link(scope);
-            return element.html(null).append(domElement);
-          });
-        }
-      };
-    }
   ]);
 
 }).call(this);
@@ -2572,17 +2574,23 @@
   angular.module('kb.ui.urlize', []).directive('kbUrlize', [
     "$compile", function($compile) {
       var config, parseUrlsToElement, pattern, patternString, pushText, pushUrl;
-      patternString = "(?:(?:https?|ftp)://)?" + "(?:\\S+(?::\\S*)?@)?" + "(?:" + "(?!(?:10|127)(?:\\.\\d{1,3}){3})" + "(?!(?:169\\.254|192\\.168)(?:\\.\\d{1,3}){2})" + "(?!172\\.(?:1[6-9]|2\\d|3[0-1])(?:\\.\\d{1,3}){2})" + "(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])" + "(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}" + "(?:\\.(?:[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))" + "|" + "(?:(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)" + "(?:\\.(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)*" + "(?:\\.(?:[a-z\\u00a1-\\uffff]{2,}))" + ")" + "(?::\\d{2,5})?" + "(?:/\\S*)?";
+      patternString = "(?:(?:https?|ftp)://)" + "(?:\\S+(?::\\S*)?@)?" + "(?:" + "(?!(?:10|127)(?:\\.\\d{1,3}){3})" + "(?!(?:169\\.254|192\\.168)(?:\\.\\d{1,3}){2})" + "(?!172\\.(?:1[6-9]|2\\d|3[0-1])(?:\\.\\d{1,3}){2})" + "(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])" + "(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}" + "(?:\\.(?:[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))" + "|" + "(?:(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)" + "(?:\\.(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)*" + "(?:\\.(?:[a-z\\u00a1-\\uffff]{2,}))" + ")" + "(?::\\d{2,5})?" + "(?:/\\S*)?";
       pushUrl = function(element, url) {
-        var http;
+        var a, http;
         http = "";
         if (!/^https?\:\/\//.test(url)) {
           http = "http://";
         }
-        return element.append(angular.element('<a href="' + http + url + '" target="_blank">' + url + '</a>'));
+        a = angular.element('<a target="_blank"></a>');
+        a.attr("href", http + url);
+        a.text(url);
+        return element.append(a);
       };
       pushText = function(element, text) {
-        return element.append(text);
+        var e;
+        e = angular.element("<span></span>");
+        e.text(text);
+        return element.append(e);
       };
       pattern = new RegExp(patternString, "g");
       parseUrlsToElement = function(element, content) {

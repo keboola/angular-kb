@@ -282,7 +282,8 @@
   )
 
   app.controller('kb.ui.urlize', ($scope) ->
-    $scope.content = "asdasd www.google.com asdsafasdf https://connection.keboola.com some other text"
+    $scope.content = "asdasd www.google.com asdsafasdf https://connection.keboola.com some other text <script>alert(1)</script> asdasd www.<script>alert(1)</script>.cz asdasdgg"
+
 
   )
 
