@@ -53,6 +53,9 @@ angular.module('kb.ui.urlize', [])
 
       pattern = new RegExp(patternString, "g")
       parseUrlsToElement = (element, content) ->
+        if not content
+          content= "null"
+        content = String(content)
         element.empty()
         urls = content.match pattern
         rest = content

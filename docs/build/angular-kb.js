@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.13.7 - 2014-10-14
+ * @version v0.13.7 - 2014-10-15
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -2595,6 +2595,10 @@
       pattern = new RegExp(patternString, "g");
       parseUrlsToElement = function(element, content) {
         var rest, split, text, url, urls, _i, _len;
+        if (!content) {
+          content = "null";
+        }
+        content = String(content);
         element.empty();
         urls = content.match(pattern);
         rest = content;
@@ -3633,11 +3637,11 @@ angular.module("kb.templates").run(["$templateCache", function($templateCache) {
     "\n" +
     "    <div class=\"input-group\">\r" +
     "\n" +
-    "        <input class=\"form-control search\" type=\"text\" placeholder=\"Search...\" ng-model=\"query\" />\r" +
+    "        <input class=\"form-control search\" type=\"text\" kb-focus=\"focus\" placeholder=\"Search...\" ng-model=\"query\" />\r" +
     "\n" +
-    "        <div class=\"input-group-addon\" ng-if=\"query\" ng-click=\"remove()\"><span class=\"fa fa-fw fa-times\"></span></div>\r" +
+    "        <div class=\"input-group-addon\" ng-if=\"hasQuery()\" ng-click=\"remove()\"><span class=\"fa fa-fw fa-times\"></span></div>\r" +
     "\n" +
-    "        <div class=\"input-group-addon\" ng-if=\"!query\"><span class=\"fa fa-fw fa-search\"></span></div>\r" +
+    "        <div class=\"input-group-addon\" ng-if=\"!hasQuery()\"><span class=\"fa fa-fw fa-search\"></span></div>\r" +
     "\n" +
     "    </div>\r" +
     "\n" +
