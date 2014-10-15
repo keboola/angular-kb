@@ -1,3 +1,6 @@
+## 0.13.8 (2014-10-15)
+ * [Feat] - Urlize directive
+
 ## 0.13.7 (2014-09-26)
  * [Fix] `kb.ui.searchFilter` - fixed query detection
 
