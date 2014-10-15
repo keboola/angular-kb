@@ -2595,8 +2595,11 @@
       pattern = new RegExp(patternString, "g");
       parseUrlsToElement = function(element, content) {
         var rest, split, text, url, urls, _i, _len;
-        content = String(content);
         element.empty();
+        if (!content) {
+          return;
+        }
+        content = String(content);
         urls = content.match(pattern);
         rest = content;
         if (urls) {
@@ -2620,13 +2623,12 @@
         scope: {
           content: "="
         },
-        template: "<span>\n</span>",
         link: function(scope, element, attrs) {
           return parseUrlsToElement(element, scope.content);
         },
         controller: [
           "$scope", "$element", function($scope, $element) {
-            return $scope.$watch("content", function(newValue, oldValue) {
+            return $scope.$watch("content", function() {
               return parseUrlsToElement($element, $scope.content);
             });
           }
