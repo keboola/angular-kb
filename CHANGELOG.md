@@ -1,4 +1,7 @@
 ## 0.13.9 (2014-10-15)
+ * [Fix] - Urlize directive - empty values
+
+## 0.13.9 (2014-10-15)
  * [Feat] - Urlize directive
 
 ## 0.13.7 (2014-09-26)
