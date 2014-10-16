@@ -1,14 +1,18 @@
-
-
 .kb-sapi-events-table .list-more {
-	text-align: center;
-	margin: 20px 0px;
+  text-align: center;
+  margin: 20px 0px;
 }
 
 .kb-sapi-events-table .list-more button {
-	width: 400px;
+  width: 400px;
 }
 
 .kb-sapi-events-table .table-events tr {
-	cursor: pointer;
+  cursor: pointer;
+}
+
+.kb-sapi-events-table table{
+    table-layout: fixed;
+    word-wrap: break-word;
+
 }

@@ -44,18 +44,20 @@
 	  <div class="col-md-2" ng-show="filter">
 	    <button type="button" class="btn btn-primary" ng-click="cancelFilter()">Cancel Filter</button>
 	  </div>
-	<div class="col-md-2">
-	  <div class="checkbox">
-	    <label>
-	      <input type="checkbox" ng-model="autoload"> Auto reload
-	    </label>
+	  <div class="col-md-2">
+	    <div class="checkbox">
+	      <label>
+		<input type="checkbox" ng-model="autoload"> Auto reload
+	      </label>
+	    </div>
 	  </div>
-	</div>
 
 	</div>
 
 
       </form>
     </div>
+
     <kb-sapi-events-table  events="events" auto-reload="autoload"></kb-sapi-events-table>
+
   </div>
