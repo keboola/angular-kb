@@ -25,6 +25,7 @@
     'kb.ui.search-filter'
     'kb.ui.sapiComponentIcon'
     'kb.ui.urlize'
+    'kb.ui.sapiEventsTable'
   ].sort()
 
   app.config(($routeProvider) ->
@@ -283,8 +284,39 @@
 
   app.controller('kb.ui.urlize', ($scope) ->
     $scope.content = "asdasd www.google.com asdsafasdf https://connection.keboola.com some other text <script>alert(1)</script> asdasd www.<script>alert(1)</script>.cz asdasdgg"
-
-
   )
+
+  app.controller('kb.ui.sapiEventsTable', ["kbSapiService", "$scope", "kbSapiEventsService", (sapiService, $scope, eventsService) ->
+    $scope.eventsUrl = '/storage/events'
+    $scope.events = eventsService($scope.eventsUrl)
+    $scope.token = ""
+    $scope.tokenVerified = false
+    $scope.autoload = false
+
+    $scope.setToken =  ->
+      $scope.tokenVerified = false
+      if not $scope.token or $scope.token == ""
+        return
+      $scope.verifying = true
+      $scope.error = null
+      $scope.events.storageService.verifyAndSetToken($scope.token).then () ->
+        $scope.events.eventsUrl = $scope.eventsUrl
+        $scope.tokenVerified = true
+        $scope.verifying = false
+        $scope.events.load()
+      , (err) ->
+        $scope.error = err.data or error
+        $scope.verifying = false
+
+    $scope.setFilter = (pFilter)->
+      $scope.filter = pFilter
+      $scope.events.setDefaultParam 'q', $scope.filter
+      $scope.events.refresh()
+
+    $scope.cancelFilter = ->
+      $scope.filter = ""
+      $scope.setFilter()
+
+  ])
 
 )(window.angular)

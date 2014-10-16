@@ -1,0 +1,61 @@
+<div class="bs-docs-example">
+  <div class="row">
+    <div class="col-md-10">
+      <form class="form-horizontal">
+	<div class="form-group">
+	  <label class="control-label col-sm-4" >Sapi Token</label>
+	  <div class="col-sm-8">
+	    <input ng-model="token" class="form-control"/>
+	  </div>
+	</div>
+	<div class="form-group">
+	  <label class="control-label col-sm-4" >Events URL</label>
+	  <div class="col-sm-8">
+	    <input ng-model="eventsUrl" class="form-control"/>
+	  </div>
+	</div>
+	<div class="form-group">
+	  <div class="col-sm-8 pull-right">
+	    <button type="button" class="btn btn-primary" ng-click="setToken()">Init events</button>
+	    <kb-loader is-loading="true" ng-show="verifying"></kb-loader>
+	  </div>
+	</div>
+      </form>
+    </div>
+  </div>
+
+  <div class="row" ng-show="error">
+    <div class="alert alert-danger">
+      <kb-tree data="error"></kb-tree>
+    </div>
+  </div>
+  <div class="row" ng-if="tokenVerified">
+    <div class="col-md-12">
+      <form class="well form-horizontal">
+
+	<div class="form-group">
+	  <label class="control-label col-sm-1" >Filter</label>
+	  <div class="col-sm-7">
+	    <input ng-model="pFilter" class="form-control"/>
+	  </div>
+	  <div class="col-md-2" ng-hide="filter">
+	    <button type="button" class="btn btn-default" ng-click="setFilter(pFilter)">Set Filter</button>
+	  </div>
+	  <div class="col-md-2" ng-show="filter">
+	    <button type="button" class="btn btn-primary" ng-click="cancelFilter()">Cancel Filter</button>
+	  </div>
+	<div class="col-md-2">
+	  <div class="checkbox">
+	    <label>
+	      <input type="checkbox" ng-model="autoload"> Auto reload
+	    </label>
+	  </div>
+	</div>
+
+	</div>
+
+
+      </form>
+    </div>
+    <kb-sapi-events-table  events="events" auto-reload="autoload"></kb-sapi-events-table>
+  </div>
