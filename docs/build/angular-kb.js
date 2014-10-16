@@ -722,11 +722,6 @@
         return this;
       };
 
-      StorageEventsService.prototype.setInitParams = function(eventsUrl, storageService) {
-        this.eventsUrl = eventsUrl;
-        return this.storageService = storageService;
-      };
-
       StorageEventsService.prototype.load = function(params) {
         var eventsService;
         eventsService = this;
