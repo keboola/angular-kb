@@ -1,6 +1,6 @@
 angular.module('kb.config', [])
   .value('kb.config', {})
-
+  .value('kb.components', {})
 angular.module('kb.templates', [])
 
 angular.module('kb', [

@@ -8,18 +8,34 @@
 	    <input ng-model="token" class="form-control"/>
 	  </div>
 	</div>
+
 	<div class="form-group">
 	  <label class="control-label col-sm-4" >Events URL</label>
 	  <div class="col-sm-8">
 	    <input ng-model="eventsUrl" class="form-control"/>
 	  </div>
 	</div>
+
+	<div class="form-group">
+	  <label class="control-label col-sm-2" >Header</label>
+
+	    <div class="col-sm-2" ng-repeat="header in possibleHeaders">
+	      <div class="checkbox">
+		<label>
+		  <input type="checkbox"  ng-checked="isChecked(header)" ng-click="setHeader(header)"> {{header}}
+		</label>
+	      </div>
+
+	  </div>
+	</div>
+
 	<div class="form-group">
 	  <div class="col-sm-8 pull-right">
 	    <button type="button" class="btn btn-primary" ng-click="setToken()">Init events</button>
 	    <kb-loader is-loading="true" ng-show="verifying"></kb-loader>
 	  </div>
 	</div>
+
       </form>
     </div>
   </div>
@@ -29,6 +45,7 @@
       <kb-tree data="error"></kb-tree>
     </div>
   </div>
+
   <div class="row" ng-if="tokenVerified">
     <div class="col-md-12">
       <form class="well form-horizontal">
@@ -47,7 +64,7 @@
 	  <div class="col-md-2">
 	    <div class="checkbox">
 	      <label>
-		<input type="checkbox" ng-model="autoload"> Auto reload
+		<input type="checkbox"  ng-model="autoload"> Auto reload
 	      </label>
 	    </div>
 	  </div>
@@ -58,6 +75,6 @@
       </form>
     </div>
 
-    <kb-sapi-events-table  events="events" auto-reload="autoload"></kb-sapi-events-table>
+    <kb-sapi-events-table header="selectedHeader"  events="events" auto-reload="autoload"></kb-sapi-events-table>
 
   </div>

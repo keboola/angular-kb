@@ -1,11 +1,11 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.13.11 - 2014-10-16
+ * @version v0.13.11 - 2014-10-17
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
 
-  angular.module('kb.config', []).value('kb.config', {});
+  angular.module('kb.config', []).value('kb.config', {}).value('kb.components', {});
 
   angular.module('kb.templates', []);
 
@@ -2371,11 +2371,13 @@
 (function() {
 
   angular.module('kb.ui.sapiEventsTable', ['kb.sapi.eventsService', 'kb.ui.tree']).directive('kbSapiEventsTable', function() {
-    var config, deprecatedAuthorizationText, infoEvents, successEvents, templates;
+    var config, defaultHeader, deprecatedAuthorizationText, infoEvents, possibleHeaders, successEvents, templates;
     successEvents = ['storage.tableImportDone'];
     infoEvents = ['storage.tableExported'];
+    possibleHeaders = ["created", "event", "id", "component", "creator"];
+    defaultHeader = ["created", "event"];
     templates = {
-      table: "<div class=\"kb-sapi-events-table\">\n	<div ng-show=\"events.events.length && events.loaded && !selectedEvent\">\n		<table class=\"table table-striped table-events\">\n			<tbody>\n				<tr ng-repeat=\"event in events.events | orderBy:'id':true track by event.id\" ng-class=\"eventClass(event)\" ng-click=\"eventDetail(event)\" title=\"Event id: {{ event.id }}\">\n					<td class=\"created\">{{ event.created | date:'fullDate' }}</td>\n					<td>{{ feedMessage(event) }}</td>\n				</tr>\n			</tbody>\n		</table>\n		<div class=\"list-more\" ng-show=\"events.hasOlderEvents\">\n			<button ng-click=\"events.loadOlderEvents()\" class=\"btn btn-default btn-large\" ng-disabled=\"events.olderEventsLoading\">More..</button>\n		</div>\n	</div>\n	<div ng-show=\"!events.events.length && events.loaded\">\n		<div class=\"well\">\n			There are no events yet.\n		</div>\n	</div>\n	<div ng-show=\"!events.loaded\">\n		<div class=\"well\">\n			<i class=\"fa fa-refresh fa-spin\"></i>\n			Loading events...\n		</div>\n	</div>\n							 <div class=\"event-detail\" ng-show=\"selectedEvent\">\n										 <a ng-click=\"leaveEventDetail()\">\n											<i class=\"fa fa-chevron-left\"></i> Back to events list\n										 </a>\n							 			<h3>Event detail</h3>\n									 <div class=\"well message\" ng-class=\"eventClass(selectedEvent)\">\n												{{ selectedEvent.message }}\n											</div>\n\n											<p class=\"well\" ng-show=\"selectedEvent.description\">\n												{{ selectedEvent.description }}\n											</p>\n									 \n											<div class=\"tab-pane active\" id=\"tableOverview\">\n												<table class=\"table\">\n													<tbody>\n														<tr>\n														<td>ID</td>\n														<td>{{ selectedEvent.id }}</td>\n														</tr>\n														<tr>\n														<td>Created</td>\n														<td><kb-datetime datetime=\"selectedEvent.created\"></kb-datetime></td>\n														</tr>\n														<tr>\n														<td>Component</td>\n														<td>{{ selectedEvent.component }}</td>\n														</tr>\n														<tr>\n															<td>Configuration ID</td>\n															<td>{{ selectedEvent.configurationId || \"N/A\" }}</td>\n														</tr>\n														<tr>\n														<td>Run ID</td>\n														<td>{{ selectedEvent.runId || \"N/A\" }}</td>\n														</tr>\n													</tbody>\n												</table>\n											</div>\n\n											<div ng-show=\"selectedEvent.attachments.length\">\n												<h3>Attachments</h3>\n												<ul>\n													<li ng-repeat=\"attachment in selectedEvent.attachments\">\n														<a href=\"{{ attachment.url }}\">\n															{{ attachment.uploadType }} ({{ attachment.sizeBytes | kbfilesize}})\n														</a>\n													</li>\n												</ul>\n											</div>\n									 \n											<div ng-show=\"selectedEvent.params\">\n												<h3>Parameters</h3>\n												<kb-tree data=\"selectedEvent.params\"></kb-tree>\n											</div>\n									 \n											<div ng-show=\"selectedEvent.performance\">\n												<h3>Performance</h3>\n												<kb-tree data=\"selectedEvent.performance\"></kb-tree>\n											</div>\n									 \n											<div ng-show=\"selectedEvent.results\">\n												<h3>Results</h3>\n												<kb-tree data=\"selectedEvent.results\"></kb-tree>\n											</div>\n									 \n											<div ng-show=\"selectedEvent.context\">\n												<h3>Context</h3>\n												<kb-tree data=\"selectedEvent.context\"></kb-tree>\n											</div>\n\n										 <a ng-click=\"leaveEventDetail()\">\n										 	<i class=\"fa fa-chevron-left\"></i> Back to events list\n										 </a>\n							 </div>\n</div>"
+      table: "<div class=\"kb-sapi-events-table\">\n <div ng-show=\"events.events.length && events.loaded && !selectedEvent\">\n   {{givenHeader}}\n   <table class=\"table table-striped table-events\">\n     <thead>\n       <tr >\n         <th ng-repeat=\"item in options.header\">{{item}}</th>\n       </tr>\n     </thead>\n     <tbody>\n       <tr ng-repeat=\"event in events.events | orderBy:'id':true track by event.id\" ng-class=\"eventClass(event)\" ng-click=\"eventDetail(event)\" title=\"Event id: {{ event.id }}\">\n           <td ng-repeat=\"item in options.header\">\n             <span ng-if=\"item == 'created'\" class=\"created\">{{ event[item] | date:'fullDate' }}</span>\n             <span ng-if=\"item == 'event'\">\n               {{feedMessage(event)}}\n             </span>\n             <span ng-if=\"item == 'component'\">\n               <p ng-if=\"component(event[item])\">\n                  <kb-sapi-component-icon component=\"component(event[item])\"  size=\"32\"></kb-sapi-component-icon>{{component(event[item]).name}}     </p>\n               <span ng-hide=\"component(event[item])\">{{event[item]}}</span>\n\n             </span>\n             <span ng-if=\"item == 'id'\">{{event[item]}}</span>\n             <span ng-if=\"item == 'creator'\">{{event.token.name}}</span>\n           </td>\n       </tr>\n     </tbody>\n   </table>\n   <div class=\"list-more\" ng-show=\"events.hasOlderEvents\">\n     <button ng-click=\"events.loadOlderEvents()\" class=\"btn btn-default btn-large\" ng-disabled=\"events.olderEventsLoading\">More..</button>\n   </div>\n </div>\n <div ng-show=\"!events.events.length && events.loaded\">\n   <div class=\"well\">\n     There are no events yet.\n   </div>\n </div>\n <div ng-show=\"!events.loaded\">\n   <div class=\"well\">\n     <i class=\"fa fa-refresh fa-spin\"></i>\n     Loading events...\n   </div>\n </div>\n  <div class=\"event-detail\" ng-show=\"selectedEvent\">\n        <a ng-click=\"leaveEventDetail()\">\n         <i class=\"fa fa-chevron-left\"></i> Back to events list\n        </a>\n       <h3>Event detail</h3>\n      <div class=\"well message\" ng-class=\"eventClass(selectedEvent)\">\n           {{ selectedEvent.message }}\n         </div>\n\n         <p class=\"well\" ng-show=\"selectedEvent.description\">\n           {{ selectedEvent.description }}\n         </p>\n\n         <div class=\"tab-pane active\" id=\"tableOverview\">\n           <table class=\"table\">\n             <tbody>\n               <tr>\n               <td>ID</td>\n               <td>{{ selectedEvent.id }}</td>\n               </tr>\n               <tr>\n               <td>Created</td>\n               <td><kb-datetime datetime=\"selectedEvent.created\"></kb-datetime></td>\n               </tr>\n               <tr>\n               <td>Component</td>\n               <td>{{ selectedEvent.component }}</td>\n               </tr>\n               <tr>\n                 <td>Configuration ID</td>\n                 <td>{{ selectedEvent.configurationId || \"N/A\" }}</td>\n               </tr>\n               <tr>\n               <td>Run ID</td>\n               <td>{{ selectedEvent.runId || \"N/A\" }}</td>\n               </tr>\n             </tbody>\n           </table>\n         </div>\n\n         <div ng-show=\"selectedEvent.attachments.length\">\n           <h3>Attachments</h3>\n           <ul>\n             <li ng-repeat=\"attachment in selectedEvent.attachments\">\n               <a href=\"{{ attachment.url }}\">\n                 {{ attachment.uploadType }} ({{ attachment.sizeBytes | kbfilesize}})\n               </a>\n             </li>\n           </ul>\n         </div>\n\n         <div ng-show=\"selectedEvent.params\">\n           <h3>Parameters</h3>\n           <kb-tree data=\"selectedEvent.params\"></kb-tree>\n         </div>\n\n         <div ng-show=\"selectedEvent.performance\">\n           <h3>Performance</h3>\n           <kb-tree data=\"selectedEvent.performance\"></kb-tree>\n         </div>\n\n         <div ng-show=\"selectedEvent.results\">\n           <h3>Results</h3>\n           <kb-tree data=\"selectedEvent.results\"></kb-tree>\n         </div>\n\n         <div ng-show=\"selectedEvent.context\">\n           <h3>Context</h3>\n           <kb-tree data=\"selectedEvent.context\"></kb-tree>\n         </div>\n\n        <a ng-click=\"leaveEventDetail()\">\n         <i class=\"fa fa-chevron-left\"></i> Back to events list\n        </a>\n  </div>\n</div>"
     };
     deprecatedAuthorizationText = "Deprecated authorization method used.";
     return config = {
@@ -2383,13 +2385,27 @@
       replace: true,
       scope: {
         events: '=',
-        autoReload: '='
+        autoReload: '=',
+        header: '='
       },
       template: templates.table,
       controller: [
-        "$scope", "$element", "$compile", "$timeout", function($scope, $element, $compile, $timeout) {
+        "$scope", "$element", "$compile", "$timeout", "kb.components", function($scope, $element, $compile, $timeout, components) {
           var loadNewEvents, timeoutId;
           timeoutId = null;
+          $scope.component = function(componentId) {
+            return _.find(components, function(comp) {
+              return comp.id === componentId;
+            });
+          };
+          $scope.options = {
+            header: $scope.header
+          };
+          if (!_.isArray($scope.header) || _.isEmpty($scope.header)) {
+            $scope.options = {
+              header: defaultHeader
+            };
+          }
           $scope.selectedEvent = null;
           $scope.eventClass = function(event) {
             var _ref;
