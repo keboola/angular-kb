@@ -19,12 +19,12 @@
 	<div class="form-group">
 	  <label class="control-label col-sm-2" >Header</label>
 
-	    <div class="col-sm-2" ng-repeat="header in possibleHeaders">
-	      <div class="checkbox">
-		<label>
-		  <input type="checkbox"  ng-checked="isChecked(header)" ng-click="setHeader(header)"> {{header}}
-		</label>
-	      </div>
+	  <div class="col-sm-2" ng-repeat="header in possibleHeaders">
+	    <div class="checkbox">
+	      <label>
+		<input type="checkbox"  ng-checked="isChecked(header)" ng-click="setHeader(header)"> {{header}}
+	      </label>
+	    </div>
 
 	  </div>
 	</div>
@@ -68,13 +68,10 @@
 	      </label>
 	    </div>
 	  </div>
-
 	</div>
-
-
       </form>
     </div>
-
-    <kb-sapi-events-table header="selectedHeader"  events="events" auto-reload="autoload"></kb-sapi-events-table>
-
+    <div class="col-md-12">
+      <kb-sapi-events-table header="selectedHeader"  events="events" auto-reload="autoload"></kb-sapi-events-table>
+    </div>
   </div>

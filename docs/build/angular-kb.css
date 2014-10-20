@@ -121,9 +121,23 @@
 }
 
 .kb-sapi-events-table table{
-    table-layout: fixed;
-    word-wrap: break-word;
+/*    table-layout: fixed;*/
 
+    -ms-word-break: break-all;
+     word-break: break-all;
+
+     /* Non standard for webkit */
+     word-break: break-word;
+
+-webkit-hyphens: auto;
+   -moz-hyphens: auto;
+    -ms-hyphens: auto;
+	hyphens: auto;
+
+}
+
+.kb-sapi-events-table thead th{
+    min-width:150px;
 }
 
 
