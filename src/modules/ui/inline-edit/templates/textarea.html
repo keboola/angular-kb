@@ -1,15 +1,15 @@
 <span class="static" ng-hide="isEditing" ng-click="edit()" tooltip="{{ tooltipTitle }}">
-		<span kb-nl2br="value"></span>
-		<a class="placeholder" ng-show="!value">
-			<i class="fa fa-pencil-square-o"></i>
-			{{ placeholder }}
-		</a>
+    <span kb-nl2br="value"></span>
+    <a class="placeholder" ng-show="!value">
+      <i class="fa fa-pencil-square-o"></i>
+      {{ placeholder }}
+    </a>
 </span>
 <div ng-show="isEditing" class="editing">
-	<textarea type="text" ng-model="editValue" placeholder="{{ placeholder }}">
-	</textarea>
-	<div class="form-actions">
-				<button class="btn btn-primary" ng-click="save()">Save</button>
-				<button class="btn btn-default" ng-click="cancel()">Cancel</button>
-	</div>
+  <textarea type="text" ng-model="editValue" placeholder="{{ placeholder }}">
+  </textarea>
+  <div class="form-actions">
+        <button class="btn btn-primary" ng-click="save()">Save</button>
+        <button class="btn btn-default" ng-click="cancel()">Cancel</button>
+  </div>
 </div>

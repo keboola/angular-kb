@@ -1,30 +1,30 @@
 
 describe 'kbfilesize', ->
 
-	filesizeFilter = null
+  filesizeFilter = null
 
-	beforeEach(module('kb.filters.filesize'))
-	beforeEach(inject(($filter) ->
-		filesizeFilter = $filter('kbfilesize')
-	))
+  beforeEach(module('kb.filters.filesize'))
+  beforeEach(inject(($filter) ->
+    filesizeFilter = $filter('kbfilesize')
+  ))
 
-	it 'should return default empty value when value is empty', ->
-		expect(filesizeFilter(null)).toBe('N/A')
+  it 'should return default empty value when value is empty', ->
+    expect(filesizeFilter(null)).toBe('N/A')
 
-	it 'should return empty value when value is empty', ->
-		expect(filesizeFilter(null, '')).toBe('')
+  it 'should return empty value when value is empty', ->
+    expect(filesizeFilter(null, '')).toBe('')
 
-	it 'should convert B', ->
-		expect(filesizeFilter(125)).toBe('125B')
+  it 'should convert B', ->
+    expect(filesizeFilter(125)).toBe('125B')
 
-	it 'should convert KB', ->
-		expect(filesizeFilter(1356)).toBe('1.32KB')
+  it 'should convert KB', ->
+    expect(filesizeFilter(1356)).toBe('1.32KB')
 
-	it 'should convert MB', ->
-		expect(filesizeFilter(2345678)).toBe('2.24MB')
-		expect(filesizeFilter(797540352)).toBe('760.59MB')
+  it 'should convert MB', ->
+    expect(filesizeFilter(2345678)).toBe('2.24MB')
+    expect(filesizeFilter(797540352)).toBe('760.59MB')
 
-	it 'should convert GB', ->
-		expect(filesizeFilter(2345678000)).toBe('2.18GB')
+  it 'should convert GB', ->
+    expect(filesizeFilter(2345678000)).toBe('2.18GB')
 
 

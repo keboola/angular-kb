@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.13.11 - 2014-10-17
+ * @version v0.13.11 - 2014-10-20
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -143,123 +143,123 @@
   angular.module('kb.filters.filesize', []).filter('kbfilesize', function() {
     var fileSize;
     fileSize = (function ( global ) {
-			"use strict";
+      "use strict";
 
-			var base    = 10,
-			    right   = /\.(.*)/,
-			    bit     = /b$/,
-			    byte    = /^B$/,
-			    zero    = /^0$/,
-			    options = {
-			    	all : {
-			    		increments : [["B", 1], ["Kb", 128], ["KB", 1024], ["Mb", 131072], ["MB", 1024*1024], ["Gb", 1.342e+8], ["GB", 1.074e+9], ["Tb", 1.374e+11], ["TB", 1.1e+12], ["Pb", 1.407e+14], ["PB", 1.126e+15]],
-			    		nth        : 11
-			    	},
-			    	bitless : {
-			    		increments : [["B", 1], ["KB", 1024], ["MB", 1024*1024], ["GB", 1024*1024*1024], ["TB", 1024*1024*1024*1024], ["PB", 1.126e+15]],
-			    		nth        : 6
-			    	}
-			    };
+      var base    = 10,
+          right   = /\.(.*)/,
+          bit     = /b$/,
+          byte    = /^B$/,
+          zero    = /^0$/,
+          options = {
+            all : {
+              increments : [["B", 1], ["Kb", 128], ["KB", 1024], ["Mb", 131072], ["MB", 1024*1024], ["Gb", 1.342e+8], ["GB", 1.074e+9], ["Tb", 1.374e+11], ["TB", 1.1e+12], ["Pb", 1.407e+14], ["PB", 1.126e+15]],
+              nth        : 11
+            },
+            bitless : {
+              increments : [["B", 1], ["KB", 1024], ["MB", 1024*1024], ["GB", 1024*1024*1024], ["TB", 1024*1024*1024*1024], ["PB", 1.126e+15]],
+              nth        : 6
+            }
+          };
 
-			/**
-			 * filesize
-			 *
-			 * @param  {Mixed}   arg  String, Int or Float to transform
-			 * @param  {Mixed}   pos  [Optional] Position to round to, defaults to 2 if short is ommitted, or "true" for shorthand output
-			 * @param  {Boolean} bits [Optional] Determines if "bit" sizes are used for result calculation, default is true
-			 * @return {String}       Readable file size String
-			 */
-			function filesize (arg) {
-				var result = "",
-				    bits   = true,
-				    skip   = false,
-				    i, neg, num, pos, short, size, sizes, suffix, z;
+      /**
+       * filesize
+       *
+       * @param  {Mixed}   arg  String, Int or Float to transform
+       * @param  {Mixed}   pos  [Optional] Position to round to, defaults to 2 if short is ommitted, or "true" for shorthand output
+       * @param  {Boolean} bits [Optional] Determines if "bit" sizes are used for result calculation, default is true
+       * @return {String}       Readable file size String
+       */
+      function filesize (arg) {
+        var result = "",
+            bits   = true,
+            skip   = false,
+            i, neg, num, pos, short, size, sizes, suffix, z;
 
-				// Determining arguments
-				if (arguments[3] !== undefined) {
-					pos   = arguments[1];
-					short = arguments[2];
-					bits  = arguments[3];
-				}
-				else {
-					typeof arguments[1] === "boolean" ? short = arguments[1] : pos = arguments[1];
+        // Determining arguments
+        if (arguments[3] !== undefined) {
+          pos   = arguments[1];
+          short = arguments[2];
+          bits  = arguments[3];
+        }
+        else {
+          typeof arguments[1] === "boolean" ? short = arguments[1] : pos = arguments[1];
 
-					if ( typeof arguments[2] === "boolean" ) {
-						bits = arguments[2];
-					}
-				}
+          if ( typeof arguments[2] === "boolean" ) {
+            bits = arguments[2];
+          }
+        }
 
-				if ( isNaN( arg ) || ( pos !== undefined && isNaN( pos ) ) ) {
-					throw Error("Invalid arguments");
-				}
+        if ( isNaN( arg ) || ( pos !== undefined && isNaN( pos ) ) ) {
+          throw Error("Invalid arguments");
+        }
 
-				short = ( short === true );
-				bits  = ( bits === true );
-				pos   = short ? 1 : ( pos === undefined ? 2 : parseInt( pos, base ) );
-				num   = Number( arg );
-				neg   = ( num < 0 );
+        short = ( short === true );
+        bits  = ( bits === true );
+        pos   = short ? 1 : ( pos === undefined ? 2 : parseInt( pos, base ) );
+        num   = Number( arg );
+        neg   = ( num < 0 );
 
-				// Flipping a negative number to determine the size
-				if ( neg ) {
-					num = -num;
-				}
+        // Flipping a negative number to determine the size
+        if ( neg ) {
+          num = -num;
+        }
 
-				// Zero is now a special case because bytes divide by 1
-				if ( num === 0 ) {
-					result = "0B";
-				}
-				else {
-					if ( bits ) {
-						sizes = options.all.increments;
-						i     = options.all.nth;
-					}
-					else {
-						sizes = options.bitless.increments;
-						i     = options.bitless.nth;
-					}
+        // Zero is now a special case because bytes divide by 1
+        if ( num === 0 ) {
+          result = "0B";
+        }
+        else {
+          if ( bits ) {
+            sizes = options.all.increments;
+            i     = options.all.nth;
+          }
+          else {
+            sizes = options.bitless.increments;
+            i     = options.bitless.nth;
+          }
 
-					while ( i-- ) {
-						size   = sizes[i][1];
-						suffix = sizes[i][0];
+          while ( i-- ) {
+            size   = sizes[i][1];
+            suffix = sizes[i][0];
 
-						if ( num >= size ) {
-							// Treating bytes as cardinal
-							if ( byte.test( suffix ) ) {
-								skip = true;
-								pos  = 0;
-							}
+            if ( num >= size ) {
+              // Treating bytes as cardinal
+              if ( byte.test( suffix ) ) {
+                skip = true;
+                pos  = 0;
+              }
 
-							result = ( num / size ).toFixed( pos );
+              result = ( num / size ).toFixed( pos );
 
-							if ( !skip && short ) {
-								if ( bits && bit.test( suffix ) ) {
-									suffix = suffix.toLowerCase();
-								}
+              if ( !skip && short ) {
+                if ( bits && bit.test( suffix ) ) {
+                  suffix = suffix.toLowerCase();
+                }
 
-								suffix = suffix.charAt( 0 );
-								z      = right.exec( result );
+                suffix = suffix.charAt( 0 );
+                z      = right.exec( result );
 
-								if ( z !== null && z[1] !== undefined && zero.test( z[1] ) ) {
-									result = parseInt( result, base );
-								}
-							}
+                if ( z !== null && z[1] !== undefined && zero.test( z[1] ) ) {
+                  result = parseInt( result, base );
+                }
+              }
 
-							result += suffix;
-							break;
-						}
-					}
-				}
+              result += suffix;
+              break;
+            }
+          }
+        }
 
-				// Decorating a 'diff'
-				if ( neg ) {
-					result = "-" + result;
-				}
+        // Decorating a 'diff'
+        if ( neg ) {
+          result = "-" + result;
+        }
 
-				return result;
-			};
+        return result;
+      };
 
-			return filesize;
-		})( this );;
+      return filesize;
+    })( this );;
     return function(value, emptyValue) {
       if (emptyValue == null) {
         emptyValue = 'N/A';
@@ -274,10 +274,11 @@
 }).call(this);
 
 (function() {
+  var removeDiacritics, removeDiacriticsCache;
 
   angular.module('kb.filters.webalize', []).filter('kbwebalize', function() {
-    var REMOVE_DIACRITICS_MAP, removeDiacritics, removeDiacriticsCache;
-    REMOVE_DIACRITICS_MAP = [
+    var REMOVE_DIACRITICS_MAP;
+    return REMOVE_DIACRITICS_MAP = [
       {
         base: 'A',
         letters: /[\u0041\u24B6\uFF21\u00C0\u00C1\u00C2\u1EA6\u1EA4\u1EAA\u1EA8\u00C3\u0100\u0102\u1EB0\u1EAE\u1EB4\u1EB2\u0226\u01E0\u00C4\u01DE\u1EA2\u00C5\u01FA\u01CD\u0200\u0202\u1EA0\u1EAC\u1EB6\u1E00\u0104\u023A\u2C6F]/g
@@ -535,23 +536,20 @@
         letters: /\s/g
       }
     ];
-    removeDiacriticsCache = {};
-    removeDiacritics = function(str) {
-      var cached, item, key, _i, _len;
-      key = '_' + str;
-      cached = removeDiacriticsCache[key];
-      if (cached) {
-        return cached;
-      }
-      for (_i = 0, _len = REMOVE_DIACRITICS_MAP.length; _i < _len; _i++) {
-        item = REMOVE_DIACRITICS_MAP[_i];
-        str = str.replace(item.letters, item.base);
-      }
-      return removeDiacriticsCache[key] = str;
-    };
-    return function(string) {
-      return removeDiacritics(string).toLowerCase().replace(/\ /g, '-').replace(/[^a-z0-9\-]/g, '');
-    };
+  }, removeDiacriticsCache = {}, removeDiacritics = function(str) {
+    var cached, item, key, _i, _len;
+    key = '_' + str;
+    cached = removeDiacriticsCache[key];
+    if (cached) {
+      return cached;
+    }
+    for (_i = 0, _len = REMOVE_DIACRITICS_MAP.length; _i < _len; _i++) {
+      item = REMOVE_DIACRITICS_MAP[_i];
+      str = str.replace(item.letters, item.base);
+    }
+    return removeDiacriticsCache[key] = str;
+  }, function(string) {
+    return removeDiacritics(string).toLowerCase().replace(/\ /g, '-').replace(/[^a-z0-9\-]/g, '');
   });
 
 }).call(this);
@@ -900,8 +898,6 @@
       };
 
       StorageService.prototype.verifyAndSetToken = function(token, callback) {
-        var service;
-        service = this;
         return this.$http({
           url: this.url('/storage/tokens/verify'),
           method: 'GET',
@@ -1065,8 +1061,6 @@
       };
 
       StorageService.prototype.deleteTable = function(id) {
-        var service;
-        service = this;
         return this.http({
           url: this.url('/storage/tables/' + id),
           method: 'DELETE'
@@ -1546,7 +1540,7 @@
       };
 
       /*
-        	# Accepts HTTP requests promise - expects job resource returned
+          # Accepts HTTP requests promise - expects job resource returned
           # Returns promise
           # Job resource is polled until job is executed
           # Promise is resolved when job finishes with success otherwise promise is rejected
@@ -1585,7 +1579,7 @@
       };
 
       /*
-        	# Poll job resource until job status is `success` or `error`
+          # Poll job resource until job status is `success` or `error`
           # Resolved as error after 20 tries
           # Returns promise - resolved when job is finished
       */
@@ -1739,7 +1733,7 @@
 
 
 /*
-	Inverts value of kbClickToggle attribute on click
+  Inverts value of kbClickToggle attribute on click
 */
 
 
@@ -1770,7 +1764,7 @@
 /*
   kbCodemirror options passed to CodeMirror instance create
   Special options:
-  	- cursorPos: sets cursor position after initialization
+    - cursorPos: sets cursor position after initialization
 
   CodeMirror
 */
@@ -1974,7 +1968,7 @@
           datetime: '=',
           emptyValue: '@'
         },
-        template: "<span ng-cloak ng-class=\"{'muted': isEmpty()}\">\n	{{ formattedValue() }}\n	<i class=\"kb-datetime fa fa-clock-o\" tooltip=\"{{ tooltipTitle }}\" ng-show=\"isDatetime()\"></i>\n</span>",
+        template: "<span ng-cloak ng-class=\"{'muted': isEmpty()}\">\n  {{ formattedValue() }}\n  <i class=\"kb-datetime fa fa-clock-o\" tooltip=\"{{ tooltipTitle }}\" ng-show=\"isDatetime()\"></i>\n</span>",
         link: function(scope, element, attrs) {
           scope.tooltipTitle = '';
           scope.resolveEmptyValue = function() {
@@ -2024,7 +2018,7 @@
         emptyValue: '@'
       },
       replace: true,
-      template: "<span title=\"{{ duration }} seconds\">\n	<span ng-hide=\"isEmpty()\">{{ duration | kbDuration }}</span>\n	<span ng-show=\"isEmpty()\" class=\"muted\">{{ getEmptyValue() }}</span>\n</span>",
+      template: "<span title=\"{{ duration }} seconds\">\n  <span ng-hide=\"isEmpty()\">{{ duration | kbDuration }}</span>\n  <span ng-show=\"isEmpty()\" class=\"muted\">{{ getEmptyValue() }}</span>\n</span>",
       link: function(scope) {
         scope.isEmpty = function() {
           return scope.duration === null || angular.isUndefined(scope.duration);
@@ -2191,7 +2185,7 @@
   angular.module('kb.ui.loader', []).directive('kbLoader', function() {
     return {
       restrict: 'E',
-      template: "<a kb-loader class=\"kb-loader\">\n	<i class=\"fa fa-refresh\"> </i>\n</a>",
+      template: "<a kb-loader class=\"kb-loader\">\n  <i class=\"fa fa-refresh\"> </i>\n</a>",
       replace: true,
       link: function(scope, element, attrs) {
         var icon;
@@ -2247,7 +2241,7 @@
   angular.module('kb.ui.runButton', ['kb.ui.loader']).directive('kbRunButton', function() {
     return {
       restrict: 'E',
-      template: "<button class=\"btn btn-default run-transformation kb-loader\">\n	<i  class=\"fa fa-play\"> </i>\n</button>",
+      template: "<button class=\"btn btn-default run-transformation kb-loader\">\n  <i  class=\"fa fa-play\"> </i>\n</button>",
       replace: true,
       link: function(scope, element, attrs) {
         var icon;
@@ -2281,7 +2275,7 @@
 /*
   Link to SAPI Console
   params:
-  	component: component hashmap from https://connection.keboola.com/v2/storage
+    component: component hashmap from https://connection.keboola.com/v2/storage
 */
 
 
@@ -2290,7 +2284,7 @@
   angular.module('kb.ui.sapiComponentIcon', []).directive('kbSapiComponentIcon', [
     function() {
       return {
-        template: "<span ng-if=\"hasIcon()\">\n	<img ng-src=\"{{ url() }}\" width=\"{{ width }}\" height=\"{{ height }}\"/>\n</span>\n<span ng-if=\"!hasIcon()\" class='kb-default'>\n	<i class=\"fa {{ defaultIconClass[component.type] }}\" style=\"font-size: {{ size - 5 }}px; height: {{ size }}px; position: relative; top: 5px\"></i>\n</span>",
+        template: "<span ng-if=\"hasIcon()\">\n  <img ng-src=\"{{ url() }}\" width=\"{{ width }}\" height=\"{{ height }}\"/>\n</span>\n<span ng-if=\"!hasIcon()\" class='kb-default'>\n  <i class=\"fa {{ defaultIconClass[component.type] }}\" style=\"font-size: {{ size - 5 }}px; height: {{ size }}px; position: relative; top: 5px\"></i>\n</span>",
         restrict: 'E',
         scope: {
           component: '=',
@@ -2336,7 +2330,7 @@
           path: '@',
           token: '@'
         },
-        template: "<form action=\"{{ url() }}\" method=\"post\" class=\"kb-sapi-console-href\" target=\"_blank\">\n	<a ng-click=\"submit()\" ng-transclude></a>\n	<input type=\"hidden\" name=\"token\" value=\"{{ getToken() }}\" />\n</form>",
+        template: "<form action=\"{{ url() }}\" method=\"post\" class=\"kb-sapi-console-href\" target=\"_blank\">\n  <a ng-click=\"submit()\" ng-transclude></a>\n  <input type=\"hidden\" name=\"token\" value=\"{{ getToken() }}\" />\n</form>",
         link: function(scope, element) {
           var path;
           path = function() {
@@ -2705,660 +2699,660 @@
   angular.module('kb.utils.csv', []).factory('kbCsv', function() {
     var csvParser;
     csvParser = (function(){
-			  /*
-			   * Generated by PEG.js 0.7.0.
-			   *
-			   * http://pegjs.majda.cz/
-			   */
+        /*
+         * Generated by PEG.js 0.7.0.
+         *
+         * http://pegjs.majda.cz/
+         */
 
-			  function quote(s) {
-			    /*
-			     * ECMA-262, 5th ed., 7.8.4: All characters may appear literally in a
-			     * string literal except for the closing quote character, backslash,
-			     * carriage return, line separator, paragraph separator, and line feed.
-			     * Any character may appear in the form of an escape sequence.
-			     *
-			     * For portability, we also escape escape all control and non-ASCII
-			     * characters. Note that "\0" and "\v" escape sequences are not used
-			     * because JSHint does not like the first and IE the second.
-			     */
-			     return '"' + s
-			      .replace(/\\/g, '\\\\')  // backslash
-			      .replace(/"/g, '\\"')    // closing quote character
-			      .replace(/\x08/g, '\\b') // backspace
-			      .replace(/\t/g, '\\t')   // horizontal tab
-			      .replace(/\n/g, '\\n')   // line feed
-			      .replace(/\f/g, '\\f')   // form feed
-			      .replace(/\r/g, '\\r')   // carriage return
-			      .replace(/[\x00-\x07\x0B\x0E-\x1F\x80-\uFFFF]/g, escape)
-			      + '"';
-			  }
+        function quote(s) {
+          /*
+           * ECMA-262, 5th ed., 7.8.4: All characters may appear literally in a
+           * string literal except for the closing quote character, backslash,
+           * carriage return, line separator, paragraph separator, and line feed.
+           * Any character may appear in the form of an escape sequence.
+           *
+           * For portability, we also escape escape all control and non-ASCII
+           * characters. Note that "\0" and "\v" escape sequences are not used
+           * because JSHint does not like the first and IE the second.
+           */
+           return '"' + s
+            .replace(/\\/g, '\\\\')  // backslash
+            .replace(/"/g, '\\"')    // closing quote character
+            .replace(/\x08/g, '\\b') // backspace
+            .replace(/\t/g, '\\t')   // horizontal tab
+            .replace(/\n/g, '\\n')   // line feed
+            .replace(/\f/g, '\\f')   // form feed
+            .replace(/\r/g, '\\r')   // carriage return
+            .replace(/[\x00-\x07\x0B\x0E-\x1F\x80-\uFFFF]/g, escape)
+            + '"';
+        }
 
-			  var result = {
-			    /*
-			     * Parses the input with a generated parser. If the parsing is successfull,
-			     * returns a value explicitly or implicitly specified by the grammar from
-			     * which the parser was generated (see |PEG.buildParser|). If the parsing is
-			     * unsuccessful, throws |PEG.parser.SyntaxError| describing the error.
-			     */
-			    parse: function(input, startRule) {
-			      var parseFunctions = {
-			        "comma": parse_comma,
-			        "sv": parse_sv,
-			        "line": parse_line,
-			        "field": parse_field,
-			        "char": parse_char
-			      };
+        var result = {
+          /*
+           * Parses the input with a generated parser. If the parsing is successfull,
+           * returns a value explicitly or implicitly specified by the grammar from
+           * which the parser was generated (see |PEG.buildParser|). If the parsing is
+           * unsuccessful, throws |PEG.parser.SyntaxError| describing the error.
+           */
+          parse: function(input, startRule) {
+            var parseFunctions = {
+              "comma": parse_comma,
+              "sv": parse_sv,
+              "line": parse_line,
+              "field": parse_field,
+              "char": parse_char
+            };
 
-			      if (startRule !== undefined) {
-			        if (parseFunctions[startRule] === undefined) {
-			          throw new Error("Invalid rule name: " + quote(startRule) + ".");
-			        }
-			      } else {
-			        startRule = "comma";
-			      }
+            if (startRule !== undefined) {
+              if (parseFunctions[startRule] === undefined) {
+                throw new Error("Invalid rule name: " + quote(startRule) + ".");
+              }
+            } else {
+              startRule = "comma";
+            }
 
-			      var pos = 0;
-			      var reportFailures = 0;
-			      var rightmostFailuresPos = 0;
-			      var rightmostFailuresExpected = [];
+            var pos = 0;
+            var reportFailures = 0;
+            var rightmostFailuresPos = 0;
+            var rightmostFailuresExpected = [];
 
-			      function padLeft(input, padding, length) {
-			        var result = input;
+            function padLeft(input, padding, length) {
+              var result = input;
 
-			        var padLength = length - input.length;
-			        for (var i = 0; i < padLength; i++) {
-			          result = padding + result;
-			        }
+              var padLength = length - input.length;
+              for (var i = 0; i < padLength; i++) {
+                result = padding + result;
+              }
 
-			        return result;
-			      }
+              return result;
+            }
 
-			      function escape(ch) {
-			        var charCode = ch.charCodeAt(0);
-			        var escapeChar;
-			        var length;
+            function escape(ch) {
+              var charCode = ch.charCodeAt(0);
+              var escapeChar;
+              var length;
 
-			        if (charCode <= 0xFF) {
-			          escapeChar = 'x';
-			          length = 2;
-			        } else {
-			          escapeChar = 'u';
-			          length = 4;
-			        }
+              if (charCode <= 0xFF) {
+                escapeChar = 'x';
+                length = 2;
+              } else {
+                escapeChar = 'u';
+                length = 4;
+              }
 
-			        return '\\' + escapeChar + padLeft(charCode.toString(16).toUpperCase(), '0', length);
-			      }
+              return '\\' + escapeChar + padLeft(charCode.toString(16).toUpperCase(), '0', length);
+            }
 
-			      function matchFailed(failure) {
-			        if (pos < rightmostFailuresPos) {
-			          return;
-			        }
+            function matchFailed(failure) {
+              if (pos < rightmostFailuresPos) {
+                return;
+              }
 
-			        if (pos > rightmostFailuresPos) {
-			          rightmostFailuresPos = pos;
-			          rightmostFailuresExpected = [];
-			        }
+              if (pos > rightmostFailuresPos) {
+                rightmostFailuresPos = pos;
+                rightmostFailuresExpected = [];
+              }
 
-			        rightmostFailuresExpected.push(failure);
-			      }
+              rightmostFailuresExpected.push(failure);
+            }
 
-			      function parse_comma() {
-			        var result0, result1;
-			        var pos0, pos1;
+            function parse_comma() {
+              var result0, result1;
+              var pos0, pos1;
 
-			        pos0 = pos;
-			        pos1 = pos;
-			        result0 = (function(offset) { return separator = ','; })(pos) ? "" : null;
-			        if (result0 !== null) {
-			          result1 = parse_sv();
-			          if (result1 !== null) {
-			            result0 = [result0, result1];
-			          } else {
-			            result0 = null;
-			            pos = pos1;
-			          }
-			        } else {
-			          result0 = null;
-			          pos = pos1;
-			        }
-			        if (result0 !== null) {
-			          result0 = (function(offset, sv) { return sv; })(pos0, result0[1]);
-			        }
-			        if (result0 === null) {
-			          pos = pos0;
-			        }
-			        return result0;
-			      }
+              pos0 = pos;
+              pos1 = pos;
+              result0 = (function(offset) { return separator = ','; })(pos) ? "" : null;
+              if (result0 !== null) {
+                result1 = parse_sv();
+                if (result1 !== null) {
+                  result0 = [result0, result1];
+                } else {
+                  result0 = null;
+                  pos = pos1;
+                }
+              } else {
+                result0 = null;
+                pos = pos1;
+              }
+              if (result0 !== null) {
+                result0 = (function(offset, sv) { return sv; })(pos0, result0[1]);
+              }
+              if (result0 === null) {
+                pos = pos0;
+              }
+              return result0;
+            }
 
-			      function parse_sv() {
-			        var result0, result1, result2, result3, result4;
-			        var pos0, pos1, pos2, pos3;
+            function parse_sv() {
+              var result0, result1, result2, result3, result4;
+              var pos0, pos1, pos2, pos3;
 
-			        pos0 = pos;
-			        pos1 = pos;
-			        result0 = [];
-			        if (/^[\n\r]/.test(input.charAt(pos))) {
-			          result1 = input.charAt(pos);
-			          pos++;
-			        } else {
-			          result1 = null;
-			          if (reportFailures === 0) {
-			            matchFailed("[\\n\\r]");
-			          }
-			        }
-			        while (result1 !== null) {
-			          result0.push(result1);
-			          if (/^[\n\r]/.test(input.charAt(pos))) {
-			            result1 = input.charAt(pos);
-			            pos++;
-			          } else {
-			            result1 = null;
-			            if (reportFailures === 0) {
-			              matchFailed("[\\n\\r]");
-			            }
-			          }
-			        }
-			        if (result0 !== null) {
-			          result1 = parse_line();
-			          if (result1 !== null) {
-			            result2 = [];
-			            pos2 = pos;
-			            pos3 = pos;
-			            if (/^[\n\r]/.test(input.charAt(pos))) {
-			              result4 = input.charAt(pos);
-			              pos++;
-			            } else {
-			              result4 = null;
-			              if (reportFailures === 0) {
-			                matchFailed("[\\n\\r]");
-			              }
-			            }
-			            if (result4 !== null) {
-			              result3 = [];
-			              while (result4 !== null) {
-			                result3.push(result4);
-			                if (/^[\n\r]/.test(input.charAt(pos))) {
-			                  result4 = input.charAt(pos);
-			                  pos++;
-			                } else {
-			                  result4 = null;
-			                  if (reportFailures === 0) {
-			                    matchFailed("[\\n\\r]");
-			                  }
-			                }
-			              }
-			            } else {
-			              result3 = null;
-			            }
-			            if (result3 !== null) {
-			              result4 = parse_line();
-			              if (result4 !== null) {
-			                result3 = [result3, result4];
-			              } else {
-			                result3 = null;
-			                pos = pos3;
-			              }
-			            } else {
-			              result3 = null;
-			              pos = pos3;
-			            }
-			            if (result3 !== null) {
-			              result3 = (function(offset, data) { return data; })(pos2, result3[1]);
-			            }
-			            if (result3 === null) {
-			              pos = pos2;
-			            }
-			            while (result3 !== null) {
-			              result2.push(result3);
-			              pos2 = pos;
-			              pos3 = pos;
-			              if (/^[\n\r]/.test(input.charAt(pos))) {
-			                result4 = input.charAt(pos);
-			                pos++;
-			              } else {
-			                result4 = null;
-			                if (reportFailures === 0) {
-			                  matchFailed("[\\n\\r]");
-			                }
-			              }
-			              if (result4 !== null) {
-			                result3 = [];
-			                while (result4 !== null) {
-			                  result3.push(result4);
-			                  if (/^[\n\r]/.test(input.charAt(pos))) {
-			                    result4 = input.charAt(pos);
-			                    pos++;
-			                  } else {
-			                    result4 = null;
-			                    if (reportFailures === 0) {
-			                      matchFailed("[\\n\\r]");
-			                    }
-			                  }
-			                }
-			              } else {
-			                result3 = null;
-			              }
-			              if (result3 !== null) {
-			                result4 = parse_line();
-			                if (result4 !== null) {
-			                  result3 = [result3, result4];
-			                } else {
-			                  result3 = null;
-			                  pos = pos3;
-			                }
-			              } else {
-			                result3 = null;
-			                pos = pos3;
-			              }
-			              if (result3 !== null) {
-			                result3 = (function(offset, data) { return data; })(pos2, result3[1]);
-			              }
-			              if (result3 === null) {
-			                pos = pos2;
-			              }
-			            }
-			            if (result2 !== null) {
-			              result3 = [];
-			              if (/^[\n\r]/.test(input.charAt(pos))) {
-			                result4 = input.charAt(pos);
-			                pos++;
-			              } else {
-			                result4 = null;
-			                if (reportFailures === 0) {
-			                  matchFailed("[\\n\\r]");
-			                }
-			              }
-			              while (result4 !== null) {
-			                result3.push(result4);
-			                if (/^[\n\r]/.test(input.charAt(pos))) {
-			                  result4 = input.charAt(pos);
-			                  pos++;
-			                } else {
-			                  result4 = null;
-			                  if (reportFailures === 0) {
-			                    matchFailed("[\\n\\r]");
-			                  }
-			                }
-			              }
-			              if (result3 !== null) {
-			                result0 = [result0, result1, result2, result3];
-			              } else {
-			                result0 = null;
-			                pos = pos1;
-			              }
-			            } else {
-			              result0 = null;
-			              pos = pos1;
-			            }
-			          } else {
-			            result0 = null;
-			            pos = pos1;
-			          }
-			        } else {
-			          result0 = null;
-			          pos = pos1;
-			        }
-			        if (result0 !== null) {
-			          result0 = (function(offset, first, rest) { rest.unshift(first); return rest; })(pos0, result0[1], result0[2]);
-			        }
-			        if (result0 === null) {
-			          pos = pos0;
-			        }
-			        return result0;
-			      }
+              pos0 = pos;
+              pos1 = pos;
+              result0 = [];
+              if (/^[\n\r]/.test(input.charAt(pos))) {
+                result1 = input.charAt(pos);
+                pos++;
+              } else {
+                result1 = null;
+                if (reportFailures === 0) {
+                  matchFailed("[\\n\\r]");
+                }
+              }
+              while (result1 !== null) {
+                result0.push(result1);
+                if (/^[\n\r]/.test(input.charAt(pos))) {
+                  result1 = input.charAt(pos);
+                  pos++;
+                } else {
+                  result1 = null;
+                  if (reportFailures === 0) {
+                    matchFailed("[\\n\\r]");
+                  }
+                }
+              }
+              if (result0 !== null) {
+                result1 = parse_line();
+                if (result1 !== null) {
+                  result2 = [];
+                  pos2 = pos;
+                  pos3 = pos;
+                  if (/^[\n\r]/.test(input.charAt(pos))) {
+                    result4 = input.charAt(pos);
+                    pos++;
+                  } else {
+                    result4 = null;
+                    if (reportFailures === 0) {
+                      matchFailed("[\\n\\r]");
+                    }
+                  }
+                  if (result4 !== null) {
+                    result3 = [];
+                    while (result4 !== null) {
+                      result3.push(result4);
+                      if (/^[\n\r]/.test(input.charAt(pos))) {
+                        result4 = input.charAt(pos);
+                        pos++;
+                      } else {
+                        result4 = null;
+                        if (reportFailures === 0) {
+                          matchFailed("[\\n\\r]");
+                        }
+                      }
+                    }
+                  } else {
+                    result3 = null;
+                  }
+                  if (result3 !== null) {
+                    result4 = parse_line();
+                    if (result4 !== null) {
+                      result3 = [result3, result4];
+                    } else {
+                      result3 = null;
+                      pos = pos3;
+                    }
+                  } else {
+                    result3 = null;
+                    pos = pos3;
+                  }
+                  if (result3 !== null) {
+                    result3 = (function(offset, data) { return data; })(pos2, result3[1]);
+                  }
+                  if (result3 === null) {
+                    pos = pos2;
+                  }
+                  while (result3 !== null) {
+                    result2.push(result3);
+                    pos2 = pos;
+                    pos3 = pos;
+                    if (/^[\n\r]/.test(input.charAt(pos))) {
+                      result4 = input.charAt(pos);
+                      pos++;
+                    } else {
+                      result4 = null;
+                      if (reportFailures === 0) {
+                        matchFailed("[\\n\\r]");
+                      }
+                    }
+                    if (result4 !== null) {
+                      result3 = [];
+                      while (result4 !== null) {
+                        result3.push(result4);
+                        if (/^[\n\r]/.test(input.charAt(pos))) {
+                          result4 = input.charAt(pos);
+                          pos++;
+                        } else {
+                          result4 = null;
+                          if (reportFailures === 0) {
+                            matchFailed("[\\n\\r]");
+                          }
+                        }
+                      }
+                    } else {
+                      result3 = null;
+                    }
+                    if (result3 !== null) {
+                      result4 = parse_line();
+                      if (result4 !== null) {
+                        result3 = [result3, result4];
+                      } else {
+                        result3 = null;
+                        pos = pos3;
+                      }
+                    } else {
+                      result3 = null;
+                      pos = pos3;
+                    }
+                    if (result3 !== null) {
+                      result3 = (function(offset, data) { return data; })(pos2, result3[1]);
+                    }
+                    if (result3 === null) {
+                      pos = pos2;
+                    }
+                  }
+                  if (result2 !== null) {
+                    result3 = [];
+                    if (/^[\n\r]/.test(input.charAt(pos))) {
+                      result4 = input.charAt(pos);
+                      pos++;
+                    } else {
+                      result4 = null;
+                      if (reportFailures === 0) {
+                        matchFailed("[\\n\\r]");
+                      }
+                    }
+                    while (result4 !== null) {
+                      result3.push(result4);
+                      if (/^[\n\r]/.test(input.charAt(pos))) {
+                        result4 = input.charAt(pos);
+                        pos++;
+                      } else {
+                        result4 = null;
+                        if (reportFailures === 0) {
+                          matchFailed("[\\n\\r]");
+                        }
+                      }
+                    }
+                    if (result3 !== null) {
+                      result0 = [result0, result1, result2, result3];
+                    } else {
+                      result0 = null;
+                      pos = pos1;
+                    }
+                  } else {
+                    result0 = null;
+                    pos = pos1;
+                  }
+                } else {
+                  result0 = null;
+                  pos = pos1;
+                }
+              } else {
+                result0 = null;
+                pos = pos1;
+              }
+              if (result0 !== null) {
+                result0 = (function(offset, first, rest) { rest.unshift(first); return rest; })(pos0, result0[1], result0[2]);
+              }
+              if (result0 === null) {
+                pos = pos0;
+              }
+              return result0;
+            }
 
-			      function parse_line() {
-			        var result0, result1, result2, result3, result4;
-			        var pos0, pos1, pos2, pos3;
+            function parse_line() {
+              var result0, result1, result2, result3, result4;
+              var pos0, pos1, pos2, pos3;
 
-			        pos0 = pos;
-			        pos1 = pos;
-			        result0 = parse_field();
-			        if (result0 !== null) {
-			          result1 = [];
-			          pos2 = pos;
-			          pos3 = pos;
-			          if (input.length > pos) {
-			            result2 = input.charAt(pos);
-			            pos++;
-			          } else {
-			            result2 = null;
-			            if (reportFailures === 0) {
-			              matchFailed("any character");
-			            }
-			          }
-			          if (result2 !== null) {
-			            result3 = (function(offset, char) { return char == separator; })(pos, result2) ? "" : null;
-			            if (result3 !== null) {
-			              result4 = parse_field();
-			              if (result4 !== null) {
-			                result2 = [result2, result3, result4];
-			              } else {
-			                result2 = null;
-			                pos = pos3;
-			              }
-			            } else {
-			              result2 = null;
-			              pos = pos3;
-			            }
-			          } else {
-			            result2 = null;
-			            pos = pos3;
-			          }
-			          if (result2 !== null) {
-			            result2 = (function(offset, char, text) { return text; })(pos2, result2[0], result2[2]);
-			          }
-			          if (result2 === null) {
-			            pos = pos2;
-			          }
-			          while (result2 !== null) {
-			            result1.push(result2);
-			            pos2 = pos;
-			            pos3 = pos;
-			            if (input.length > pos) {
-			              result2 = input.charAt(pos);
-			              pos++;
-			            } else {
-			              result2 = null;
-			              if (reportFailures === 0) {
-			                matchFailed("any character");
-			              }
-			            }
-			            if (result2 !== null) {
-			              result3 = (function(offset, char) { return char == separator; })(pos, result2) ? "" : null;
-			              if (result3 !== null) {
-			                result4 = parse_field();
-			                if (result4 !== null) {
-			                  result2 = [result2, result3, result4];
-			                } else {
-			                  result2 = null;
-			                  pos = pos3;
-			                }
-			              } else {
-			                result2 = null;
-			                pos = pos3;
-			              }
-			            } else {
-			              result2 = null;
-			              pos = pos3;
-			            }
-			            if (result2 !== null) {
-			              result2 = (function(offset, char, text) { return text; })(pos2, result2[0], result2[2]);
-			            }
-			            if (result2 === null) {
-			              pos = pos2;
-			            }
-			          }
-			          if (result1 !== null) {
-			            result2 = (function(offset, first, rest) { return first !== null || rest.length; })(pos, result0, result1) ? "" : null;
-			            if (result2 !== null) {
-			              result0 = [result0, result1, result2];
-			            } else {
-			              result0 = null;
-			              pos = pos1;
-			            }
-			          } else {
-			            result0 = null;
-			            pos = pos1;
-			          }
-			        } else {
-			          result0 = null;
-			          pos = pos1;
-			        }
-			        if (result0 !== null) {
-			          result0 = (function(offset, first, rest) { rest.unshift(first); return rest; })(pos0, result0[0], result0[1]);
-			        }
-			        if (result0 === null) {
-			          pos = pos0;
-			        }
-			        return result0;
-			      }
+              pos0 = pos;
+              pos1 = pos;
+              result0 = parse_field();
+              if (result0 !== null) {
+                result1 = [];
+                pos2 = pos;
+                pos3 = pos;
+                if (input.length > pos) {
+                  result2 = input.charAt(pos);
+                  pos++;
+                } else {
+                  result2 = null;
+                  if (reportFailures === 0) {
+                    matchFailed("any character");
+                  }
+                }
+                if (result2 !== null) {
+                  result3 = (function(offset, char) { return char == separator; })(pos, result2) ? "" : null;
+                  if (result3 !== null) {
+                    result4 = parse_field();
+                    if (result4 !== null) {
+                      result2 = [result2, result3, result4];
+                    } else {
+                      result2 = null;
+                      pos = pos3;
+                    }
+                  } else {
+                    result2 = null;
+                    pos = pos3;
+                  }
+                } else {
+                  result2 = null;
+                  pos = pos3;
+                }
+                if (result2 !== null) {
+                  result2 = (function(offset, char, text) { return text; })(pos2, result2[0], result2[2]);
+                }
+                if (result2 === null) {
+                  pos = pos2;
+                }
+                while (result2 !== null) {
+                  result1.push(result2);
+                  pos2 = pos;
+                  pos3 = pos;
+                  if (input.length > pos) {
+                    result2 = input.charAt(pos);
+                    pos++;
+                  } else {
+                    result2 = null;
+                    if (reportFailures === 0) {
+                      matchFailed("any character");
+                    }
+                  }
+                  if (result2 !== null) {
+                    result3 = (function(offset, char) { return char == separator; })(pos, result2) ? "" : null;
+                    if (result3 !== null) {
+                      result4 = parse_field();
+                      if (result4 !== null) {
+                        result2 = [result2, result3, result4];
+                      } else {
+                        result2 = null;
+                        pos = pos3;
+                      }
+                    } else {
+                      result2 = null;
+                      pos = pos3;
+                    }
+                  } else {
+                    result2 = null;
+                    pos = pos3;
+                  }
+                  if (result2 !== null) {
+                    result2 = (function(offset, char, text) { return text; })(pos2, result2[0], result2[2]);
+                  }
+                  if (result2 === null) {
+                    pos = pos2;
+                  }
+                }
+                if (result1 !== null) {
+                  result2 = (function(offset, first, rest) { return first !== null || rest.length; })(pos, result0, result1) ? "" : null;
+                  if (result2 !== null) {
+                    result0 = [result0, result1, result2];
+                  } else {
+                    result0 = null;
+                    pos = pos1;
+                  }
+                } else {
+                  result0 = null;
+                  pos = pos1;
+                }
+              } else {
+                result0 = null;
+                pos = pos1;
+              }
+              if (result0 !== null) {
+                result0 = (function(offset, first, rest) { rest.unshift(first); return rest; })(pos0, result0[0], result0[1]);
+              }
+              if (result0 === null) {
+                pos = pos0;
+              }
+              return result0;
+            }
 
-			      function parse_field() {
-			        var result0, result1, result2;
-			        var pos0, pos1;
+            function parse_field() {
+              var result0, result1, result2;
+              var pos0, pos1;
 
-			        pos0 = pos;
-			        pos1 = pos;
-			        if (input.charCodeAt(pos) === 34) {
-			          result0 = "\"";
-			          pos++;
-			        } else {
-			          result0 = null;
-			          if (reportFailures === 0) {
-			            matchFailed("\"\\\"\"");
-			          }
-			        }
-			        if (result0 !== null) {
-			          result1 = [];
-			          result2 = parse_char();
-			          while (result2 !== null) {
-			            result1.push(result2);
-			            result2 = parse_char();
-			          }
-			          if (result1 !== null) {
-			            if (input.charCodeAt(pos) === 34) {
-			              result2 = "\"";
-			              pos++;
-			            } else {
-			              result2 = null;
-			              if (reportFailures === 0) {
-			                matchFailed("\"\\\"\"");
-			              }
-			            }
-			            if (result2 !== null) {
-			              result0 = [result0, result1, result2];
-			            } else {
-			              result0 = null;
-			              pos = pos1;
-			            }
-			          } else {
-			            result0 = null;
-			            pos = pos1;
-			          }
-			        } else {
-			          result0 = null;
-			          pos = pos1;
-			        }
-			        if (result0 !== null) {
-			          result0 = (function(offset, text) { return text.join(''); })(pos0, result0[1]);
-			        }
-			        if (result0 === null) {
-			          pos = pos0;
-			        }
-			        return result0;
-			      }
+              pos0 = pos;
+              pos1 = pos;
+              if (input.charCodeAt(pos) === 34) {
+                result0 = "\"";
+                pos++;
+              } else {
+                result0 = null;
+                if (reportFailures === 0) {
+                  matchFailed("\"\\\"\"");
+                }
+              }
+              if (result0 !== null) {
+                result1 = [];
+                result2 = parse_char();
+                while (result2 !== null) {
+                  result1.push(result2);
+                  result2 = parse_char();
+                }
+                if (result1 !== null) {
+                  if (input.charCodeAt(pos) === 34) {
+                    result2 = "\"";
+                    pos++;
+                  } else {
+                    result2 = null;
+                    if (reportFailures === 0) {
+                      matchFailed("\"\\\"\"");
+                    }
+                  }
+                  if (result2 !== null) {
+                    result0 = [result0, result1, result2];
+                  } else {
+                    result0 = null;
+                    pos = pos1;
+                  }
+                } else {
+                  result0 = null;
+                  pos = pos1;
+                }
+              } else {
+                result0 = null;
+                pos = pos1;
+              }
+              if (result0 !== null) {
+                result0 = (function(offset, text) { return text.join(''); })(pos0, result0[1]);
+              }
+              if (result0 === null) {
+                pos = pos0;
+              }
+              return result0;
+            }
 
-			      function parse_char() {
-			        var result0, result1;
-			        var pos0, pos1;
+            function parse_char() {
+              var result0, result1;
+              var pos0, pos1;
 
-			        pos0 = pos;
-			        pos1 = pos;
-			        if (input.charCodeAt(pos) === 34) {
-			          result0 = "\"";
-			          pos++;
-			        } else {
-			          result0 = null;
-			          if (reportFailures === 0) {
-			            matchFailed("\"\\\"\"");
-			          }
-			        }
-			        if (result0 !== null) {
-			          if (input.charCodeAt(pos) === 34) {
-			            result1 = "\"";
-			            pos++;
-			          } else {
-			            result1 = null;
-			            if (reportFailures === 0) {
-			              matchFailed("\"\\\"\"");
-			            }
-			          }
-			          if (result1 !== null) {
-			            result0 = [result0, result1];
-			          } else {
-			            result0 = null;
-			            pos = pos1;
-			          }
-			        } else {
-			          result0 = null;
-			          pos = pos1;
-			        }
-			        if (result0 !== null) {
-			          result0 = (function(offset) { return '"'; })(pos0);
-			        }
-			        if (result0 === null) {
-			          pos = pos0;
-			        }
-			        if (result0 === null) {
-			          if (/^[^"]/.test(input.charAt(pos))) {
-			            result0 = input.charAt(pos);
-			            pos++;
-			          } else {
-			            result0 = null;
-			            if (reportFailures === 0) {
-			              matchFailed("[^\"]");
-			            }
-			          }
-			        }
-			        return result0;
-			      }
-
-
-			      function cleanupExpected(expected) {
-			        expected.sort();
-
-			        var lastExpected = null;
-			        var cleanExpected = [];
-			        for (var i = 0; i < expected.length; i++) {
-			          if (expected[i] !== lastExpected) {
-			            cleanExpected.push(expected[i]);
-			            lastExpected = expected[i];
-			          }
-			        }
-			        return cleanExpected;
-			      }
-
-			      function computeErrorPosition() {
-			        /*
-			         * The first idea was to use |String.split| to break the input up to the
-			         * error position along newlines and derive the line and column from
-			         * there. However IE's |split| implementation is so broken that it was
-			         * enough to prevent it.
-			         */
-
-			        var line = 1;
-			        var column = 1;
-			        var seenCR = false;
-
-			        for (var i = 0; i < Math.max(pos, rightmostFailuresPos); i++) {
-			          var ch = input.charAt(i);
-			          if (ch === "\n") {
-			            if (!seenCR) { line++; }
-			            column = 1;
-			            seenCR = false;
-			          } else if (ch === "\r" || ch === "\u2028" || ch === "\u2029") {
-			            line++;
-			            column = 1;
-			            seenCR = true;
-			          } else {
-			            column++;
-			            seenCR = false;
-			          }
-			        }
-
-			        return { line: line, column: column };
-			      }
+              pos0 = pos;
+              pos1 = pos;
+              if (input.charCodeAt(pos) === 34) {
+                result0 = "\"";
+                pos++;
+              } else {
+                result0 = null;
+                if (reportFailures === 0) {
+                  matchFailed("\"\\\"\"");
+                }
+              }
+              if (result0 !== null) {
+                if (input.charCodeAt(pos) === 34) {
+                  result1 = "\"";
+                  pos++;
+                } else {
+                  result1 = null;
+                  if (reportFailures === 0) {
+                    matchFailed("\"\\\"\"");
+                  }
+                }
+                if (result1 !== null) {
+                  result0 = [result0, result1];
+                } else {
+                  result0 = null;
+                  pos = pos1;
+                }
+              } else {
+                result0 = null;
+                pos = pos1;
+              }
+              if (result0 !== null) {
+                result0 = (function(offset) { return '"'; })(pos0);
+              }
+              if (result0 === null) {
+                pos = pos0;
+              }
+              if (result0 === null) {
+                if (/^[^"]/.test(input.charAt(pos))) {
+                  result0 = input.charAt(pos);
+                  pos++;
+                } else {
+                  result0 = null;
+                  if (reportFailures === 0) {
+                    matchFailed("[^\"]");
+                  }
+                }
+              }
+              return result0;
+            }
 
 
-			        var separator = ',';
+            function cleanupExpected(expected) {
+              expected.sort();
+
+              var lastExpected = null;
+              var cleanExpected = [];
+              for (var i = 0; i < expected.length; i++) {
+                if (expected[i] !== lastExpected) {
+                  cleanExpected.push(expected[i]);
+                  lastExpected = expected[i];
+                }
+              }
+              return cleanExpected;
+            }
+
+            function computeErrorPosition() {
+              /*
+               * The first idea was to use |String.split| to break the input up to the
+               * error position along newlines and derive the line and column from
+               * there. However IE's |split| implementation is so broken that it was
+               * enough to prevent it.
+               */
+
+              var line = 1;
+              var column = 1;
+              var seenCR = false;
+
+              for (var i = 0; i < Math.max(pos, rightmostFailuresPos); i++) {
+                var ch = input.charAt(i);
+                if (ch === "\n") {
+                  if (!seenCR) { line++; }
+                  column = 1;
+                  seenCR = false;
+                } else if (ch === "\r" || ch === "\u2028" || ch === "\u2029") {
+                  line++;
+                  column = 1;
+                  seenCR = true;
+                } else {
+                  column++;
+                  seenCR = false;
+                }
+              }
+
+              return { line: line, column: column };
+            }
 
 
-			      var result = parseFunctions[startRule]();
+              var separator = ',';
 
-			      /*
-			       * The parser is now in one of the following three states:
-			       *
-			       * 1. The parser successfully parsed the whole input.
-			       *
-			       *    - |result !== null|
-			       *    - |pos === input.length|
-			       *    - |rightmostFailuresExpected| may or may not contain something
-			       *
-			       * 2. The parser successfully parsed only a part of the input.
-			       *
-			       *    - |result !== null|
-			       *    - |pos < input.length|
-			       *    - |rightmostFailuresExpected| may or may not contain something
-			       *
-			       * 3. The parser did not successfully parse any part of the input.
-			       *
-			       *   - |result === null|
-			       *   - |pos === 0|
-			       *   - |rightmostFailuresExpected| contains at least one failure
-			       *
-			       * All code following this comment (including called functions) must
-			       * handle these states.
-			       */
-			      if (result === null || pos !== input.length) {
-			        var offset = Math.max(pos, rightmostFailuresPos);
-			        var found = offset < input.length ? input.charAt(offset) : null;
-			        var errorPosition = computeErrorPosition();
 
-			        throw new this.SyntaxError(
-			          cleanupExpected(rightmostFailuresExpected),
-			          found,
-			          offset,
-			          errorPosition.line,
-			          errorPosition.column
-			        );
-			      }
+            var result = parseFunctions[startRule]();
 
-			      return result;
-			    },
+            /*
+             * The parser is now in one of the following three states:
+             *
+             * 1. The parser successfully parsed the whole input.
+             *
+             *    - |result !== null|
+             *    - |pos === input.length|
+             *    - |rightmostFailuresExpected| may or may not contain something
+             *
+             * 2. The parser successfully parsed only a part of the input.
+             *
+             *    - |result !== null|
+             *    - |pos < input.length|
+             *    - |rightmostFailuresExpected| may or may not contain something
+             *
+             * 3. The parser did not successfully parse any part of the input.
+             *
+             *   - |result === null|
+             *   - |pos === 0|
+             *   - |rightmostFailuresExpected| contains at least one failure
+             *
+             * All code following this comment (including called functions) must
+             * handle these states.
+             */
+            if (result === null || pos !== input.length) {
+              var offset = Math.max(pos, rightmostFailuresPos);
+              var found = offset < input.length ? input.charAt(offset) : null;
+              var errorPosition = computeErrorPosition();
 
-			    /* Returns the parser source code. */
-			    toSource: function() { return this._source; }
-			  };
+              throw new this.SyntaxError(
+                cleanupExpected(rightmostFailuresExpected),
+                found,
+                offset,
+                errorPosition.line,
+                errorPosition.column
+              );
+            }
 
-			  /* Thrown when a parser encounters a syntax error. */
+            return result;
+          },
 
-			  result.SyntaxError = function(expected, found, offset, line, column) {
-			    function buildMessage(expected, found) {
-			      var expectedHumanized, foundHumanized;
+          /* Returns the parser source code. */
+          toSource: function() { return this._source; }
+        };
 
-			      switch (expected.length) {
-			        case 0:
-			          expectedHumanized = "end of input";
-			          break;
-			        case 1:
-			          expectedHumanized = expected[0];
-			          break;
-			        default:
-			          expectedHumanized = expected.slice(0, expected.length - 1).join(", ")
-			            + " or "
-			            + expected[expected.length - 1];
-			      }
+        /* Thrown when a parser encounters a syntax error. */
 
-			      foundHumanized = found ? quote(found) : "end of input";
+        result.SyntaxError = function(expected, found, offset, line, column) {
+          function buildMessage(expected, found) {
+            var expectedHumanized, foundHumanized;
 
-			      return "Expected " + expectedHumanized + " but " + foundHumanized + " found.";
-			    }
+            switch (expected.length) {
+              case 0:
+                expectedHumanized = "end of input";
+                break;
+              case 1:
+                expectedHumanized = expected[0];
+                break;
+              default:
+                expectedHumanized = expected.slice(0, expected.length - 1).join(", ")
+                  + " or "
+                  + expected[expected.length - 1];
+            }
 
-			    this.name = "SyntaxError";
-			    this.expected = expected;
-			    this.found = found;
-			    this.message = buildMessage(expected, found);
-			    this.offset = offset;
-			    this.line = line;
-			    this.column = column;
-			  };
+            foundHumanized = found ? quote(found) : "end of input";
 
-			  result.SyntaxError.prototype = Error.prototype;
+            return "Expected " + expectedHumanized + " but " + foundHumanized + " found.";
+          }
 
-			  return result;
-		})();
+          this.name = "SyntaxError";
+          this.expected = expected;
+          this.found = found;
+          this.message = buildMessage(expected, found);
+          this.offset = offset;
+          this.line = line;
+          this.column = column;
+        };
+
+        result.SyntaxError.prototype = Error.prototype;
+
+        return result;
+    })();
     return {
       'parse': csvParser.parse,
       'create': function(data) {
@@ -3463,203 +3457,114 @@
 angular.module("kb.templates").run(["$templateCache", function($templateCache) {
 
   $templateCache.put("kb/ui/confirm/templates/confirm.html",
-    "<div class=\"modal-header\">\r" +
-    "\n" +
-    "    <h4 class=\"modal-title\">{{ params.header }}</h4>\r" +
-    "\n" +
-    "</div>\r" +
-    "\n" +
-    "<div class=\"modal-body\">\r" +
-    "\n" +
-    "    <p ng-bind-html=\"params.message\"></p>\r" +
-    "\n" +
-    "</div>\r" +
-    "\n" +
-    "<div class=\"modal-footer\">\r" +
-    "\n" +
-    "    <button class=\"btn btn-default\" ng-click=\"close()\" kb-focus>{{ params.cancelButton.label }}</button>\r" +
-    "\n" +
-    "    <button class=\"btn btn-{{ params.confirmButton.type}}\" ng-click=\"confirm()\">{{ params.confirmButton.label }}</button>\r" +
-    "\n" +
+    "<div class=\"modal-header\">\n" +
+    "    <h4 class=\"modal-title\">{{ params.header }}</h4>\n" +
+    "</div>\n" +
+    "<div class=\"modal-body\">\n" +
+    "    <p ng-bind-html=\"params.message\"></p>\n" +
+    "</div>\n" +
+    "<div class=\"modal-footer\">\n" +
+    "    <button class=\"btn btn-default\" ng-click=\"close()\" kb-focus>{{ params.cancelButton.label }}</button>\n" +
+    "    <button class=\"btn btn-{{ params.confirmButton.type}}\" ng-click=\"confirm()\">{{ params.confirmButton.label }}</button>\n" +
     "</div>"
   );
 
   $templateCache.put("kb/ui/inline-edit/templates/datetime.html",
-    "<span class=\"static\" ng-hide=\"isEditing\" ng-click=\"edit()\" tooltip=\"{{ tooltipTitle }}\">\r" +
+    "<span class=\"static\" ng-hide=\"isEditing\" ng-click=\"edit()\" tooltip=\"{{ tooltipTitle }}\">\n" +
+    "  <kb-datetime datetime=\"value\"></kb-datetime>\n" +
+    "   <a class=\"placeholder\" ng-show=\"!value\">\n" +
+    "         <i class=\"fa fa-pencil-square-o\"></i>\n" +
+    "         {{ placeholder }}\n" +
+    "     </a>\n" +
+    "</span>\n" +
+    "<div ng-show=\"isEditing\" class=\"editing\">\n" +
+    "    <div class=\"input-group\">\n" +
+    "        <input type=\"text\" ng-model=\"editValue\" class=\"form-control\" placeholder=\"{{ placeholder }}\"/>\n" +
     "\n" +
-    "\t<kb-datetime datetime=\"value\"></kb-datetime>\r" +
-    "\n" +
-    "\t <a class=\"placeholder\" ng-show=\"!value\">\r" +
-    "\n" +
-    "         <i class=\"fa fa-pencil-square-o\"></i>\r" +
-    "\n" +
-    "         {{ placeholder }}\r" +
-    "\n" +
-    "     </a>\r" +
-    "\n" +
-    "</span>\r" +
-    "\n" +
-    "<div ng-show=\"isEditing\" class=\"editing\">\r" +
-    "\n" +
-    "    <div class=\"input-group\">\r" +
-    "\n" +
-    "        <input type=\"text\" ng-model=\"editValue\" class=\"form-control\" placeholder=\"{{ placeholder }}\"/>\r" +
-    "\n" +
-    "\r" +
-    "\n" +
-    "        <div class=\"input-group-btn\">\r" +
-    "\n" +
-    "            <button class=\"btn btn-success\" ng-click=\"save()\">\r" +
-    "\n" +
-    "                <i class=\"fa fa-check\" title=\"save\"></i>\r" +
-    "\n" +
-    "            </button>\r" +
-    "\n" +
-    "            <button class=\"btn btn-default\" ng-click=\"cancel()\">\r" +
-    "\n" +
-    "                <i class=\"fa fa-times\" title=\"Cancel\"></i>\r" +
-    "\n" +
-    "            </button>\r" +
-    "\n" +
-    "        </div>\r" +
-    "\n" +
-    "    </div>\r" +
-    "\n" +
-    "</div>\r" +
-    "\n" +
-    "\r" +
+    "        <div class=\"input-group-btn\">\n" +
+    "            <button class=\"btn btn-success\" ng-click=\"save()\">\n" +
+    "                <i class=\"fa fa-check\" title=\"save\"></i>\n" +
+    "            </button>\n" +
+    "            <button class=\"btn btn-default\" ng-click=\"cancel()\">\n" +
+    "                <i class=\"fa fa-times\" title=\"Cancel\"></i>\n" +
+    "            </button>\n" +
+    "        </div>\n" +
+    "    </div>\n" +
+    "</div>\n" +
     "\n"
   );
 
   $templateCache.put("kb/ui/inline-edit/templates/select.html",
-    "<span class=\"static\" ng-hide=\"isEditing\" ng-click=\"edit()\" tooltip=\"{{ tooltipTitle }}\">\r" +
+    "<span class=\"static\" ng-hide=\"isEditing\" ng-click=\"edit()\" tooltip=\"{{ tooltipTitle }}\">\n" +
+    "  {{ value }}\n" +
+    "  <span class=\"placeholder\" ng-show=\"!value\">{{ placeholder }}</span>\n" +
+    "</span>\n" +
+    "<div ng-show=\"isEditing\" class=\"editing\">\n" +
+    "    <div class=\"input-group\">\n" +
+    "        <select ng-options=\"value for value in options\" class=\"form-control\" ng-model=\"editValue\"></select>\n" +
     "\n" +
-    "\t{{ value }}\r" +
+    "        <span class=\"input-group-btn\">\n" +
+    "            <button class=\"btn btn-success\" ng-click=\"save()\">\n" +
+    "                    <i class=\"fa fa-check\" title=\"save\"></i>\n" +
+    "            </button>\n" +
+    "            <button class=\"btn btn-default\" ng-click=\"cancel()\">\n" +
+    "                <i class=\"fa fa-times\" title=\"Cancel\"></i>\n" +
+    "            </button>\n" +
+    "        </span>\n" +
     "\n" +
-    "\t<span class=\"placeholder\" ng-show=\"!value\">{{ placeholder }}</span>\r" +
-    "\n" +
-    "</span>\r" +
-    "\n" +
-    "<div ng-show=\"isEditing\" class=\"editing\">\r" +
-    "\n" +
-    "    <div class=\"input-group\">\r" +
-    "\n" +
-    "        <select ng-options=\"value for value in options\" class=\"form-control\" ng-model=\"editValue\"></select>\r" +
-    "\n" +
-    "\r" +
-    "\n" +
-    "        <span class=\"input-group-btn\">\r" +
-    "\n" +
-    "            <button class=\"btn btn-success\" ng-click=\"save()\">\r" +
-    "\n" +
-    "                    <i class=\"fa fa-check\" title=\"save\"></i>\r" +
-    "\n" +
-    "            </button>\r" +
-    "\n" +
-    "            <button class=\"btn btn-default\" ng-click=\"cancel()\">\r" +
-    "\n" +
-    "                <i class=\"fa fa-times\" title=\"Cancel\"></i>\r" +
-    "\n" +
-    "            </button>\r" +
-    "\n" +
-    "        </span>\r" +
-    "\n" +
-    "\r" +
-    "\n" +
-    "    </div>\r" +
-    "\n" +
+    "    </div>\n" +
     "</div>"
   );
 
   $templateCache.put("kb/ui/inline-edit/templates/text.html",
-    "<span class=\"static\" ng-hide=\"isEditing\" ng-click=\"edit()\" tooltip=\"{{ tooltipTitle }}\">\r" +
+    "<span class=\"static\" ng-hide=\"isEditing\" ng-click=\"edit()\" tooltip=\"{{ tooltipTitle }}\">\n" +
+    "  {{ value }}\n" +
+    "   <a class=\"placeholder\" ng-show=\"!value\">\n" +
+    "      <i class=\"fa fa-pencil-square-o\"></i>\n" +
+    "      {{ placeholder }}\n" +
+    "    </a>\n" +
+    "</span>\n" +
+    "<div ng-show=\"isEditing\" class=\"editing\">\n" +
+    "    <div class=\"input-group\">\n" +
+    "        <input type=\"text\" ng-model=\"editValue\" class=\"form-control\" placeholder=\"{{ placeholder }}\"/>\n" +
     "\n" +
-    "\t{{ value }}\r" +
-    "\n" +
-    "\t <a class=\"placeholder\" ng-show=\"!value\">\r" +
-    "\n" +
-    "\t\t\t<i class=\"fa fa-pencil-square-o\"></i>\r" +
-    "\n" +
-    "\t\t\t{{ placeholder }}\r" +
-    "\n" +
-    "\t\t</a>\r" +
-    "\n" +
-    "</span>\r" +
-    "\n" +
-    "<div ng-show=\"isEditing\" class=\"editing\">\r" +
-    "\n" +
-    "    <div class=\"input-group\">\r" +
-    "\n" +
-    "        <input type=\"text\" ng-model=\"editValue\" class=\"form-control\" placeholder=\"{{ placeholder }}\"/>\r" +
-    "\n" +
-    "\r" +
-    "\n" +
-    "        <div class=\"input-group-btn\">\r" +
-    "\n" +
-    "            <button class=\"btn btn-success\" ng-click=\"save()\">\r" +
-    "\n" +
-    "                <i class=\"fa fa-check\" title=\"save\"></i>\r" +
-    "\n" +
-    "            </button>\r" +
-    "\n" +
-    "            <button class=\"btn btn-default\" ng-click=\"cancel()\">\r" +
-    "\n" +
-    "                <i class=\"fa fa-times\" title=\"Cancel\"></i>\r" +
-    "\n" +
-    "            </button>\r" +
-    "\n" +
-    "        </div>\r" +
-    "\n" +
-    "    </div>\r" +
-    "\n" +
+    "        <div class=\"input-group-btn\">\n" +
+    "            <button class=\"btn btn-success\" ng-click=\"save()\">\n" +
+    "                <i class=\"fa fa-check\" title=\"save\"></i>\n" +
+    "            </button>\n" +
+    "            <button class=\"btn btn-default\" ng-click=\"cancel()\">\n" +
+    "                <i class=\"fa fa-times\" title=\"Cancel\"></i>\n" +
+    "            </button>\n" +
+    "        </div>\n" +
+    "    </div>\n" +
     "</div>"
   );
 
   $templateCache.put("kb/ui/inline-edit/templates/textarea.html",
-    "<span class=\"static\" ng-hide=\"isEditing\" ng-click=\"edit()\" tooltip=\"{{ tooltipTitle }}\">\r" +
-    "\n" +
-    "\t\t<span kb-nl2br=\"value\"></span>\r" +
-    "\n" +
-    "\t\t<a class=\"placeholder\" ng-show=\"!value\">\r" +
-    "\n" +
-    "\t\t\t<i class=\"fa fa-pencil-square-o\"></i>\r" +
-    "\n" +
-    "\t\t\t{{ placeholder }}\r" +
-    "\n" +
-    "\t\t</a>\r" +
-    "\n" +
-    "</span>\r" +
-    "\n" +
-    "<div ng-show=\"isEditing\" class=\"editing\">\r" +
-    "\n" +
-    "\t<textarea type=\"text\" ng-model=\"editValue\" placeholder=\"{{ placeholder }}\">\r" +
-    "\n" +
-    "\t</textarea>\r" +
-    "\n" +
-    "\t<div class=\"form-actions\">\r" +
-    "\n" +
-    "\t\t\t\t<button class=\"btn btn-primary\" ng-click=\"save()\">Save</button>\r" +
-    "\n" +
-    "\t\t\t\t<button class=\"btn btn-default\" ng-click=\"cancel()\">Cancel</button>\r" +
-    "\n" +
-    "\t</div>\r" +
-    "\n" +
+    "<span class=\"static\" ng-hide=\"isEditing\" ng-click=\"edit()\" tooltip=\"{{ tooltipTitle }}\">\n" +
+    "    <span kb-nl2br=\"value\"></span>\n" +
+    "    <a class=\"placeholder\" ng-show=\"!value\">\n" +
+    "      <i class=\"fa fa-pencil-square-o\"></i>\n" +
+    "      {{ placeholder }}\n" +
+    "    </a>\n" +
+    "</span>\n" +
+    "<div ng-show=\"isEditing\" class=\"editing\">\n" +
+    "  <textarea type=\"text\" ng-model=\"editValue\" placeholder=\"{{ placeholder }}\">\n" +
+    "  </textarea>\n" +
+    "  <div class=\"form-actions\">\n" +
+    "        <button class=\"btn btn-primary\" ng-click=\"save()\">Save</button>\n" +
+    "        <button class=\"btn btn-default\" ng-click=\"cancel()\">Cancel</button>\n" +
+    "  </div>\n" +
     "</div>"
   );
 
   $templateCache.put("kb/ui/search-filter/templates/search-filter.html",
-    "<div class=\"form-group form-group-sm search-filter has-feedback\">\r" +
-    "\n" +
-    "    <div class=\"input-group\">\r" +
-    "\n" +
-    "        <input class=\"form-control search\" type=\"text\" kb-focus=\"focus\" placeholder=\"Search...\" ng-model=\"query\" />\r" +
-    "\n" +
-    "        <div class=\"input-group-addon\" ng-if=\"hasQuery()\" ng-click=\"remove()\"><span class=\"fa fa-fw fa-times\"></span></div>\r" +
-    "\n" +
-    "        <div class=\"input-group-addon\" ng-if=\"!hasQuery()\"><span class=\"fa fa-fw fa-search\"></span></div>\r" +
-    "\n" +
-    "    </div>\r" +
-    "\n" +
+    "<div class=\"form-group form-group-sm search-filter has-feedback\">\n" +
+    "    <div class=\"input-group\">\n" +
+    "        <input class=\"form-control search\" type=\"text\" kb-focus=\"focus\" placeholder=\"Search...\" ng-model=\"query\" />\n" +
+    "        <div class=\"input-group-addon\" ng-if=\"hasQuery()\" ng-click=\"remove()\"><span class=\"fa fa-fw fa-times\"></span></div>\n" +
+    "        <div class=\"input-group-addon\" ng-if=\"!hasQuery()\"><span class=\"fa fa-fw fa-search\"></span></div>\n" +
+    "    </div>\n" +
     "</div>"
   );
 

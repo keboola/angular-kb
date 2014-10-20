@@ -1,9 +1,9 @@
 
 .kb-tree .kb-tree-node {
-	display: block;
-	padding: 2px 0px 2px 16px;
+  display: block;
+  padding: 2px 0px 2px 16px;
 }
 
 .kb-tree .key {
-	color: #666;
+  color: #666;
 }
