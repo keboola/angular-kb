@@ -1,3 +1,7 @@
+## 0.13.12 (2014-10-20)
+ * [Feat] - `kb.ui.sapiEventsTable` - configurable header attribute
+ * [Feat] - `kb.ui.sapiEventsTable` - break long overflowing words
+
 ## 0.13.11 (2014-10-15)
  * [Fix] - Urlize directive - empty values
 
