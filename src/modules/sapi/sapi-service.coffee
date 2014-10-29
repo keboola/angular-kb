@@ -723,7 +723,7 @@
       @http(
         url: @url "/storage/components/#{componentId}/configs/#{configurationId}"
         method: 'GET'
-      ))(window.angular)
+      )
 
 
     # bucket credentials
@@ -755,3 +755,5 @@
         url: @url "/storage/credentials/#{id}"
         method: 'DELETE'
       )
+
+)(window.angular)

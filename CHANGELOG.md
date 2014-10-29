@@ -1,3 +1,6 @@
+## 0.13.15 (2014-20-29)
+ * [Fix] - `kb.sapi.sapiService`
+
 ## 0.13.14 (2014-20-29)
  * [Feat] - `kb.sapi.sapiService` - bucket credentials resource supported
 

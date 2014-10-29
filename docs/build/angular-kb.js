@@ -1671,41 +1671,44 @@
         });
       };
 
+      StorageService.prototype.getCredentials = function() {
+        return this.http({
+          url: this.url('/storage/credentials'),
+          method: 'GET'
+        }).error(this.errorHandler);
+      };
+
+      StorageService.prototype.getBucketCredentials = function(bucketId) {
+        return this.http({
+          url: this.url("/storage/buckets/" + bucketId + "/credentials"),
+          method: 'GET'
+        }).error(this.errorHandler);
+      };
+
+      StorageService.prototype.createBucketCredentials = function(bucketId, name) {
+        return this.http({
+          url: this.url("/storage/buckets/" + bucketId + "/credentials"),
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          data: $.param({
+            name: name
+          })
+        });
+      };
+
+      StorageService.prototype.deleteBucketCredentials = function(id) {
+        return this.http({
+          url: this.url("/storage/credentials/" + id),
+          method: 'DELETE'
+        });
+      };
+
       return StorageService;
 
     })();
-  })(window.angular)({
-    getCredentials: function() {
-      return this.http({
-        url: this.url('/storage/credentials'),
-        method: 'GET'
-      }).error(this.errorHandler);
-    },
-    getBucketCredentials: function(bucketId) {
-      return this.http({
-        url: this.url("/storage/buckets/" + bucketId + "/credentials"),
-        method: 'GET'
-      }).error(this.errorHandler);
-    },
-    createBucketCredentials: function(bucketId, name) {
-      return this.http({
-        url: this.url("/storage/buckets/" + bucketId + "/credentials"),
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        data: $.param({
-          name: name
-        })
-      });
-    },
-    deleteBucketCredentials: function(id) {
-      return this.http({
-        url: this.url("/storage/credentials/" + id),
-        method: 'DELETE'
-      });
-    }
-  });
+  })(window.angular);
 
 }).call(this);
 
