@@ -1,3 +1,6 @@
+## 0.13.14 (2014-20-29)
+ * [Feat] - `kb.sapi.sapiService` - bucket credentials resource supported
+
 ## 0.13.12 (2014-10-20)
  * [Feat] - `kb.ui.sapiEventsTable` - configurable header attribute
  * [Feat] - `kb.ui.sapiEventsTable` - break long overflowing words

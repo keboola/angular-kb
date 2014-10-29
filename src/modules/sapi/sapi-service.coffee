@@ -724,3 +724,34 @@
         url: @url "/storage/components/#{componentId}/configs/#{configurationId}"
         method: 'GET'
       ))(window.angular)
+
+
+    # bucket credentials
+    getCredentials: ->
+      @http(
+        url: @url '/storage/credentials'
+        method: 'GET'
+      ).error(@errorHandler)
+
+    getBucketCredentials: (bucketId) ->
+      @http(
+        url: @url "/storage/buckets/#{bucketId}/credentials"
+        method: 'GET'
+      ).error(@errorHandler)
+
+    createBucketCredentials: (bucketId, name) ->
+      @http(
+        url: @url "/storage/buckets/#{bucketId}/credentials"
+        method: 'POST'
+        headers:
+          'Content-Type': 'application/x-www-form-urlencoded'
+        data: $.param(
+          name: name
+        )
+      )
+
+    deleteBucketCredentials: (id) ->
+      @http(
+        url: @url "/storage/credentials/#{id}"
+        method: 'DELETE'
+      )
