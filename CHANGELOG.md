@@ -1,3 +1,6 @@
+## 0.13.16 (2014-20-30)
+ * [Fix] - `kb.filters.webalize` - filter was broken after tabs to spaces replace
+
 ## 0.13.15 (2014-20-29)
  * [Fix] - `kb.sapi.sapiService`
 
