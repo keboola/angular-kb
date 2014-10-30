@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.13.15 - 2014-10-29
+ * @version v0.13.15 - 2014-10-30
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -274,11 +274,10 @@
 }).call(this);
 
 (function() {
-  var removeDiacritics, removeDiacriticsCache;
 
   angular.module('kb.filters.webalize', []).filter('kbwebalize', function() {
-    var REMOVE_DIACRITICS_MAP;
-    return REMOVE_DIACRITICS_MAP = [
+    var REMOVE_DIACRITICS_MAP, removeDiacritics, removeDiacriticsCache;
+    REMOVE_DIACRITICS_MAP = [
       {
         base: 'A',
         letters: /[\u0041\u24B6\uFF21\u00C0\u00C1\u00C2\u1EA6\u1EA4\u1EAA\u1EA8\u00C3\u0100\u0102\u1EB0\u1EAE\u1EB4\u1EB2\u0226\u01E0\u00C4\u01DE\u1EA2\u00C5\u01FA\u01CD\u0200\u0202\u1EA0\u1EAC\u1EB6\u1E00\u0104\u023A\u2C6F]/g
@@ -536,20 +535,23 @@
         letters: /\s/g
       }
     ];
-  }, removeDiacriticsCache = {}, removeDiacritics = function(str) {
-    var cached, item, key, _i, _len;
-    key = '_' + str;
-    cached = removeDiacriticsCache[key];
-    if (cached) {
-      return cached;
-    }
-    for (_i = 0, _len = REMOVE_DIACRITICS_MAP.length; _i < _len; _i++) {
-      item = REMOVE_DIACRITICS_MAP[_i];
-      str = str.replace(item.letters, item.base);
-    }
-    return removeDiacriticsCache[key] = str;
-  }, function(string) {
-    return removeDiacritics(string).toLowerCase().replace(/\ /g, '-').replace(/[^a-z0-9\-]/g, '');
+    removeDiacriticsCache = {};
+    removeDiacritics = function(str) {
+      var cached, item, key, _i, _len;
+      key = '_' + str;
+      cached = removeDiacriticsCache[key];
+      if (cached) {
+        return cached;
+      }
+      for (_i = 0, _len = REMOVE_DIACRITICS_MAP.length; _i < _len; _i++) {
+        item = REMOVE_DIACRITICS_MAP[_i];
+        str = str.replace(item.letters, item.base);
+      }
+      return removeDiacriticsCache[key] = str;
+    };
+    return function(string) {
+      return removeDiacritics(string).toLowerCase().replace(/\ /g, '-').replace(/[^a-z0-9\-]/g, '');
+    };
   });
 
 }).call(this);
