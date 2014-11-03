@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.13.16 - 2014-10-30
+ * @version v0.13.16 - 2014-11-03
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */
@@ -140,7 +140,6 @@
     min-width:150px;
 }
 
-
 .kb-tree .kb-tree-node {
   display: block;
   padding: 2px 0px 2px 16px;
@@ -148,4 +147,7 @@
 
 .kb-tree .key {
   color: #666;
+}
+.kb-urlize {
+   word-wrap:break-word;
 }

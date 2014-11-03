@@ -40,14 +40,14 @@ angular.module('kb.ui.urlize', [])
         http = ""
         if not (/^https?\:\/\//).test(url)
           http = "http://"
-        a = angular.element('<a target="_blank"></a>')
+        a = angular.element('<a class="kb-urlize" target="_blank"></a>')
         a.attr("href", http + url);
         a.text(url)
         element.append(a)
       #element.append(angular.element('<a href="' + http + url + '" target="_blank">' + url + '</a>'))
 
       pushText = (element, text) ->
-        e = angular.element("<span></span>")
+        e = angular.element('<span class="kb-urlize"></span>')
         e.text(text)
         element.append(e)
 
