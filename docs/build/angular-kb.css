@@ -132,12 +132,17 @@
 -webkit-hyphens: auto;
    -moz-hyphens: auto;
     -ms-hyphens: auto;
-	hyphens: auto;
+  hyphens: auto;
 
 }
 
 .kb-sapi-events-table thead th{
     min-width:150px;
+}
+
+.kb-sapi-events-table .event-detail div
+{
+  word-wrap:break-word;
 }
 
 .kb-tree .kb-tree-node {
