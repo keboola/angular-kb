@@ -1,10 +1,9 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.13.18 - 2014-11-12
+ * @version v0.14.0 - 2014-11-12
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
-
   angular.module('kb.config', []).value('kb.config', {}).value('kb.components', {});
 
   angular.module('kb.templates', []);
@@ -14,7 +13,6 @@
 }).call(this);
 
 (function() {
-
   angular.module("kb.exceptionHandler", ["kb.exceptionHandler.logger"]).factory("$exceptionHandler", [
     "$window", "$log", "kbLogger", function($window, $log, logger) {
       $window.onerror = jQuery.proxy(logger.onError, logger);
@@ -28,12 +26,10 @@
 }).call(this);
 
 (function() {
-
   angular.module("kb.exceptionHandler.logger", []).factory("kb.Logger", [
     "$window", function($window) {
       var Logger;
       return Logger = (function() {
-
         function Logger() {}
 
         Logger.prototype.onError = function(errorMsg, file, lineNumber) {
@@ -82,7 +78,6 @@
 }).call(this);
 
 (function() {
-
   angular.module('kb.filters.date', []).filter('kbdate', [
     "$filter", function($filter) {
       var R_ISO8601_STR, dateFilter;
@@ -102,11 +97,9 @@
 
 /*
   Formats duration in seconds to minutes, hours, ...
-*/
-
+ */
 
 (function() {
-
   angular.module('kb.filters.duration', []).filter('kbDuration', function() {
     return function(duration) {
       var value;
@@ -135,11 +128,9 @@
 
 /*
   File size formatter: https://github.com/avoidwork/filesize.js
-*/
-
+ */
 
 (function() {
-
   angular.module('kb.filters.filesize', []).filter('kbfilesize', function() {
     var fileSize;
     fileSize = (function ( global ) {
@@ -274,7 +265,6 @@
 }).call(this);
 
 (function() {
-
   angular.module('kb.filters.webalize', []).filter('kbwebalize', function() {
     var REMOVE_DIACRITICS_MAP, removeDiacritics, removeDiacriticsCache;
     REMOVE_DIACRITICS_MAP = [
@@ -557,7 +547,6 @@
 }).call(this);
 
 (function() {
-
   angular.module("kb.i18n", [], [
     "$provide", function($provide) {
       var PLURAL_CATEGORY;
@@ -629,7 +618,6 @@
 }).call(this);
 
 (function() {
-
   angular.module("kb.sapi.errorHandler", ["ui.bootstrap.modal", "ui.bootstrap.tpls"]).factory("kbSapiErrorHandler", [
     "$modal", function($modal) {
       var handler;
@@ -684,11 +672,9 @@
 
 /*
   SAPI events service
-*/
-
+ */
 
 (function() {
-
   (function(angular) {
     var StorageEventsService;
     angular.module('kb.sapi.eventsService', ['kb.sapi.sapiService']).factory("kbSapiEventsService", [
@@ -702,7 +688,6 @@
       }
     ]);
     return StorageEventsService = (function() {
-
       function StorageEventsService(eventsUrl, storageService) {
         this.eventsUrl = eventsUrl;
         this.storageService = storageService;
@@ -809,8 +794,7 @@
 
 /*
   Storage API wrapper
-*/
-
+ */
 
 (function() {
   var __hasProp = {}.hasOwnProperty,
@@ -830,7 +814,6 @@
       }
     ]);
     Token = (function() {
-
       function Token(data) {
         this.data = data;
       }
@@ -871,7 +854,6 @@
 
     })();
     return StorageService = (function() {
-
       function StorageService($http, $rootScope, csv, multipartUpload, $q, $timeout) {
         this.$http = $http;
         this.$rootScope = $rootScope;
@@ -880,9 +862,7 @@
         this.$q = $q;
         this.$timeout = $timeout;
         this.errorHandler = __bind(this.errorHandler, this);
-
         this.setVerifiedToken = __bind(this.setVerifiedToken, this);
-
         this.apiToken = '';
         this.token = {};
         this.endpoint = this.defaultEndpoint = 'https://connection.keboola.com';
@@ -1541,13 +1521,13 @@
         });
       };
 
-      /*
-          # Accepts HTTP requests promise - expects job resource returned
-          # Returns promise
-          # Job resource is polled until job is executed
-          # Promise is resolved when job finishes with success otherwise promise is rejected
-      */
 
+      /*
+       * Accepts HTTP requests promise - expects job resource returned
+       * Returns promise
+       * Job resource is polled until job is executed
+       * Promise is resolved when job finishes with success otherwise promise is rejected
+       */
 
       StorageService.prototype.resolveAsyncRequest = function(httpRequestPromise) {
         var deferred, fetchJob, jobError, jobSuccess, service;
@@ -1580,12 +1560,12 @@
         return deferred.promise;
       };
 
-      /*
-          # Poll job resource until job status is `success` or `error`
-          # Resolved as error after 20 tries
-          # Returns promise - resolved when job is finished
-      */
 
+      /*
+       * Poll job resource until job status is `success` or `error`
+       * Resolved as error after 20 tries
+       * Returns promise - resolved when job is finished
+       */
 
       StorageService.prototype.pollJobUntilDone = function(id, maxAttemptsCount) {
         var attemptsCount, checkJob, deferred, jobFetchError, jobReceived, service;
@@ -1715,12 +1695,10 @@
 }).call(this);
 
 (function() {
-
   angular.module('kb.syrup.asyncRunner', ['kb.config', 'kb.sapi.errorHandler']).factory('kbSyrupAsyncRunner', [
     "$http", "kb.components", "kbSapiErrorHandler", "$q", function($http, components, errorHandler, $q) {
       var SyrupAsyncRunner;
       SyrupAsyncRunner = (function() {
-
         function SyrupAsyncRunner($http, $q) {
           this.$http = $http;
           this.$q = $q;
@@ -1787,7 +1765,6 @@
 }).call(this);
 
 (function() {
-
   angular.module('kb.ui.autoComplete', []).directive('kbAutoComplete', function() {
     return {
       restrict: 'A',
@@ -1819,7 +1796,6 @@
 }).call(this);
 
 (function() {
-
   angular.module('kb.ui.check', []).directive('kbCheck', function() {
     return {
       restrict: 'E',
@@ -1842,11 +1818,9 @@
 
 /*
   Inverts value of kbClickToggle attribute on click
-*/
-
+ */
 
 (function() {
-
   angular.module('kb.ui.clickToggle', []).directive('kbClickToggle', [
     '$parse', function($parse) {
       return function(scope, element, attrs) {
@@ -1875,11 +1849,9 @@
     - cursorPos: sets cursor position after initialization
 
   CodeMirror
-*/
-
+ */
 
 (function() {
-
   angular.module('kb.ui.codemirror', ['kb.config']).directive('kbCodemirror', [
     "$timeout", "$window", "kb.config", function($timeout, $window, config) {
       return {
@@ -1927,7 +1899,6 @@
 }).call(this);
 
 (function() {
-
   angular.module('kb.ui.confirm', ['kb.config', 'ui.bootstrap.modal', 'ngSanitize']).factory('kbConfirm', [
     '$modal', function($modal) {
       var confirm, defaultParams;
@@ -2003,11 +1974,9 @@
 
 /*
   Requires: components/bootstrap/js/tooltip.js
-*/
-
+ */
 
 (function() {
-
   angular.module('kb.ui.copyButton', ['kb.config']).directive('kbCopyButton', [
     '$timeout', 'kb.config', function($timeout, config) {
       var clip, swfPath, _ref, _ref1;
@@ -2056,13 +2025,11 @@
 
 
 /*
-# Accepts datetime in ISO_8601 format and converts to current client timezone
-# otherwise original value is displayed
-*/
-
+ * Accepts datetime in ISO_8601 format and converts to current client timezone
+ * otherwise original value is displayed
+ */
 
 (function() {
-
   angular.module('kb.ui.datetime', ['ui.bootstrap.tooltip', 'ui.bootstrap.tpls']).directive('kbDatetime', [
     "$filter", function($filter) {
       var R_ISO8601_STR, dateFilter;
@@ -2113,11 +2080,9 @@
 
 /*
   Formatted duration
-*/
-
+ */
 
 (function() {
-
   angular.module('kb.ui.duration', ['kb.filters.duration']).directive('kbDuration', function() {
     return {
       restrict: 'E',
@@ -2147,11 +2112,9 @@
 
 /*
   Input autofocus
-*/
-
+ */
 
 (function() {
-
   angular.module('kb.ui.focus', []).directive('kbFocus', [
     "$timeout", "$parse", function($timeout, $parse) {
       return function(scope, element, attrs) {
@@ -2183,7 +2146,6 @@
 }).call(this);
 
 (function() {
-
   (function(angular) {
     var inlineEditFactory, module;
     module = angular.module('kb.ui.inlineEdit', []);
@@ -2289,7 +2251,6 @@
 }).call(this);
 
 (function() {
-
   angular.module('kb.ui.loader', []).directive('kbLoader', function() {
     return {
       restrict: 'E',
@@ -2313,11 +2274,9 @@
 
 /*
   Convert new lines into <br/>
-*/
-
+ */
 
 (function() {
-
   angular.module('kb.ui.nl2br', []).directive('kbNl2br', function() {
     return function(scope, element, attr) {
       return scope.$watch(attr.kbNl2br, function(text) {
@@ -2345,7 +2304,6 @@
 }).call(this);
 
 (function() {
-
   angular.module('kb.ui.notifications', []).directive('kbNotifications', [
     'kbNotifications', 'kbEvents', function(kbNotifications, kbEvents) {
       return {
@@ -2369,7 +2327,6 @@
 }).call(this);
 
 (function() {
-
   angular.module('kb.ui.runButton', ['kb.ui.loader']).directive('kbRunButton', function() {
     return {
       restrict: 'E',
@@ -2408,11 +2365,9 @@
   Link to SAPI Console
   params:
     component: component hashmap from https://connection.keboola.com/v2/storage
-*/
-
+ */
 
 (function() {
-
   angular.module('kb.ui.sapiComponentIcon', []).directive('kbSapiComponentIcon', [
     function() {
       return {
@@ -2448,11 +2403,9 @@
   Link to SAPI Console
   Token is transfered threw POST body instead of URL parameters
   Implemented by form submit into blank window
-*/
-
+ */
 
 (function() {
-
   angular.module('kb.ui.sapiConsoleHref', ['kb.sapi.sapiService']).directive('kbSapiConsoleHref', [
     "kbSapiService", "$sce", function(sapiService, $sce) {
       return {
@@ -2491,11 +2444,9 @@
 
 /*
   Storage API events table
-*/
-
+ */
 
 (function() {
-
   angular.module('kb.ui.sapiEventsTable', ['kb.sapi.eventsService', 'kb.ui.tree']).directive('kbSapiEventsTable', function() {
     var config, defaultHeader, deprecatedAuthorizationText, infoEvents, possibleHeaders, successEvents, templates;
     successEvents = ['storage.tableImportDone'];
@@ -2636,7 +2587,6 @@
 }).call(this);
 
 (function() {
-
   angular.module('kb.ui.searchFilter', []).directive('kbSearchFilter', [
     function() {
       return {
@@ -2660,7 +2610,6 @@
 }).call(this);
 
 (function() {
-
   angular.module('kb.ui.tree', []).directive('kbTree', [
     "$compile", function($compile) {
       var directive, template;
@@ -2712,7 +2661,6 @@
 }).call(this);
 
 (function() {
-
   angular.module('kb.ui.urlize', []).directive('kbUrlize', [
     "$compile", function($compile) {
       var config, parseUrlsToElement, pattern, patternString, pushText, pushUrl;
@@ -2783,7 +2731,6 @@
 }).call(this);
 
 (function() {
-
   angular.module('kb.utils.appVersion', []).provider('kbAppVersion', [
     '$sceDelegateProvider', function($sceDelegateProvider) {
       var basePath, provider, version;
@@ -2823,11 +2770,9 @@
 /*
   CSV parer
   Depends on: /app/libs/csv/csv.js
-*/
-
+ */
 
 (function() {
-
   angular.module('kb.utils.csv', []).factory('kbCsv', function() {
     var csvParser;
     csvParser = (function(){
@@ -3508,7 +3453,6 @@
 }).call(this);
 
 (function() {
-
   angular.module('kb.utils.events', []).service('kbEvents', [
     "$q", "$rootScope", function($q, $rootScope) {
       return {
@@ -3556,11 +3500,9 @@
 /*
   Keyboard shortcuts registration service
   Depends: /app/libs/mousetrap
-*/
-
+ */
 
 (function() {
-
   angular.module('kb.utils.keyboardShortcuts', []).factory('kbKeyboardShortcuts', function() {
     var originalStopCallback;
     originalStopCallback = Mousetrap.stopCallback;
@@ -3590,8 +3532,7 @@
 
 /*
   Multipart upload service
-*/
-
+ */
 
 (function() {
   var __hasProp = {}.hasOwnProperty;
@@ -3632,12 +3573,10 @@
 }).call(this);
 
 (function() {
-
   angular.module('kb.utils.notifications', ['kb.utils.events']).factory('kbNotifications', [
     "kbEvents", function(kbEvents) {
       var Notifications;
       Notifications = (function() {
-
         function Notifications() {}
 
         Notifications.prototype.notifications = [];
@@ -3680,16 +3619,16 @@ angular.module("kb.templates").run(["$templateCache", function($templateCache) {
     "    <p ng-bind-html=\"params.message\"></p>\n" +
     "</div>\n" +
     "<div class=\"modal-footer\">\n" +
-    "    <button class=\"btn btn-default\" ng-click=\"close()\">{{ params.cancelButton.label }}</button>\n" +
+    "    <button class=\"btn btn-default\" ng-click=\"close()\" kb-focus>{{ params.cancelButton.label }}</button>\n" +
     "    <button class=\"btn btn-{{ params.confirmButton.type}}\" ng-click=\"confirm()\">{{ params.confirmButton.label }}</button>\n" +
     "</div>"
   );
 
   $templateCache.put("kb/ui/inline-edit/templates/datetime.html",
     "<span class=\"static\" ng-hide=\"isEditing\" ng-click=\"edit()\" tooltip=\"{{ tooltipTitle }}\">\n" +
-    "\t<kb-datetime datetime=\"value\"></kb-datetime>\n" +
-    "\t <a class=\"placeholder\" ng-show=\"!value\">\n" +
-    "         <i class=\"icon-edit\"></i>\n" +
+    "  <kb-datetime datetime=\"value\"></kb-datetime>\n" +
+    "   <a class=\"placeholder\" ng-show=\"!value\">\n" +
+    "         <i class=\"fa fa-pencil-square-o\"></i>\n" +
     "         {{ placeholder }}\n" +
     "     </a>\n" +
     "</span>\n" +
@@ -3699,10 +3638,10 @@ angular.module("kb.templates").run(["$templateCache", function($templateCache) {
     "\n" +
     "        <div class=\"input-group-btn\">\n" +
     "            <button class=\"btn btn-success\" ng-click=\"save()\">\n" +
-    "                <i class=\"glyphicon glyphicon-ok\" title=\"save\"></i>\n" +
+    "                <i class=\"fa fa-check\" title=\"save\"></i>\n" +
     "            </button>\n" +
     "            <button class=\"btn btn-default\" ng-click=\"cancel()\">\n" +
-    "                <i class=\"glyphicon glyphicon-remove\" title=\"Cancel\"></i>\n" +
+    "                <i class=\"fa fa-times\" title=\"Cancel\"></i>\n" +
     "            </button>\n" +
     "        </div>\n" +
     "    </div>\n" +
@@ -3712,8 +3651,8 @@ angular.module("kb.templates").run(["$templateCache", function($templateCache) {
 
   $templateCache.put("kb/ui/inline-edit/templates/select.html",
     "<span class=\"static\" ng-hide=\"isEditing\" ng-click=\"edit()\" tooltip=\"{{ tooltipTitle }}\">\n" +
-    "\t{{ value }}\n" +
-    "\t<span class=\"placeholder\" ng-show=\"!value\">{{ placeholder }}</span>\n" +
+    "  {{ value }}\n" +
+    "  <span class=\"placeholder\" ng-show=\"!value\">{{ placeholder }}</span>\n" +
     "</span>\n" +
     "<div ng-show=\"isEditing\" class=\"editing\">\n" +
     "    <div class=\"input-group\">\n" +
@@ -3721,10 +3660,10 @@ angular.module("kb.templates").run(["$templateCache", function($templateCache) {
     "\n" +
     "        <span class=\"input-group-btn\">\n" +
     "            <button class=\"btn btn-success\" ng-click=\"save()\">\n" +
-    "                    <i class=\"glyphicon glyphicon-ok\" title=\"save\"></i>\n" +
+    "                    <i class=\"fa fa-check\" title=\"save\"></i>\n" +
     "            </button>\n" +
     "            <button class=\"btn btn-default\" ng-click=\"cancel()\">\n" +
-    "                <i class=\"glyphicon glyphicon-remove\" title=\"Cancel\"></i>\n" +
+    "                <i class=\"fa fa-times\" title=\"Cancel\"></i>\n" +
     "            </button>\n" +
     "        </span>\n" +
     "\n" +
@@ -3734,11 +3673,11 @@ angular.module("kb.templates").run(["$templateCache", function($templateCache) {
 
   $templateCache.put("kb/ui/inline-edit/templates/text.html",
     "<span class=\"static\" ng-hide=\"isEditing\" ng-click=\"edit()\" tooltip=\"{{ tooltipTitle }}\">\n" +
-    "\t{{ value }}\n" +
-    "\t <a class=\"placeholder\" ng-show=\"!value\">\n" +
-    "\t\t\t<i class=\"icon-edit\"></i>\n" +
-    "\t\t\t{{ placeholder }}\n" +
-    "\t\t</a>\n" +
+    "  {{ value }}\n" +
+    "   <a class=\"placeholder\" ng-show=\"!value\">\n" +
+    "      <i class=\"fa fa-pencil-square-o\"></i>\n" +
+    "      {{ placeholder }}\n" +
+    "    </a>\n" +
     "</span>\n" +
     "<div ng-show=\"isEditing\" class=\"editing\">\n" +
     "    <div class=\"input-group\">\n" +
@@ -3746,10 +3685,10 @@ angular.module("kb.templates").run(["$templateCache", function($templateCache) {
     "\n" +
     "        <div class=\"input-group-btn\">\n" +
     "            <button class=\"btn btn-success\" ng-click=\"save()\">\n" +
-    "                <i class=\"glyphicon glyphicon-ok\" title=\"save\"></i>\n" +
+    "                <i class=\"fa fa-check\" title=\"save\"></i>\n" +
     "            </button>\n" +
     "            <button class=\"btn btn-default\" ng-click=\"cancel()\">\n" +
-    "                <i class=\"glyphicon glyphicon-remove\" title=\"Cancel\"></i>\n" +
+    "                <i class=\"fa fa-times\" title=\"Cancel\"></i>\n" +
     "            </button>\n" +
     "        </div>\n" +
     "    </div>\n" +
@@ -3758,19 +3697,29 @@ angular.module("kb.templates").run(["$templateCache", function($templateCache) {
 
   $templateCache.put("kb/ui/inline-edit/templates/textarea.html",
     "<span class=\"static\" ng-hide=\"isEditing\" ng-click=\"edit()\" tooltip=\"{{ tooltipTitle }}\">\n" +
-    "\t\t<span kb-nl2br=\"value\"></span>\n" +
-    "\t\t<a class=\"placeholder\" ng-show=\"!value\">\n" +
-    "\t\t\t<i class=\"icon-edit\"></i>\n" +
-    "\t\t\t{{ placeholder }}\n" +
-    "\t\t</a>\n" +
+    "    <span kb-nl2br=\"value\"></span>\n" +
+    "    <a class=\"placeholder\" ng-show=\"!value\">\n" +
+    "      <i class=\"fa fa-pencil-square-o\"></i>\n" +
+    "      {{ placeholder }}\n" +
+    "    </a>\n" +
     "</span>\n" +
     "<div ng-show=\"isEditing\" class=\"editing\">\n" +
-    "\t<textarea type=\"text\" ng-model=\"editValue\" placeholder=\"{{ placeholder }}\">\n" +
-    "\t</textarea>\n" +
-    "\t<div class=\"form-actions\">\n" +
-    "\t\t\t\t<button class=\"btn btn-primary\" ng-click=\"save()\">Save</button>\n" +
-    "\t\t\t\t<button class=\"btn btn-default\" ng-click=\"cancel()\">Cancel</button>\n" +
-    "\t</div>\n" +
+    "  <textarea type=\"text\" ng-model=\"editValue\" placeholder=\"{{ placeholder }}\">\n" +
+    "  </textarea>\n" +
+    "  <div class=\"form-actions\">\n" +
+    "        <button class=\"btn btn-primary\" ng-click=\"save()\">Save</button>\n" +
+    "        <button class=\"btn btn-default\" ng-click=\"cancel()\">Cancel</button>\n" +
+    "  </div>\n" +
+    "</div>"
+  );
+
+  $templateCache.put("kb/ui/search-filter/templates/search-filter.html",
+    "<div class=\"form-group form-group-sm search-filter has-feedback\">\n" +
+    "    <div class=\"input-group\">\n" +
+    "        <input class=\"form-control search\" type=\"text\" kb-focus=\"focus\" placeholder=\"Search...\" ng-model=\"query\" />\n" +
+    "        <div class=\"input-group-addon\" ng-if=\"hasQuery()\" ng-click=\"remove()\"><span class=\"fa fa-fw fa-times\"></span></div>\n" +
+    "        <div class=\"input-group-addon\" ng-if=\"!hasQuery()\"><span class=\"fa fa-fw fa-search\"></span></div>\n" +
+    "    </div>\n" +
     "</div>"
   );
 
