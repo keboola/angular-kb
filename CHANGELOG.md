@@ -1,10 +1,16 @@
-## 0.13.16 (2014-20-30)
+## 0.14.0 (2014-11-12)
+ * [Feat] `kb.ui.notifications` directive added
+ * [Feat] `kb.utils.notifications` service added
+ * [Feat] `kb.utils.events` service added
+ * [Feat] `kb.syrup.asyncRunner` service added
+
+## 0.13.16 (2014-10-30)
  * [Fix] - `kb.filters.webalize` - filter was broken after tabs to spaces replace
 
-## 0.13.15 (2014-20-29)
+## 0.13.15 (2014-10-29)
  * [Fix] - `kb.sapi.sapiService`
 
-## 0.13.14 (2014-20-29)
+## 0.13.14 (2014-10-29)
  * [Feat] - `kb.sapi.sapiService` - bucket credentials resource supported
 
 ## 0.13.12 (2014-10-20)
