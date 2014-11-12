@@ -30,6 +30,7 @@
     'kb.ui.sapiComponentIcon'
     'kb.ui.urlize'
     'kb.ui.sapiEventsTable'
+    'kb.ui.notifications'
   ].sort()
 
   app.config(($routeProvider) ->
@@ -333,6 +334,15 @@
         $scope.selectedHeader.push(header)
     $scope.isChecked = (header) ->
       header in $scope.selectedHeader
+
+  ])
+
+  app.controller('kb.ui.notifications', ['$scope', 'kbNotifications', ($scope, kbNotifications) ->
+    $scope.level = 'success'
+    $scope.message = 'Notification'
+    kbNotifications.add("warning", "Notification")
+    $scope.addNotification = () ->
+      kbNotifications.add($scope.level, $scope.message)
 
   ])
 

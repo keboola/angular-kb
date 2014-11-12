@@ -13,6 +13,7 @@ files = [
 	'docs/components/angular/angular.js',
 	'docs/components/angular-mocks/angular-mocks.js',
 	'docs/components/angular-route/angular-route.js',
+	'docs/components/angular-ui-bootstrap-bower/ui-bootstrap-tpls.js',
   	'docs/build/angular-kb.js',
   	'tmp/modules/**/test/*.js'
 ];

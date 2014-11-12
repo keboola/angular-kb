@@ -25,11 +25,14 @@ angular.module('kb', [
   'kb.ui.check'
   'kb.ui.searchFilter'
   'kb.ui.urlize'
+  'kb.ui.notifications'
 
   'kb.utils.multipartUpload'
   'kb.utils.csv'
   'kb.utils.keyboardShortcuts'
   'kb.utils.appVersion'
+  'kb.utils.events'
+  'kb.utils.notifications'
 
   'kb.filters.date'
   'kb.filters.filesize'
@@ -39,6 +42,8 @@ angular.module('kb', [
   'kb.sapi.sapiService'
   'kb.sapi.eventsService'
   'kb.sapi.errorHandler'
+
+  'kb.syrup.asyncRunner'
 
   'kb.templates'
 ])

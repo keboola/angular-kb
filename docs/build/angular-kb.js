@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.13.18 - 2014-11-03
+ * @version v0.13.18 - 2014-11-12
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -9,7 +9,7 @@
 
   angular.module('kb.templates', []);
 
-  angular.module('kb', ['kb.config', 'kb.ui.inlineEdit', 'kb.ui.clickToggle', 'kb.ui.copyButton', 'kb.ui.nl2br', 'kb.ui.sapiEventsTable', 'kb.ui.loader', 'kb.ui.autoComplete', 'kb.ui.focus', 'kb.ui.tree', 'kb.ui.runButton', 'kb.ui.codemirror', 'kb.ui.datetime', 'kb.ui.duration', 'kb.ui.sapiConsoleHref', 'kb.ui.sapiComponentIcon', 'kb.ui.confirm', 'kb.ui.check', 'kb.ui.searchFilter', 'kb.ui.urlize', 'kb.utils.multipartUpload', 'kb.utils.csv', 'kb.utils.keyboardShortcuts', 'kb.utils.appVersion', 'kb.filters.date', 'kb.filters.filesize', 'kb.filters.webalize', 'kb.filters.duration', 'kb.sapi.sapiService', 'kb.sapi.eventsService', 'kb.sapi.errorHandler', 'kb.templates']);
+  angular.module('kb', ['kb.config', 'kb.ui.inlineEdit', 'kb.ui.clickToggle', 'kb.ui.copyButton', 'kb.ui.nl2br', 'kb.ui.sapiEventsTable', 'kb.ui.loader', 'kb.ui.autoComplete', 'kb.ui.focus', 'kb.ui.tree', 'kb.ui.runButton', 'kb.ui.codemirror', 'kb.ui.datetime', 'kb.ui.duration', 'kb.ui.sapiConsoleHref', 'kb.ui.sapiComponentIcon', 'kb.ui.confirm', 'kb.ui.check', 'kb.ui.searchFilter', 'kb.ui.urlize', 'kb.ui.notifications', 'kb.utils.multipartUpload', 'kb.utils.csv', 'kb.utils.keyboardShortcuts', 'kb.utils.appVersion', 'kb.utils.events', 'kb.utils.notifications', 'kb.filters.date', 'kb.filters.filesize', 'kb.filters.webalize', 'kb.filters.duration', 'kb.sapi.sapiService', 'kb.sapi.eventsService', 'kb.sapi.errorHandler', 'kb.syrup.asyncRunner', 'kb.templates']);
 
 }).call(this);
 
@@ -1716,6 +1716,78 @@
 
 (function() {
 
+  angular.module('kb.syrup.asyncRunner', ['kb.config', 'kb.sapi.errorHandler']).factory('kbSyrupAsyncRunner', [
+    "$http", "kb.components", "kbSapiErrorHandler", "$q", function($http, components, errorHandler, $q) {
+      var SyrupAsyncRunner;
+      SyrupAsyncRunner = (function() {
+
+        function SyrupAsyncRunner($http, $q) {
+          this.$http = $http;
+          this.$q = $q;
+        }
+
+        SyrupAsyncRunner.prototype.call = function(config) {
+          var params;
+          params = this.httpParams(config);
+          return $http(params).then(this.runEnd)["catch"](this.handleError);
+        };
+
+        SyrupAsyncRunner.prototype.httpParams = function(config) {
+          var params;
+          if (!config.method) {
+            config.method = 'run';
+          }
+          if (!config.data) {
+            config.data = {};
+          }
+          params = {
+            data: config.data,
+            url: this.uri(config.component, config.method),
+            method: 'POST',
+            headers: {
+              'X-StorageApi-Token': config.token
+            }
+          };
+          return params;
+        };
+
+        SyrupAsyncRunner.prototype.uri = function(component, method) {
+          var componentConfig, uri;
+          componentConfig = _.find(components, function(c) {
+            return c.id === component;
+          });
+          if (componentConfig && componentConfig.uri) {
+            uri = componentConfig.uri;
+          } else {
+            uri = component;
+          }
+          return uri + '/' + method;
+        };
+
+        SyrupAsyncRunner.prototype.runEnd = function(response) {
+          var data;
+          data = {
+            jobUri: "jobs#/job/" + response.data.id,
+            jobId: response.data.id
+          };
+          return data;
+        };
+
+        SyrupAsyncRunner.prototype.handleError = function(response) {
+          return errorHandler.handleError(response);
+        };
+
+        return SyrupAsyncRunner;
+
+      })();
+      return new SyrupAsyncRunner($http, $q);
+    }
+  ]);
+
+}).call(this);
+
+(function() {
+
   angular.module('kb.ui.autoComplete', []).directive('kbAutoComplete', function() {
     return {
       restrict: 'A',
@@ -2269,6 +2341,30 @@
       });
     };
   });
+
+}).call(this);
+
+(function() {
+
+  angular.module('kb.ui.notifications', []).directive('kbNotifications', [
+    'kbNotifications', 'kbEvents', function(kbNotifications, kbEvents) {
+      return {
+        template: "<div class=\"alert alert-{{notification.level}} alert-dismissable\"  ng-repeat=\"notification in notifications\">\n    <button type=\"button\" class=\"close\" ng-click=\"close($index)\">\n        <span>×</span>\n        <span class=\"sr-only\">Close</span>\n    </button>\n    <div><span ng-bind-html=\"notification.message\"></span></div>\n</div>",
+        restrict: 'E',
+        link: function(scope) {
+          var refresh;
+          refresh = function() {
+            return scope.notifications = kbNotifications.list();
+          };
+          scope.close = function(index) {
+            return kbNotifications.remove(index);
+          };
+          refresh();
+          return kbEvents.subscribe("kbNotifications.change", refresh);
+        }
+      };
+    }
+  ]);
 
 }).call(this);
 
@@ -3411,6 +3507,51 @@
 
 }).call(this);
 
+(function() {
+
+  angular.module('kb.utils.events', []).service('kbEvents', [
+    "$q", "$rootScope", function($q, $rootScope) {
+      return {
+        publish: function(name, args) {
+          var deferred, eventArgs, i, promises;
+          if (!$rootScope.$$listeners[name]) {
+            return [];
+          }
+          deferred = [];
+          i = 0;
+          while (i < $rootScope.$$listeners[name].length) {
+            deferred.push($q.defer());
+            i++;
+          }
+          eventArgs = {
+            args: args,
+            reject: function(a) {
+              deferred.pop().reject(a);
+            },
+            resolve: function(a) {
+              deferred.pop().resolve(a);
+            }
+          };
+          $rootScope.$broadcast(name, eventArgs);
+          promises = _.map(deferred, function(p) {
+            return p.promise;
+          });
+          return promises;
+        },
+        subscribe: function(name, callback) {
+          return $rootScope.$on(name, callback);
+        },
+        unsubscribe: function(handle) {
+          if (angular.isFunction(handle)) {
+            handle();
+          }
+        }
+      };
+    }
+  ]);
+
+}).call(this);
+
 
 /*
   Keyboard shortcuts registration service
@@ -3490,206 +3631,146 @@
 
 }).call(this);
 
+(function() {
+
+  angular.module('kb.utils.notifications', ['kb.utils.events']).factory('kbNotifications', [
+    "kbEvents", function(kbEvents) {
+      var Notifications;
+      Notifications = (function() {
+
+        function Notifications() {}
+
+        Notifications.prototype.notifications = [];
+
+        Notifications.prototype.add = function(level, message) {
+          this.notifications.push({
+            level: level,
+            message: message
+          });
+          return kbEvents.publish('kbNotifications.change');
+        };
+
+        Notifications.prototype.remove = function(index) {
+          this.notifications = _.reject(this.notifications, function(item, key) {
+            return key === index;
+          });
+          return kbEvents.publish('kbNotifications.change');
+        };
+
+        Notifications.prototype.list = function() {
+          return this.notifications;
+        };
+
+        return Notifications;
+
+      })();
+      return new Notifications();
+    }
+  ]);
+
+}).call(this);
+
 angular.module("kb.templates").run(["$templateCache", function($templateCache) {
 
   $templateCache.put("kb/ui/confirm/templates/confirm.html",
-    "<div class=\"modal-header\">\r" +
-    "\n" +
-    "    <h4 class=\"modal-title\">{{ params.header }}</h4>\r" +
-    "\n" +
-    "</div>\r" +
-    "\n" +
-    "<div class=\"modal-body\">\r" +
-    "\n" +
-    "    <p ng-bind-html=\"params.message\"></p>\r" +
-    "\n" +
-    "</div>\r" +
-    "\n" +
-    "<div class=\"modal-footer\">\r" +
-    "\n" +
-    "    <button class=\"btn btn-default\" ng-click=\"close()\" kb-focus>{{ params.cancelButton.label }}</button>\r" +
-    "\n" +
-    "    <button class=\"btn btn-{{ params.confirmButton.type}}\" ng-click=\"confirm()\">{{ params.confirmButton.label }}</button>\r" +
-    "\n" +
+    "<div class=\"modal-header\">\n" +
+    "    <h4 class=\"modal-title\">{{ params.header }}</h4>\n" +
+    "</div>\n" +
+    "<div class=\"modal-body\">\n" +
+    "    <p ng-bind-html=\"params.message\"></p>\n" +
+    "</div>\n" +
+    "<div class=\"modal-footer\">\n" +
+    "    <button class=\"btn btn-default\" ng-click=\"close()\">{{ params.cancelButton.label }}</button>\n" +
+    "    <button class=\"btn btn-{{ params.confirmButton.type}}\" ng-click=\"confirm()\">{{ params.confirmButton.label }}</button>\n" +
     "</div>"
   );
 
   $templateCache.put("kb/ui/inline-edit/templates/datetime.html",
-    "<span class=\"static\" ng-hide=\"isEditing\" ng-click=\"edit()\" tooltip=\"{{ tooltipTitle }}\">\r" +
+    "<span class=\"static\" ng-hide=\"isEditing\" ng-click=\"edit()\" tooltip=\"{{ tooltipTitle }}\">\n" +
+    "\t<kb-datetime datetime=\"value\"></kb-datetime>\n" +
+    "\t <a class=\"placeholder\" ng-show=\"!value\">\n" +
+    "         <i class=\"icon-edit\"></i>\n" +
+    "         {{ placeholder }}\n" +
+    "     </a>\n" +
+    "</span>\n" +
+    "<div ng-show=\"isEditing\" class=\"editing\">\n" +
+    "    <div class=\"input-group\">\n" +
+    "        <input type=\"text\" ng-model=\"editValue\" class=\"form-control\" placeholder=\"{{ placeholder }}\"/>\n" +
     "\n" +
-    "  <kb-datetime datetime=\"value\"></kb-datetime>\r" +
-    "\n" +
-    "   <a class=\"placeholder\" ng-show=\"!value\">\r" +
-    "\n" +
-    "         <i class=\"fa fa-pencil-square-o\"></i>\r" +
-    "\n" +
-    "         {{ placeholder }}\r" +
-    "\n" +
-    "     </a>\r" +
-    "\n" +
-    "</span>\r" +
-    "\n" +
-    "<div ng-show=\"isEditing\" class=\"editing\">\r" +
-    "\n" +
-    "    <div class=\"input-group\">\r" +
-    "\n" +
-    "        <input type=\"text\" ng-model=\"editValue\" class=\"form-control\" placeholder=\"{{ placeholder }}\"/>\r" +
-    "\n" +
-    "\r" +
-    "\n" +
-    "        <div class=\"input-group-btn\">\r" +
-    "\n" +
-    "            <button class=\"btn btn-success\" ng-click=\"save()\">\r" +
-    "\n" +
-    "                <i class=\"fa fa-check\" title=\"save\"></i>\r" +
-    "\n" +
-    "            </button>\r" +
-    "\n" +
-    "            <button class=\"btn btn-default\" ng-click=\"cancel()\">\r" +
-    "\n" +
-    "                <i class=\"fa fa-times\" title=\"Cancel\"></i>\r" +
-    "\n" +
-    "            </button>\r" +
-    "\n" +
-    "        </div>\r" +
-    "\n" +
-    "    </div>\r" +
-    "\n" +
-    "</div>\r" +
-    "\n" +
-    "\r" +
+    "        <div class=\"input-group-btn\">\n" +
+    "            <button class=\"btn btn-success\" ng-click=\"save()\">\n" +
+    "                <i class=\"glyphicon glyphicon-ok\" title=\"save\"></i>\n" +
+    "            </button>\n" +
+    "            <button class=\"btn btn-default\" ng-click=\"cancel()\">\n" +
+    "                <i class=\"glyphicon glyphicon-remove\" title=\"Cancel\"></i>\n" +
+    "            </button>\n" +
+    "        </div>\n" +
+    "    </div>\n" +
+    "</div>\n" +
     "\n"
   );
 
   $templateCache.put("kb/ui/inline-edit/templates/select.html",
-    "<span class=\"static\" ng-hide=\"isEditing\" ng-click=\"edit()\" tooltip=\"{{ tooltipTitle }}\">\r" +
+    "<span class=\"static\" ng-hide=\"isEditing\" ng-click=\"edit()\" tooltip=\"{{ tooltipTitle }}\">\n" +
+    "\t{{ value }}\n" +
+    "\t<span class=\"placeholder\" ng-show=\"!value\">{{ placeholder }}</span>\n" +
+    "</span>\n" +
+    "<div ng-show=\"isEditing\" class=\"editing\">\n" +
+    "    <div class=\"input-group\">\n" +
+    "        <select ng-options=\"value for value in options\" class=\"form-control\" ng-model=\"editValue\"></select>\n" +
     "\n" +
-    "  {{ value }}\r" +
+    "        <span class=\"input-group-btn\">\n" +
+    "            <button class=\"btn btn-success\" ng-click=\"save()\">\n" +
+    "                    <i class=\"glyphicon glyphicon-ok\" title=\"save\"></i>\n" +
+    "            </button>\n" +
+    "            <button class=\"btn btn-default\" ng-click=\"cancel()\">\n" +
+    "                <i class=\"glyphicon glyphicon-remove\" title=\"Cancel\"></i>\n" +
+    "            </button>\n" +
+    "        </span>\n" +
     "\n" +
-    "  <span class=\"placeholder\" ng-show=\"!value\">{{ placeholder }}</span>\r" +
-    "\n" +
-    "</span>\r" +
-    "\n" +
-    "<div ng-show=\"isEditing\" class=\"editing\">\r" +
-    "\n" +
-    "    <div class=\"input-group\">\r" +
-    "\n" +
-    "        <select ng-options=\"value for value in options\" class=\"form-control\" ng-model=\"editValue\"></select>\r" +
-    "\n" +
-    "\r" +
-    "\n" +
-    "        <span class=\"input-group-btn\">\r" +
-    "\n" +
-    "            <button class=\"btn btn-success\" ng-click=\"save()\">\r" +
-    "\n" +
-    "                    <i class=\"fa fa-check\" title=\"save\"></i>\r" +
-    "\n" +
-    "            </button>\r" +
-    "\n" +
-    "            <button class=\"btn btn-default\" ng-click=\"cancel()\">\r" +
-    "\n" +
-    "                <i class=\"fa fa-times\" title=\"Cancel\"></i>\r" +
-    "\n" +
-    "            </button>\r" +
-    "\n" +
-    "        </span>\r" +
-    "\n" +
-    "\r" +
-    "\n" +
-    "    </div>\r" +
-    "\n" +
+    "    </div>\n" +
     "</div>"
   );
 
   $templateCache.put("kb/ui/inline-edit/templates/text.html",
-    "<span class=\"static\" ng-hide=\"isEditing\" ng-click=\"edit()\" tooltip=\"{{ tooltipTitle }}\">\r" +
+    "<span class=\"static\" ng-hide=\"isEditing\" ng-click=\"edit()\" tooltip=\"{{ tooltipTitle }}\">\n" +
+    "\t{{ value }}\n" +
+    "\t <a class=\"placeholder\" ng-show=\"!value\">\n" +
+    "\t\t\t<i class=\"icon-edit\"></i>\n" +
+    "\t\t\t{{ placeholder }}\n" +
+    "\t\t</a>\n" +
+    "</span>\n" +
+    "<div ng-show=\"isEditing\" class=\"editing\">\n" +
+    "    <div class=\"input-group\">\n" +
+    "        <input type=\"text\" ng-model=\"editValue\" class=\"form-control\" placeholder=\"{{ placeholder }}\"/>\n" +
     "\n" +
-    "  {{ value }}\r" +
-    "\n" +
-    "   <a class=\"placeholder\" ng-show=\"!value\">\r" +
-    "\n" +
-    "      <i class=\"fa fa-pencil-square-o\"></i>\r" +
-    "\n" +
-    "      {{ placeholder }}\r" +
-    "\n" +
-    "    </a>\r" +
-    "\n" +
-    "</span>\r" +
-    "\n" +
-    "<div ng-show=\"isEditing\" class=\"editing\">\r" +
-    "\n" +
-    "    <div class=\"input-group\">\r" +
-    "\n" +
-    "        <input type=\"text\" ng-model=\"editValue\" class=\"form-control\" placeholder=\"{{ placeholder }}\"/>\r" +
-    "\n" +
-    "\r" +
-    "\n" +
-    "        <div class=\"input-group-btn\">\r" +
-    "\n" +
-    "            <button class=\"btn btn-success\" ng-click=\"save()\">\r" +
-    "\n" +
-    "                <i class=\"fa fa-check\" title=\"save\"></i>\r" +
-    "\n" +
-    "            </button>\r" +
-    "\n" +
-    "            <button class=\"btn btn-default\" ng-click=\"cancel()\">\r" +
-    "\n" +
-    "                <i class=\"fa fa-times\" title=\"Cancel\"></i>\r" +
-    "\n" +
-    "            </button>\r" +
-    "\n" +
-    "        </div>\r" +
-    "\n" +
-    "    </div>\r" +
-    "\n" +
+    "        <div class=\"input-group-btn\">\n" +
+    "            <button class=\"btn btn-success\" ng-click=\"save()\">\n" +
+    "                <i class=\"glyphicon glyphicon-ok\" title=\"save\"></i>\n" +
+    "            </button>\n" +
+    "            <button class=\"btn btn-default\" ng-click=\"cancel()\">\n" +
+    "                <i class=\"glyphicon glyphicon-remove\" title=\"Cancel\"></i>\n" +
+    "            </button>\n" +
+    "        </div>\n" +
+    "    </div>\n" +
     "</div>"
   );
 
   $templateCache.put("kb/ui/inline-edit/templates/textarea.html",
-    "<span class=\"static\" ng-hide=\"isEditing\" ng-click=\"edit()\" tooltip=\"{{ tooltipTitle }}\">\r" +
-    "\n" +
-    "    <span kb-nl2br=\"value\"></span>\r" +
-    "\n" +
-    "    <a class=\"placeholder\" ng-show=\"!value\">\r" +
-    "\n" +
-    "      <i class=\"fa fa-pencil-square-o\"></i>\r" +
-    "\n" +
-    "      {{ placeholder }}\r" +
-    "\n" +
-    "    </a>\r" +
-    "\n" +
-    "</span>\r" +
-    "\n" +
-    "<div ng-show=\"isEditing\" class=\"editing\">\r" +
-    "\n" +
-    "  <textarea type=\"text\" ng-model=\"editValue\" placeholder=\"{{ placeholder }}\">\r" +
-    "\n" +
-    "  </textarea>\r" +
-    "\n" +
-    "  <div class=\"form-actions\">\r" +
-    "\n" +
-    "        <button class=\"btn btn-primary\" ng-click=\"save()\">Save</button>\r" +
-    "\n" +
-    "        <button class=\"btn btn-default\" ng-click=\"cancel()\">Cancel</button>\r" +
-    "\n" +
-    "  </div>\r" +
-    "\n" +
-    "</div>"
-  );
-
-  $templateCache.put("kb/ui/search-filter/templates/search-filter.html",
-    "<div class=\"form-group form-group-sm search-filter has-feedback\">\r" +
-    "\n" +
-    "    <div class=\"input-group\">\r" +
-    "\n" +
-    "        <input class=\"form-control search\" type=\"text\" kb-focus=\"focus\" placeholder=\"Search...\" ng-model=\"query\" />\r" +
-    "\n" +
-    "        <div class=\"input-group-addon\" ng-if=\"hasQuery()\" ng-click=\"remove()\"><span class=\"fa fa-fw fa-times\"></span></div>\r" +
-    "\n" +
-    "        <div class=\"input-group-addon\" ng-if=\"!hasQuery()\"><span class=\"fa fa-fw fa-search\"></span></div>\r" +
-    "\n" +
-    "    </div>\r" +
-    "\n" +
+    "<span class=\"static\" ng-hide=\"isEditing\" ng-click=\"edit()\" tooltip=\"{{ tooltipTitle }}\">\n" +
+    "\t\t<span kb-nl2br=\"value\"></span>\n" +
+    "\t\t<a class=\"placeholder\" ng-show=\"!value\">\n" +
+    "\t\t\t<i class=\"icon-edit\"></i>\n" +
+    "\t\t\t{{ placeholder }}\n" +
+    "\t\t</a>\n" +
+    "</span>\n" +
+    "<div ng-show=\"isEditing\" class=\"editing\">\n" +
+    "\t<textarea type=\"text\" ng-model=\"editValue\" placeholder=\"{{ placeholder }}\">\n" +
+    "\t</textarea>\n" +
+    "\t<div class=\"form-actions\">\n" +
+    "\t\t\t\t<button class=\"btn btn-primary\" ng-click=\"save()\">Save</button>\n" +
+    "\t\t\t\t<button class=\"btn btn-default\" ng-click=\"cancel()\">Cancel</button>\n" +
+    "\t</div>\n" +
     "</div>"
   );
 
