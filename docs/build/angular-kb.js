@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.14.0 - 2014-11-12
+ * @version v0.14.1 - 2014-11-13
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -2330,7 +2330,7 @@
   angular.module('kb.ui.runButton', ['kb.ui.loader']).directive('kbRunButton', function() {
     return {
       restrict: 'E',
-      template: "<button class=\"btn btn-default run-transformation kb-loader\">\n  <i  class=\"fa fa-play\"> </i>\n</button>",
+      template: "<button class=\"btn btn-default run-transformation kb-loader\">\n  <i class=\"fa fa-fw fa-play\"> </i>\n</button>",
       replace: true,
       link: function(scope, element, attrs) {
         var icon;
