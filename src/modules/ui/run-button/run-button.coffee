@@ -5,7 +5,7 @@ angular.module('kb.ui.runButton', ['kb.ui.loader'])
       restrict: 'E'
       template: """
         <button class="btn btn-default run-transformation kb-loader">
-          <i  class="fa fa-play"> </i>
+          <i class="fa fa-fw fa-play"> </i>
         </button>
       """
       replace: true
