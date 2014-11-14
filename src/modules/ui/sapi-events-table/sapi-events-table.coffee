@@ -177,7 +177,7 @@ angular
           return '' if !event
 
           if event.type is 'error'
-            return 'error'
+            return 'danger'
 
           if event.type is 'warn'
             return 'warning'
