@@ -1,0 +1,21 @@
+<div class="bs-docs-example">
+	<kb-run-icon is-running="isRunning" ng-click="run()"></kb-run-icon>
+</div>
+
+<div class="bs-docs-source">
+   <h4>View</h4>
+   <pre>
+     &lt;kb-run-icon is-running="isRunning" ng-click="run()"&gt;&lt;/kb-run-icon&gt;   </pre>
+   <h4>Controller</h4>
+   <pre>
+     app.controller('appController', () ->
+       $scope.isRunning = false
+       $scope.run = ->
+         $scope.isRunning = true
+         $timeout( ->
+           $scope.isRunning = false
+         , 1000)
+     )
+   </pre>
+
+ </div>

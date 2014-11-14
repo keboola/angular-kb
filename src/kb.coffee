@@ -16,6 +16,7 @@ angular.module('kb', [
   'kb.ui.focus'
   'kb.ui.tree'
   'kb.ui.runButton'
+  'kb.ui.runIcon'
   'kb.ui.codemirror'
   'kb.ui.datetime'
   'kb.ui.duration'
@@ -26,6 +27,7 @@ angular.module('kb', [
   'kb.ui.searchFilter'
   'kb.ui.urlize'
   'kb.ui.notifications'
+  'kb.ui.configurationDescription'
 
   'kb.utils.multipartUpload'
   'kb.utils.csv'

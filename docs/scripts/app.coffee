@@ -17,6 +17,7 @@
     'kb.ui.datetime'
     'kb.ui.tree'
     'kb.ui.run-button'
+    'kb.ui.run-icon'
     'kb.ui.loader'
     'kb.ui.copy-button'
     'kb.ui.duration'
@@ -72,6 +73,15 @@
 
   app.controller('kb.ui.run-button', ($scope, $timeout) ->
     $scope.isRunning = false
+    $scope.run = ->
+      $scope.isRunning = true
+      $timeout( ->
+        $scope.isRunning = false
+      , 1000)
+  )
+
+  app.controller('kb.ui.run-icon', ($scope, $timeout) ->
+    $scope.isRunning = false
     $scope.isDisabled = false
     $scope.switch = ->
       $scope.isDisabled = !$scope.isDisabled
@@ -81,6 +91,7 @@
         $scope.isRunning = false
       , 1000)
   )
+
 
   app.controller('kb.ui.tree', ($scope) ->
 

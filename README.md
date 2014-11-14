@@ -31,6 +31,10 @@ Before adding any directive please check that directive isn't already implemente
 * `git push origin --tags`
 
 
+## Documentation edit
+
+* `grunt docsServer`
+
 ## Documentation publish
 
 * `grunt publishDocs`
