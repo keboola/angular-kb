@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.14.2 - 2014-11-14
+ * @version v0.14.3 - 2014-11-14
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -8,7 +8,7 @@
 
   angular.module('kb.templates', []);
 
-  angular.module('kb', ['kb.config', 'kb.ui.inlineEdit', 'kb.ui.clickToggle', 'kb.ui.copyButton', 'kb.ui.nl2br', 'kb.ui.sapiEventsTable', 'kb.ui.loader', 'kb.ui.autoComplete', 'kb.ui.focus', 'kb.ui.tree', 'kb.ui.runButton', 'kb.ui.codemirror', 'kb.ui.datetime', 'kb.ui.duration', 'kb.ui.sapiConsoleHref', 'kb.ui.sapiComponentIcon', 'kb.ui.confirm', 'kb.ui.check', 'kb.ui.searchFilter', 'kb.ui.urlize', 'kb.ui.notifications', 'kb.utils.multipartUpload', 'kb.utils.csv', 'kb.utils.keyboardShortcuts', 'kb.utils.appVersion', 'kb.utils.events', 'kb.utils.notifications', 'kb.filters.date', 'kb.filters.filesize', 'kb.filters.webalize', 'kb.filters.duration', 'kb.sapi.sapiService', 'kb.sapi.eventsService', 'kb.sapi.errorHandler', 'kb.syrup.asyncRunner', 'kb.templates']);
+  angular.module('kb', ['kb.config', 'kb.ui.inlineEdit', 'kb.ui.clickToggle', 'kb.ui.copyButton', 'kb.ui.nl2br', 'kb.ui.sapiEventsTable', 'kb.ui.loader', 'kb.ui.autoComplete', 'kb.ui.focus', 'kb.ui.tree', 'kb.ui.runButton', 'kb.ui.runIcon', 'kb.ui.codemirror', 'kb.ui.datetime', 'kb.ui.duration', 'kb.ui.sapiConsoleHref', 'kb.ui.sapiComponentIcon', 'kb.ui.confirm', 'kb.ui.check', 'kb.ui.searchFilter', 'kb.ui.urlize', 'kb.ui.notifications', 'kb.ui.configurationDescription', 'kb.utils.multipartUpload', 'kb.utils.csv', 'kb.utils.keyboardShortcuts', 'kb.utils.appVersion', 'kb.utils.events', 'kb.utils.notifications', 'kb.filters.date', 'kb.filters.filesize', 'kb.filters.webalize', 'kb.filters.duration', 'kb.sapi.sapiService', 'kb.sapi.eventsService', 'kb.sapi.errorHandler', 'kb.syrup.asyncRunner', 'kb.templates']);
 
 }).call(this);
 
@@ -1899,6 +1899,34 @@
 }).call(this);
 
 (function() {
+  angular.module('kb.ui.configurationDescription', ['kb.sapi.sapiService', 'kb.ui.inlineEdit']).directive('kbConfigurationDescription', [
+    'kbSapiService', function(storageService) {
+      return {
+        template: "<kb-inline-edit-textarea value=\"configuration.description\" edit-title=\"Click to edit configuration description\" placeholder=\"Describe the confguration...\" on-save=\"saveDescription(newValue)\"></kb-inline-edit-textarea>",
+        restrict: 'E',
+        scope: {
+          componentId: "=",
+          configuration: "="
+        },
+        link: function(scope) {
+          console.log(scope.configuration);
+          console.log(scope.componentId);
+          return scope.saveDescription = function() {
+            var data;
+            data = {
+              name: scope.configuration.name,
+              description: scope.configuration.description
+            };
+            return storageService.updateComponentConfiguration(scope.componentId, scope.configuration.id, data);
+          };
+        }
+      };
+    }
+  ]);
+
+}).call(this);
+
+(function() {
   angular.module('kb.ui.confirm', ['kb.config', 'ui.bootstrap.modal', 'ngSanitize']).factory('kbConfirm', [
     '$modal', function($modal) {
       var confirm, defaultParams;
@@ -2342,6 +2370,33 @@
             return element.removeClass('disabled');
           }
         });
+        return scope.$watch(attrs.isRunning, function(newValue) {
+          element.removeClass('running');
+          icon.removeClass('fa-refresh');
+          icon.removeClass('fa-play');
+          icon.removeClass('fa-spin');
+          if (newValue) {
+            element.addClass('running');
+            return icon.addClass('fa-refresh fa-spin');
+          } else {
+            return icon.addClass('fa-play');
+          }
+        });
+      }
+    };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('kb.ui.runIcon', ['kb.ui.loader']).directive('kbRunIcon', function() {
+    return {
+      restrict: 'E',
+      template: "<span class=\"kb-loader\">\n  <i class=\"fa fa-fw fa-play\"> </i>\n</span>",
+      replace: true,
+      link: function(scope, element, attrs) {
+        var icon;
+        icon = element.find('i');
         return scope.$watch(attrs.isRunning, function(newValue) {
           element.removeClass('running');
           icon.removeClass('fa-refresh');
