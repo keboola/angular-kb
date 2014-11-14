@@ -1,3 +1,7 @@
+## 0.14.3 (2014-11-14)
+ * [Fix] `kb.ui.runIcon` directive
+ * [Fix] `kb.ui.configurationDescription` directive
+
 ## 0.14.2 (2014-11-14)
  * [Fix] `kb.sapiEventsTable` error event has red color
 
