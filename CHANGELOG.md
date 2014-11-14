@@ -1,3 +1,6 @@
+## 0.14.2 (2014-11-14)
+ * [Fix] `kb.sapiEventsTable` error event has red color
+
 ## 0.14.0 (2014-11-12)
  * [Feat] `kb.ui.notifications` directive added
  * [Feat] `kb.utils.notifications` service added
