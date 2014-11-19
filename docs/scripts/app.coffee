@@ -32,6 +32,7 @@
     'kb.ui.urlize'
     'kb.ui.sapiEventsTable'
     'kb.ui.notifications'
+    'kb.ui.protected'
   ].sort()
 
   app.config(($routeProvider) ->
@@ -355,6 +356,10 @@
     $scope.addNotification = () ->
       kbNotifications.add($scope.level, $scope.message)
 
+  ])
+
+  app.controller('kb.ui.protected', ['$scope', ($scope) ->
+    $scope.isProtected = true
   ])
 
 )(window.angular)

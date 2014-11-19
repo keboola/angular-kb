@@ -28,6 +28,7 @@ angular.module('kb', [
   'kb.ui.urlize'
   'kb.ui.notifications'
   'kb.ui.configurationDescription'
+  'kb.ui.protected'
 
   'kb.utils.multipartUpload'
   'kb.utils.csv'
