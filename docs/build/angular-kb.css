@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.14.4 - 2014-11-19
+ * @version v0.14.5 - 2014-11-19
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */
@@ -100,6 +100,10 @@
 
 .kb-inline-edit .placeholder i {
   margin-right: 5px;
+}
+
+.kb-protected .locked {
+  cursor: pointer;
 }
 
 

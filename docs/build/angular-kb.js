@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.14.4 - 2014-11-19
+ * @version v0.14.5 - 2014-11-19
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -8,7 +8,7 @@
 
   angular.module('kb.templates', []);
 
-  angular.module('kb', ['kb.config', 'kb.ui.inlineEdit', 'kb.ui.clickToggle', 'kb.ui.copyButton', 'kb.ui.nl2br', 'kb.ui.sapiEventsTable', 'kb.ui.loader', 'kb.ui.autoComplete', 'kb.ui.focus', 'kb.ui.tree', 'kb.ui.runButton', 'kb.ui.runIcon', 'kb.ui.codemirror', 'kb.ui.datetime', 'kb.ui.duration', 'kb.ui.sapiConsoleHref', 'kb.ui.sapiComponentIcon', 'kb.ui.confirm', 'kb.ui.check', 'kb.ui.searchFilter', 'kb.ui.urlize', 'kb.ui.notifications', 'kb.ui.configurationDescription', 'kb.utils.multipartUpload', 'kb.utils.csv', 'kb.utils.keyboardShortcuts', 'kb.utils.appVersion', 'kb.utils.events', 'kb.utils.notifications', 'kb.filters.date', 'kb.filters.filesize', 'kb.filters.webalize', 'kb.filters.duration', 'kb.sapi.sapiService', 'kb.sapi.eventsService', 'kb.sapi.errorHandler', 'kb.syrup.asyncRunner', 'kb.templates']);
+  angular.module('kb', ['kb.config', 'kb.ui.inlineEdit', 'kb.ui.clickToggle', 'kb.ui.copyButton', 'kb.ui.nl2br', 'kb.ui.sapiEventsTable', 'kb.ui.loader', 'kb.ui.autoComplete', 'kb.ui.focus', 'kb.ui.tree', 'kb.ui.runButton', 'kb.ui.runIcon', 'kb.ui.codemirror', 'kb.ui.datetime', 'kb.ui.duration', 'kb.ui.sapiConsoleHref', 'kb.ui.sapiComponentIcon', 'kb.ui.confirm', 'kb.ui.check', 'kb.ui.searchFilter', 'kb.ui.urlize', 'kb.ui.notifications', 'kb.ui.configurationDescription', 'kb.ui.protected', 'kb.utils.multipartUpload', 'kb.utils.csv', 'kb.utils.keyboardShortcuts', 'kb.utils.appVersion', 'kb.utils.events', 'kb.utils.notifications', 'kb.filters.date', 'kb.filters.filesize', 'kb.filters.webalize', 'kb.filters.duration', 'kb.sapi.sapiService', 'kb.sapi.eventsService', 'kb.sapi.errorHandler', 'kb.syrup.asyncRunner', 'kb.templates']);
 
 }).call(this);
 
@@ -2349,6 +2349,30 @@
       };
     }
   ]);
+
+}).call(this);
+
+(function() {
+  angular.module('kb.ui.protected', []).directive('kbProtected', function() {
+    return {
+      restrict: 'E',
+      scope: {
+        "protected": '='
+      },
+      transclude: true,
+      replace: true,
+      template: "<div class=\"kb-protected\">\n  <span class=\"locked\" ng-show=\"locked\" ng-click=\"unlock()\">\n    <i class=\"fa fa-fw  fa-lock\"></i>\n  </span>\n  <span ng-transclude ng-show=\"!locked\"></span>\n</div>",
+      link: function(scope) {
+        scope.locked = scope["protected"];
+        scope.$watch('protected', function(newValue) {
+          return scope.locked = newValue;
+        });
+        return scope.unlock = function() {
+          return scope["protected"] = false;
+        };
+      }
+    };
+  });
 
 }).call(this);
 
