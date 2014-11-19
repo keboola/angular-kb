@@ -6,7 +6,7 @@ angular
     restrict: 'E'
     require: 'ngModel'
     template: """
-      <i class="fa" "></i>
+      <i class="fa"></i>
     """
     link: (scope, element, attrs, ngModel) ->
       ngModel.$render =  ->
