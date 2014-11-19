@@ -8,8 +8,6 @@ angular.module('kb.ui.configurationDescription', ['kb.sapi.sapiService', 'kb.ui.
       componentId: "="
       configuration: "="
     link: (scope) ->
-      console.log scope.configuration
-      console.log scope.componentId
       scope.saveDescription = () ->
         data =
           name: scope.configuration.name
