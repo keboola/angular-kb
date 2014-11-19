@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.14.5 - 2014-11-19
+ * @version v0.14.6 - 2014-11-19
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -1800,7 +1800,7 @@
     return {
       restrict: 'E',
       require: 'ngModel',
-      template: "<i class=\"fa\" \"></i>",
+      template: "<i class=\"fa\"></i>",
       link: function(scope, element, attrs, ngModel) {
         return ngModel.$render = function() {
           var i;
@@ -2357,16 +2357,12 @@
     return {
       restrict: 'E',
       scope: {
-        "protected": '='
+        "protected": '&'
       },
       transclude: true,
       replace: true,
-      template: "<div class=\"kb-protected\">\n  <span class=\"locked\" ng-show=\"locked\" ng-click=\"unlock()\">\n    <i class=\"fa fa-fw  fa-lock\"></i>\n  </span>\n  <span ng-transclude ng-show=\"!locked\"></span>\n</div>",
+      template: "<div class=\"kb-protected\">\n  <span class=\"locked\" ng-show=\"protected\" ng-click=\"unlock()\">\n    <i class=\"fa fa-fw fa-lock\"></i>\n  </span>\n  <span ng-transclude ng-show=\"!protected\"></span>\n</div>",
       link: function(scope) {
-        scope.locked = scope["protected"];
-        scope.$watch('protected', function(newValue) {
-          return scope.locked = newValue;
-        });
         return scope.unlock = function() {
           return scope["protected"] = false;
         };
