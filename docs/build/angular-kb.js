@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.14.3 - 2014-11-14
+ * @version v0.14.4 - 2014-11-19
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -1909,8 +1909,6 @@
           configuration: "="
         },
         link: function(scope) {
-          console.log(scope.configuration);
-          console.log(scope.componentId);
           return scope.saveDescription = function() {
             var data;
             data = {
