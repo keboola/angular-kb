@@ -33,6 +33,7 @@
     'kb.ui.sapiEventsTable'
     'kb.ui.notifications'
     'kb.ui.protected'
+    'kb.ui.extractor-info'
   ].sort()
 
   app.config(($routeProvider) ->
@@ -361,5 +362,21 @@
   app.controller('kb.ui.protected', ['$scope', ($scope) ->
     $scope.isProtected = true
   ])
+
+  app.controller('kb.ui.extractor-info', ['$scope', ($scope) ->
+    $scope.account1 = null
+    $scope.configuration1 =
+      creatorToken:
+        description: 'user@keboola.com'
+      created: '2014-11-19T11:25:34+0100'
+
+    $scope.account2 =
+      username: 'customer@crm.com'
+    $scope.configuration2 =
+      creatorToken:
+        description: 'user@keboola.com'
+      created: '2014-11-19T11:25:34+0100'
+  ])
+
 
 )(window.angular)

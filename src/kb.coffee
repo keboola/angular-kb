@@ -29,6 +29,7 @@ angular.module('kb', [
   'kb.ui.notifications'
   'kb.ui.configurationDescription'
   'kb.ui.protected'
+  'kb.ui.extractorInfo'
 
   'kb.utils.multipartUpload'
   'kb.utils.csv'
