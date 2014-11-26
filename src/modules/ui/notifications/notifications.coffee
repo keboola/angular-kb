@@ -14,7 +14,7 @@ angular.module('kb.ui.notifications', [])
 
       # reload list
       refresh = () ->
-        scope.notifications = kbNotifications.list()
+        scope.notifications = kbNotifications.list().reverse()
 
       # close button
       scope.close = (index) ->
