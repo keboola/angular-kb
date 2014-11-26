@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.14.7 - 2014-11-20
+ * @version v0.14.8 - 2014-11-25
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -2353,7 +2353,7 @@
         link: function(scope) {
           var refresh;
           refresh = function() {
-            return scope.notifications = kbNotifications.list();
+            return scope.notifications = kbNotifications.list().reverse();
           };
           scope.close = function(index) {
             return kbNotifications.remove(index);
