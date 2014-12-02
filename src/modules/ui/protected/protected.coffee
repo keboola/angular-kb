@@ -4,7 +4,7 @@ angular.module('kb.ui.protected', [])
   .directive('kbProtected', ->
     restrict: 'E'
     scope:
-      "protected": '&'
+      "protected": '='
     transclude: true
     replace: true
     template: """

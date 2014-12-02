@@ -4,7 +4,7 @@
       <form class="form-horizontal">
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">
-            <kb-protected protected="isProtected == true">
+            <kb-protected protected="isProtected">
               Hidden Text
             </kb-protected>
           </div>
@@ -22,7 +22,7 @@
 <div class="bs-docs-source">
   <h4>View</h4>
     <pre>
-      &lt;kb-protected protected="isProtected == true"&gt;Hidden Text&lt;/kb-protected&gt;   </pre>
+      &lt;kb-protected protected="isProtected"&gt;Hidden Text&lt;/kb-protected&gt;   </pre>
   <h4>Controller</h4>
     <pre>
       app.controller('appController', () ->

@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.14.9 - 2014-12-01
+ * @version v0.14.9 - 2014-12-02
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -2372,7 +2372,7 @@
     return {
       restrict: 'E',
       scope: {
-        "protected": '&'
+        "protected": '='
       },
       transclude: true,
       replace: true,
