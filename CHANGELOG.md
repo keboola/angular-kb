@@ -1,6 +1,27 @@
+## 0.14.10 (2014-12-02)
+ * [Fix] `kb.ui.protected` protected parameter not an expression
+
+## 0.14.9 (2014-12-01)
+ * [Fix] `kb.ui.searchFilter` remove right padding
+
+## 0.14.8 (2014-11-25)
+ * [Fix] `kb.ui.notifications` show notifications in reverse order
+
+## 0.14.7 (2014-11-20)
+ * [Feat] `kb.ui.extractorInfo` directive
+
+## 0.14.6 (2014-11-19)
+ * [Fix] `kb.ui.protected` protected parameter as expression
+
+## 0.14.5 (2014-11-19)
+ * [Feat] `kb.ui.protected` directive
+
+## 0.14.4 (2014-11-19)
+ * [Fix] `kb.ui.configurationDescription` remove `console.log`
+
 ## 0.14.3 (2014-11-14)
- * [Fix] `kb.ui.runIcon` directive
- * [Fix] `kb.ui.configurationDescription` directive
+ * [Feat] `kb.ui.runIcon` directive
+ * [Feat] `kb.ui.configurationDescription` directive
 
 ## 0.14.2 (2014-11-14)
  * [Fix] `kb.sapiEventsTable` error event has red color
