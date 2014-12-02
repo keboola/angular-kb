@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.14.8 - 2014-11-25
+ * @version v0.14.9 - 2014-12-01
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -3802,7 +3802,7 @@ angular.module("kb.templates").run(["$templateCache", function($templateCache) {
   );
 
   $templateCache.put("kb/ui/search-filter/templates/search-filter.html",
-    "<div class=\"form-group form-group-sm search-filter has-feedback\">\n" +
+    "<div class=\"form-group form-group-sm search-filter\">\n" +
     "    <div class=\"input-group\">\n" +
     "        <input class=\"form-control search\" type=\"text\" kb-focus=\"focus\" placeholder=\"Search...\" ng-model=\"query\" />\n" +
     "        <div class=\"input-group-addon\" ng-if=\"hasQuery()\" ng-click=\"remove()\"><span class=\"fa fa-fw fa-times\"></span></div>\n" +
