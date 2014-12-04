@@ -30,6 +30,7 @@ angular.module('kb', [
   'kb.ui.configurationDescription'
   'kb.ui.protected'
   'kb.ui.extractorInfo'
+  'kb.ui.sapiInput'
 
   'kb.utils.multipartUpload'
   'kb.utils.csv'

@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.14.10 - 2014-12-02
+ * @version v0.14.10 - 2014-12-04
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -8,7 +8,7 @@
 
   angular.module('kb.templates', []);
 
-  angular.module('kb', ['kb.config', 'kb.ui.inlineEdit', 'kb.ui.clickToggle', 'kb.ui.copyButton', 'kb.ui.nl2br', 'kb.ui.sapiEventsTable', 'kb.ui.loader', 'kb.ui.autoComplete', 'kb.ui.focus', 'kb.ui.tree', 'kb.ui.runButton', 'kb.ui.runIcon', 'kb.ui.codemirror', 'kb.ui.datetime', 'kb.ui.duration', 'kb.ui.sapiConsoleHref', 'kb.ui.sapiComponentIcon', 'kb.ui.confirm', 'kb.ui.check', 'kb.ui.searchFilter', 'kb.ui.urlize', 'kb.ui.notifications', 'kb.ui.configurationDescription', 'kb.ui.protected', 'kb.ui.extractorInfo', 'kb.utils.multipartUpload', 'kb.utils.csv', 'kb.utils.keyboardShortcuts', 'kb.utils.appVersion', 'kb.utils.events', 'kb.utils.notifications', 'kb.filters.date', 'kb.filters.filesize', 'kb.filters.webalize', 'kb.filters.duration', 'kb.sapi.sapiService', 'kb.sapi.eventsService', 'kb.sapi.errorHandler', 'kb.syrup.asyncRunner', 'kb.templates']);
+  angular.module('kb', ['kb.config', 'kb.ui.inlineEdit', 'kb.ui.clickToggle', 'kb.ui.copyButton', 'kb.ui.nl2br', 'kb.ui.sapiEventsTable', 'kb.ui.loader', 'kb.ui.autoComplete', 'kb.ui.focus', 'kb.ui.tree', 'kb.ui.runButton', 'kb.ui.runIcon', 'kb.ui.codemirror', 'kb.ui.datetime', 'kb.ui.duration', 'kb.ui.sapiConsoleHref', 'kb.ui.sapiComponentIcon', 'kb.ui.confirm', 'kb.ui.check', 'kb.ui.searchFilter', 'kb.ui.urlize', 'kb.ui.notifications', 'kb.ui.configurationDescription', 'kb.ui.protected', 'kb.ui.extractorInfo', 'kb.ui.sapiInput', 'kb.utils.multipartUpload', 'kb.utils.csv', 'kb.utils.keyboardShortcuts', 'kb.utils.appVersion', 'kb.utils.events', 'kb.utils.notifications', 'kb.filters.date', 'kb.filters.filesize', 'kb.filters.webalize', 'kb.filters.duration', 'kb.sapi.sapiService', 'kb.sapi.eventsService', 'kb.sapi.errorHandler', 'kb.syrup.asyncRunner', 'kb.templates']);
 
 }).call(this);
 
@@ -2671,6 +2671,66 @@
       ]
     };
   });
+
+}).call(this);
+
+(function() {
+  angular.module('kb.ui.sapiInput', ['ui.bootstrap.typeahead', 'kb.sapi.sapiService']).directive('kbSapiInput', [
+    "$compile", "kbSapiService", function($compile, sapiService) {
+      var config, linker, prepareSapiTables;
+      prepareSapiTables = function(scope, tables) {
+        var excludeStage, s, _i, _len, _ref;
+        scope.sapiTables = tables;
+        if (scope.excludeStages) {
+          excludeStage = function(stage) {
+            return scope.sapiTables = _.filter(tables, function(t) {
+              return t.bucket.stage !== stage;
+            });
+          };
+          if (_.isArray(scope.excludeStages)) {
+            _ref = scope.excludeStages;
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+              s = _ref[_i];
+              excludeStage(s);
+            }
+          }
+          if (_.isString(scope.excludeStages)) {
+            excludeStage(scope.excludeStages);
+          }
+        }
+        if (scope.bucketId) {
+          scope.sapiTables = _.filter(tables, function(t) {
+            return t.bucket.id === scope.bucketId;
+          });
+        }
+        return scope.sapiTables = _.map(scope.sapiTables, function(t) {
+          return t.id;
+        });
+      };
+      linker = function(scope, element, attrs) {
+        var html;
+        scope.sapiTables = [];
+        html = "\n<input type=\"text\" ng-model=\"ngModel\" placeholder={{placeholder}} typeahead=\"id for id in sapiTables| filter:$viewValue|limitTo:15\" class=\"form-control\" > </input>\n";
+        element.html(html);
+        sapiService.getTables().success(function(result) {
+          return prepareSapiTables(scope, result);
+        });
+        return $compile(element.contents())(scope);
+      };
+      config = {
+        restrict: 'E',
+        priority: 1000,
+        scope: {
+          bucketId: '=',
+          excludeStages: '=',
+          ngModel: '=',
+          placeholder: '@'
+        },
+        link: linker
+      };
+      return config;
+    }
+  ]);
 
 }).call(this);
 

@@ -34,6 +34,7 @@
     'kb.ui.notifications'
     'kb.ui.protected'
     'kb.ui.extractor-info'
+    'kb.ui.sapiInput'
   ].sort()
 
   app.config(($routeProvider) ->
@@ -377,6 +378,29 @@
         description: 'user@keboola.com'
       created: '2014-11-19T11:25:34+0100'
   ])
+
+  app.controller('kb.ui.sapiInput',["$scope", "kbSapiService", ($scope, sapiService) ->
+    $scope.input = ""
+    $scope.token = ""
+    $scope.bucketSet = false
+
+    $scope.setToken = () ->
+      $scope.bucketid = null if not $scope.bucketSet
+      $scope.excludeStages = []
+
+      if $scope.sys
+        $scope.excludeStages.push("sys")
+      if $scope.out
+        $scope.excludeStages.push("out")
+      if $scope.in
+        $scope.excludeStages.push("in")
+
+      $scope.tokenSet = true
+      sapiService.apiToken = $scope.token
+    ]
+
+  )
+
 
 
 )(window.angular)
