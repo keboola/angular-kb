@@ -6,14 +6,13 @@ angular
       scope.sapiTables = tables
       if scope.excludeStages
         excludeStage =  (stage) ->
-          scope.sapiTables = _.filter tables, (t) ->
+          scope.sapiTables = _.filter scope.sapiTables, (t) ->
             t.bucket.stage != stage
 
-        if _.isArray(scope.excludeStages)
-          for s in scope.excludeStages
+        stages = scope.excludeStages.split(",")
+        console.log stages
+        for s in stages
             excludeStage(s)
-        if _.isString(scope.excludeStages)
-          excludeStage(scope.excludeStages)
 
       if scope.bucketId
         scope.sapiTables = _.filter tables, (t) ->
@@ -46,8 +45,8 @@ angular
       #transclude:true
       priority: 1000
       scope:
-        bucketId: '='
-        excludeStages: '='
+        bucketId: '@'
+        excludeStages: '@'
         ngModel: '='
         placeholder: '@'
       link: linker

@@ -59,8 +59,8 @@
 	<div class="form-group">
 
 	  <kb-sapi-input ng-model="input"
-			 exclude-stages="excludeStages"
-			 bucket-id="bucketid"
+			 exclude-stages="{{excludeStages}}"
+			 bucket-id="{{bucketid}}"
 			 placeholder="start typing"> </kb-sapi-input>
 
 	</div>
@@ -75,8 +75,8 @@
 <div class="bs-docs-source">
   <pre>
     &lt;kb-sapi-input ng-model="input"
-    exclude-stages="excludeStages"
-    bucket-id="bucketid"
+    exclude-stages="sys,out"
+    bucket-id="in.c-main"
     placeholder="start typing"&gt; &lt;/kb-sapi-input&gt;
 </pre>
 </div>

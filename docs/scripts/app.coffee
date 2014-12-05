@@ -386,15 +386,15 @@
 
     $scope.setToken = () ->
       $scope.bucketid = null if not $scope.bucketSet
-      $scope.excludeStages = []
-
+      $scope.excludeStages = ""
+      stages = []
       if $scope.sys
-        $scope.excludeStages.push("sys")
+        stages.push("sys")
       if $scope.out
-        $scope.excludeStages.push("out")
+        stages.push("out")
       if $scope.in
-        $scope.excludeStages.push("in")
-
+        stages.push("in")
+      $scope.excludeStages = stages.join()
       $scope.tokenSet = true
       sapiService.apiToken = $scope.token
     ]

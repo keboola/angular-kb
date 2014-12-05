@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.14.10 - 2014-12-04
+ * @version v0.14.10 - 2014-12-05
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -2679,23 +2679,19 @@
     "$compile", "kbSapiService", function($compile, sapiService) {
       var config, linker, prepareSapiTables;
       prepareSapiTables = function(scope, tables) {
-        var excludeStage, s, _i, _len, _ref;
+        var excludeStage, s, stages, _i, _len;
         scope.sapiTables = tables;
         if (scope.excludeStages) {
           excludeStage = function(stage) {
-            return scope.sapiTables = _.filter(tables, function(t) {
+            return scope.sapiTables = _.filter(scope.sapiTables, function(t) {
               return t.bucket.stage !== stage;
             });
           };
-          if (_.isArray(scope.excludeStages)) {
-            _ref = scope.excludeStages;
-            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-              s = _ref[_i];
-              excludeStage(s);
-            }
-          }
-          if (_.isString(scope.excludeStages)) {
-            excludeStage(scope.excludeStages);
+          stages = scope.excludeStages.split(",");
+          console.log(stages);
+          for (_i = 0, _len = stages.length; _i < _len; _i++) {
+            s = stages[_i];
+            excludeStage(s);
           }
         }
         if (scope.bucketId) {
@@ -2721,8 +2717,8 @@
         restrict: 'E',
         priority: 1000,
         scope: {
-          bucketId: '=',
-          excludeStages: '=',
+          bucketId: '@',
+          excludeStages: '@',
           ngModel: '=',
           placeholder: '@'
         },
