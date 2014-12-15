@@ -1,0 +1,35 @@
+<div class="bs-docs-example">
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Original size in bytes</th>
+				<th>kb.filter.filesize</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="size in sizes">
+				<td>{{ size }}</td>
+				<td>
+					{{ size | kbfilesize }}
+				</td>
+			</tr>
+			<tr>
+				<td>
+                    <form class="form-inline" role="form">
+                        <div class="form-group">
+                            <input type="number" class="form-control" ng-model="edit.value" placeholder="Enter size in bytes..."/>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" ng-model="edit.emptyValue" placeholder="Empty value"/>
+                        </div>
+                    </form>
+				</td>
+				<td>
+					{{ edit.value | kbfilesize:edit.emptyValue }}
+				</td>
+
+			</tr>
+		</tbody>
+	</table>
+</div>

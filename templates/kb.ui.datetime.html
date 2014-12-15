@@ -1,0 +1,34 @@
+<div class="bs-docs-example">
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Original</th>
+				<th>kb.ui.datetime</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="time in times">
+				<td>{{ time }}</td>
+				<td>
+					<kb-datetime datetime="time"></kb-datetime>
+				</td>
+			</tr>
+			<tr>
+				<td>
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Date" ng-model="editTime" />
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Empty Value" ng-model="editEmptyValue" />
+                        </div>
+                    </form>
+				</td>
+				<td>
+					<kb-datetime datetime="editTime" empty-value="{{ editEmptyValue }}"></kb-datetime>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

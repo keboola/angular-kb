@@ -1,0 +1,15 @@
+<div class="bs-docs-example">
+
+	<h3>Control from outside</h3>
+	<label class="checkbox">
+		<input type="checkbox" ng-model="loader1loading" />
+	  	Loading
+		<kb-loader is-loading="loader1loading" ng-show="loader1loading"/>
+	</label>
+
+	<h3>Clickable</h3>
+	<div>
+		Loading status: {{ loader2loading }}
+	</div>
+	<kb-loader is-loading="loader2loading" ng-click="loader2start()"/>
+</div>

@@ -1,0 +1,50 @@
+
+<div class="bs-docs-example">
+
+    <kb-notifications></kb-notifications>
+    <div class="row">
+        <div class="col-md-6">
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <label class="control-label col-sm-4" >Level</label>
+                    <div class="col-sm-8">
+                        <select class="form-control" name="level" ng-model="level">
+                          <option>success</option>
+                          <option>info</option>
+                          <option>warning</option>
+                          <option>danger</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-4" >Message</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" ng-model="message"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-4"></label>
+                    <div class="col-sm-8">
+                        <button type="button" class="btn btn-success" ng-click="addNotification()">Add notification</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="bs-docs-source">
+  The directive and the service are tied together using <code>kbEvents</code>. No need to assign <code>kbNotifications.list()</code> to scope or create <code>remove</code> method.
+  <h4>View</h4>
+  <pre>
+    &lt;kb-notifications&gt;&lt;/kb-notifications&gt;
+  </pre>
+  <h4>Controller</h4>
+  <pre>
+    app.controller('appController', ['kbNotifications', (kbNotifications) ->
+      # add notification, the directive will display it automatically
+      kbNotifications.add("warning", "Notification")
+    ])
+  </pre>
+
+</div>

@@ -1,0 +1,50 @@
+<div class="bs-docs-example">
+    <div class="row">
+        <div class="col-md-12">
+            <form class="form-horizontal">
+
+                <div class="form-group">
+                    <label class="control-label col-sm-4" >Focused input on load</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" kb-focus ng-model="copyValue" />
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+</div>
+
+<div class="bs-docs-example">
+    <div class="row">
+        <div class="col-md-12">
+            <form class="form-horizontal">
+
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" ng-model="focus.checked"> Focus input
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-4"  >Trigerred by change</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" kb-focus="focus.checked" ng-model="copyValue" />
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+</div>
+
+
+

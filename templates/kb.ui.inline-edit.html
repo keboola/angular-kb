@@ -1,0 +1,135 @@
+
+<div class="bs-docs-example">
+
+    <div class="row">
+        <div class="col-md-6">
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <label class="control-label col-sm-4" >Edit value</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" ng-model="textEditValue"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-4" >Placeholder</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" ng-model="textEditPlaceholder"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-4" >Edit tooltip</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" ng-model="textEditTitle"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-4 col-sm-8">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" ng-model="textEditDisabled" />Disabled
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-6">
+            <strong>kb-inline-edit</strong>:<br/>
+            <kb-inline-edit value="textEditValue" edit-title="{{ textEditTitle }}" disabled="textEditDisabled" placeholder="{{ textEditPlaceholder }}"></kb-inline-edit>
+        </div>
+    </div>
+</div>
+
+<div class="bs-docs-example">
+
+	<div class="row">
+		<div class="col-md-6">
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <label class="control-label col-sm-4" >Edit value</label>
+                    <div class="col-sm-8">
+                        <textarea rows="3" class="form-control" ng-model="textAreaValue"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-4" >Placeholder</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" ng-model="textAreaPlaceholder"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-4" >Edit tooltip</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" ng-model="textAreaTitle"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-4 col-sm-8">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" ng-model="textAreaDisabled" />Disabled
+                            </label>
+                        </div>
+                    </div>
+                </div>
+              </form>
+		</div>
+		<div class="col-md-6">
+			<strong>kb-inline-edit-textarea</strong>:<br/>
+			<kb-inline-edit-textarea value="textAreaValue" edit-title="{{ textAreaTitle }}" disabled="textAreaDisabled" placeholder="{{ textAreaPlaceholder }}"></kb-inline-edit-textarea>
+		</div>
+	</div>
+</div>
+
+<div class="bs-docs-example">
+
+	<div class="row">
+		<div class="col-md-6">
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <label class="control-label col-sm-4" >Edit value</label>
+                    <div class="col-sm-8">
+                        <select class="form-control" ng-model="selectValue" ng-options="value for value in selectOptions"></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-4" >Edit tooltip</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" ng-model="selectTitle"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-4 col-sm-8">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" ng-model="selectDisabled" />Disabled
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </form>
+		</div>
+		<div class="col-md-6">
+			<strong>kb-inline-edit-select</strong>:<br/>
+			<kb-inline-edit-select value="selectValue" edit-title="{{ selectTitle }}" options="selectOptions" disabled="selectDisabled"></kb-inline-edit-select>
+		</div>
+	</div>
+</div>
+
+<div class="bs-docs-example">
+
+	<div class="row">
+		<div class="col-md-6">
+			<strong>kb-inline-edit</strong>:<br/>
+			<kb-inline-edit value="itemAdd" on-save="addItem(newValue)" edit-title="Edit" placeholder="Enter new item"></kb-inline-edit>
+		</div>
+		<div class="col-md-6">
+			<strong>Items:</strong>
+			<ul>
+				<li ng-repeat="item in items">
+					{{ item }}
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>

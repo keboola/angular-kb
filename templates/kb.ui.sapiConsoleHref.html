@@ -1,0 +1,45 @@
+<div class="bs-docs-example">
+    <div class="row">
+        <div class="col-md-12">
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <label class="control-label col-sm-4" >Table</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" ng-model="form.table" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8 col-md-offset-4">
+            <kb-sapi-console-href path="/tables/{{ form.table }}">
+              <span class="btn btn-default btn-xs">
+                  <i class="fa fa-fw fa-table"></i>
+              </span>
+            </kb-sapi-console-href>
+        </div>
+    </div>
+</div>
+
+<div class="bs-docs-source">
+    The directive creates a link to Storage Console in the current project. It uses <code>kb.config</code> to store the <code>projectBaseUrl</code> property.
+    <h4>View</h4>
+  <pre>
+    &lt;kb-sapi-console-href path="/tables/in.c-main.table"&gt;
+      &lt;span class="btn btn-default btn-xs"&gt;
+          &lt;i class="fa fa-fw fa-table"&gt;&lt;/i&gt;
+      &lt;/span&gt;
+    &lt;/kb-sapi-console-href&gt;      
+  </pre>
+    <h4>app.coffee</h4>
+  <pre>
+    angular.run([
+        "kbc.application.config"
+        "kb.config"
+        (appConfig, kbConfig) ->
+            kbConfig.projectBaseUrl = appConfig.projectBaseUrl
+    ])
+  </pre>
+
+</div>
