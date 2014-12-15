@@ -4,36 +4,28 @@
   Implemented by form submit into blank window
 ###
 
-angular.module( 'kb.ui.sapiConsoleHref', ['kb.sapi.sapiService'])
-  .directive('kbSapiConsoleHref', [ "kbSapiService", "$sce", (sapiService, $sce) ->
+angular.module( 'kb.ui.sapiConsoleHref', ['kb.sapi.sapiService', 'kb.config'])
+.directive('kbSapiConsoleHref', [ "kbSapiService", "$sce", "kb.config", (sapiService, $sce, config) ->
     restrict: 'E'
     transclude: true
     scope:
       path: '@'
-      token: '@'
 
     template: """
-      <form action="{{ url() }}" method="post" class="kb-sapi-console-href" target="_blank">
-        <a ng-click="submit()" ng-transclude></a>
-        <input type="hidden" name="token" value="{{ getToken() }}" />
-      </form>
+      <a href="{{ url() }}" ng-transclude></a>
     """
-    link: (scope, element) ->
-
+    link: (scope) ->
+            
       path = ->
         scope.path || "/"
-
-      scope.getToken = ->
-        if scope.token
-          return scope.token
-        else
-          sapiService.apiToken
+        
+      if !config.projectBaseUrl
+        throw "'kb.config' property projectBaseUrl is not defined"
 
       scope.url = ->
-        $sce.trustAsResourceUrl("#{sapiService.consoleUrl}#{path()}?endpoint=#{sapiService.endpoint}")
+        if !config.projectBaseUrl
+          return "/"
+        return $sce.trustAsResourceUrl(config.projectBaseUrl + "/storage#" + path())
 
-      scope.submit = ->
-        element.find('form').submit()
-        return
 
   ])

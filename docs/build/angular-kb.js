@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.15.0 - 2014-12-05
+ * @version v0.15.1 - 2014-12-15
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -2494,33 +2494,28 @@
  */
 
 (function() {
-  angular.module('kb.ui.sapiConsoleHref', ['kb.sapi.sapiService']).directive('kbSapiConsoleHref', [
-    "kbSapiService", "$sce", function(sapiService, $sce) {
+  angular.module('kb.ui.sapiConsoleHref', ['kb.sapi.sapiService', 'kb.config']).directive('kbSapiConsoleHref', [
+    "kbSapiService", "$sce", "kb.config", function(sapiService, $sce, config) {
       return {
         restrict: 'E',
         transclude: true,
         scope: {
-          path: '@',
-          token: '@'
+          path: '@'
         },
-        template: "<form action=\"{{ url() }}\" method=\"post\" class=\"kb-sapi-console-href\" target=\"_blank\">\n  <a ng-click=\"submit()\" ng-transclude></a>\n  <input type=\"hidden\" name=\"token\" value=\"{{ getToken() }}\" />\n</form>",
-        link: function(scope, element) {
+        template: "<a href=\"{{ url() }}\" ng-transclude></a>",
+        link: function(scope) {
           var path;
           path = function() {
             return scope.path || "/";
           };
-          scope.getToken = function() {
-            if (scope.token) {
-              return scope.token;
-            } else {
-              return sapiService.apiToken;
+          if (!config.projectBaseUrl) {
+            throw "'kb.config' property projectBaseUrl is not defined";
+          }
+          return scope.url = function() {
+            if (!config.projectBaseUrl) {
+              return "/";
             }
-          };
-          scope.url = function() {
-            return $sce.trustAsResourceUrl("" + sapiService.consoleUrl + (path()) + "?endpoint=" + sapiService.endpoint);
-          };
-          return scope.submit = function() {
-            element.find('form').submit();
+            return $sce.trustAsResourceUrl(config.projectBaseUrl + "/storage#" + path());
           };
         }
       };

@@ -1,3 +1,9 @@
+## 0.14.12 (2014-12-14)
+ * [Fix] fix CHANGELOG.md
+
+## 0.14.11 (2014-12-14)
+ * [Fix] `kb.ui.sapiConsoleHref` use kbConfig.projectBaseUrl property and a basic href
+
 ## 0.14.10 (2014-12-02)
  * [Fix] `kb.ui.protected` protected parameter not an expression
 
