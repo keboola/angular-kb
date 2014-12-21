@@ -1,3 +1,9 @@
+## 0.15.3 (2014-12-20)
+ * [Fix] fix CHANGELOG.md
+
+## 0.15.2 (2014-12-20)
+ * [Fix] Fix sapi-events-table detail color
+
 ## 0.14.12 (2014-12-14)
  * [Fix] fix CHANGELOG.md
 
