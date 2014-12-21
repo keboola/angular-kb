@@ -69,9 +69,10 @@ angular
                       <i class="fa fa-chevron-left"></i> Back to events list
                      </a>
                     <h3>Event detail</h3>
-                   <div class="well message" ng-class="eventClass(selectedEvent)">
+
+                      <p class="well message" ng-class="eventClass(selectedEvent)">
                         {{ selectedEvent.message }}
-                      </div>
+                      </p>
 
                       <p class="well" ng-show="selectedEvent.description">
                         {{ selectedEvent.description }}
@@ -195,7 +196,6 @@ angular
             return 'info'
           else
             return ''
-
 
         $scope.eventDetail = (event) ->
           $scope.selectedEvent = event
