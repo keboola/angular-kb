@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.15.1 - 2014-12-15
+ * @version v0.15.2 - 2014-12-20
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */
@@ -154,6 +154,30 @@
   word-wrap:break-word;
 }
 
+.kb-sapi-events-table .event-detail .well.message.danger 
+{
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+}
+
+.kb-sapi-events-table .event-detail .well.message.warning {
+    color: #8a6d3b;
+    background-color: #fcf8e3;
+    border-color: #faebcc;
+}
+
+.kb-sapi-events-table .event-detail .well.message.info {
+    color: #31708f;
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+}
+
+.kb-sapi-events-table .event-detail .well.message.success {
+    color: #3c763d;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+}
 .kb-tree .kb-tree-node {
   display: block;
   padding: 2px 0px 2px 16px;
