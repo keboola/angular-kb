@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.15.3 - 2014-12-20
+ * @version v0.15.4 - 2015-01-03
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -634,27 +634,35 @@
           }
         },
         handleError: function(errorResponse) {
-          var errorMessage, modalInstance;
+          var errorMessage, modalInstance, userError;
+          userError = false;
+          if (errorResponse.code && errorResponse.code >= 400 && errorResponse.code < 500) {
+            userError = true;
+          }
           errorMessage = void 0;
-          errorMessage = errorResponse.message || errorResponse.error || "Unknown error during comunication with API";
+          errorMessage = errorResponse.message || errorResponse.error || "Unknown error during communication with API";
           if (errorResponse.status === "maintenance") {
             errorMessage = errorResponse.reason;
             errorMessage += ". Please repeat the action " + this.remainingTimeText(new Date(errorResponse.estimatedEndTime));
           }
           return modalInstance = $modal.open({
-            template: "<div class=\"modal-header\">\n<h4 class=\"modal-title\">Application error</h4>\n</div>\n<div class=\"modal-body\">\n<p>{{ message }}</p>\n<p ng-show=\"exceptionId\">\nException ID: <strong>{{ exceptionId }}</strong>\n</p>\n</div>\n<div class=\"modal-footer\">\n<button class=\"btn btn-danger\" ng-click=\"close()\">Close</button>\n</div>",
+            template: "<div class=\"modal-header\">\n<h4 class=\"modal-title\"><span ng-show=\"!userError\">Application error</span><span ng-show=\"userError\">User error</span></h4>\n</div>\n<div class=\"modal-body\">\n<p>{{ message }}</p>\n<p ng-show=\"exceptionId && !userError\">\n  Exception ID: <strong>{{ exceptionId }}</strong>\n</p>\n</div>\n<div class=\"modal-footer\">\n<button class=\"btn btn-danger\" ng-click=\"close()\">Close</button>\n</div>",
             resolve: {
               message: function() {
                 return errorMessage;
+              },
+              userError: function() {
+                return userError;
               },
               exceptionId: function() {
                 return errorResponse.exceptionId;
               }
             },
             controller: [
-              "$scope", "$modalInstance", "message", "exceptionId", function($scope, $modalInstance, message, exceptionId) {
+              "$scope", "$modalInstance", "message", "exceptionId", "userError", function($scope, $modalInstance, message, exceptionId, userError) {
                 $scope.message = message;
                 $scope.exceptionId = exceptionId;
+                $scope.userError = userError;
                 return $scope.close = function() {
                   return $modalInstance.close();
                 };
@@ -1705,9 +1713,18 @@
         }
 
         SyrupAsyncRunner.prototype.call = function(config) {
-          var params;
+          var deferred, params, runner;
           params = this.httpParams(config);
-          return $http(params).then(this.runEnd)["catch"](this.handleError);
+          deferred = this.$q.defer();
+          runner = this;
+          $http(params).then((function(response) {
+            runner.runEnd(response);
+            return deferred.resolve(response);
+          }), function(response) {
+            runner.handleError(response);
+            return deferred.reject(response);
+          });
+          return deferred.promise;
         };
 
         SyrupAsyncRunner.prototype.httpParams = function(config) {
@@ -1752,7 +1769,7 @@
         };
 
         SyrupAsyncRunner.prototype.handleError = function(response) {
-          return errorHandler.handleError(response);
+          return errorHandler.handleError(response.data);
         };
 
         return SyrupAsyncRunner;
