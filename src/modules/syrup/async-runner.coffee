@@ -14,9 +14,16 @@ angular
       # - config.method: API method ('run' as default)
       call: (config) ->
         params = @httpParams(config)
+        deferred = @$q.defer()
+        runner = @
         $http(params)
-          .then(@runEnd)
-          .catch(@handleError)
+          .then ((response) ->
+            runner.runEnd(response)
+            deferred.resolve(response)
+          ), (response) ->
+            runner.handleError(response)
+            deferred.reject(response)
+        deferred.promise
 
       # prepare http params from config
       httpParams: (config) ->
@@ -54,7 +61,7 @@ angular
 
       # sapi error handler
       handleError: (response) ->
-        errorHandler.handleError(response)
+        errorHandler.handleError(response.data)
 
     new SyrupAsyncRunner($http, $q)
 
