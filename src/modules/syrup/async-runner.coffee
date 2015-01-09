@@ -18,8 +18,8 @@ angular
         runner = @
         $http(params)
           .then ((response) ->
-            runner.runEnd(response)
-            deferred.resolve(response)
+            data = runner.runEnd(response)
+            deferred.resolve(data)
           ), (response) ->
             runner.handleError(response)
             deferred.reject(response)
