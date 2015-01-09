@@ -1,3 +1,9 @@
+## 0.15.5 (2014-01-08)
+ * [Fix] `kb.syrup.asyncRunner` fix promise resolve with correct data
+
+## 0.15.4 (2015-01-03)
+ * [Fix] `kb.syrup.asyncRunner` fix rejected promises
+
 ## 0.15.3 (2014-12-20)
  * [Fix] fix CHANGELOG.md
 
