@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.15.4 - 2015-01-03
+ * @version v0.15.5 - 2015-01-08
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -1718,8 +1718,9 @@
           deferred = this.$q.defer();
           runner = this;
           $http(params).then((function(response) {
-            runner.runEnd(response);
-            return deferred.resolve(response);
+            var data;
+            data = runner.runEnd(response);
+            return deferred.resolve(data);
           }), function(response) {
             runner.handleError(response);
             return deferred.reject(response);
