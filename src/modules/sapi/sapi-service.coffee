@@ -253,7 +253,7 @@
     updateTable: (tableId, data) ->
       @http(
         url: @url '/storage/tables/' + tableId
-        method: 'POST'
+        method: 'PUT'
         headers:
           'Content-Type': 'application/x-www-form-urlencoded'
         data: $.param(data)

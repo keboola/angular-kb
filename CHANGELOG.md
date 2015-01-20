@@ -1,3 +1,6 @@
+## 0.15.7 (2014-01-20)
+ * [Fix] `kb.sapi.sapiService` table update
+
 ## 0.15.6 (2014-01-20)
  * [Feat] `kb.sapi.sapiService` update table method added
 
