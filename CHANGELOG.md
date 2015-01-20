@@ -1,3 +1,6 @@
+## 0.15.6 (2014-01-20)
+ * [Feat] `kb.sapi.sapiService` update table method added
+
 ## 0.15.5 (2014-01-08)
  * [Fix] `kb.syrup.asyncRunner` fix promise resolve with correct data
 

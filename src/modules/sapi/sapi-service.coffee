@@ -250,6 +250,14 @@
     truncateTable: (tableId) ->
       @deleteTableRows(tableId)
 
+    updateTable: (tableId, data) ->
+      @http(
+        url: @url '/storage/tables/' + tableId
+        method: 'POST'
+        headers:
+          'Content-Type': 'application/x-www-form-urlencoded'
+        data: $.param(data)
+      )
 
     # aliases
     createAliasTable: (bucketId, options) ->

@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.15.5 - 2015-01-08
+ * @version v0.15.5 - 2015-01-20
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -1111,6 +1111,17 @@
 
       StorageService.prototype.truncateTable = function(tableId) {
         return this.deleteTableRows(tableId);
+      };
+
+      StorageService.prototype.updateTable = function(tableId, data) {
+        return this.http({
+          url: this.url('/storage/tables/' + tableId),
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          data: $.param(data)
+        });
       };
 
       StorageService.prototype.createAliasTable = function(bucketId, options) {
