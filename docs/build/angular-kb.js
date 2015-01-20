@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.15.6 - 2015-01-20
+ * @version v0.15.7 - 2015-01-20
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -1116,7 +1116,7 @@
       StorageService.prototype.updateTable = function(tableId, data) {
         return this.http({
           url: this.url('/storage/tables/' + tableId),
-          method: 'POST',
+          method: 'PUT',
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
           },
