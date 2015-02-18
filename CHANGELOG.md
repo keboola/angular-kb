@@ -1,4 +1,4 @@
-# 0.14.8 (2015-02-18)
+# 0.15.8 (2015-02-18)
  * [Feat] `kb.syrup.asyncRunner` Job Uri template can be set by `kb.config.syrup.jobUriTemplate`
 
 # 0.15.7 (2014-01-20)
