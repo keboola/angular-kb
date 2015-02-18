@@ -1,8 +1,9 @@
 describe 'kb.syrup.asyncRunner', ->
 
-  angular.module('kb.config', [])
-    .value('kb.config', {})
-    .value('kb.components', [{"id":"gooddata-writer","uri":"https:\/\/syrup.keboola.com\/gooddata-writer"}])
+  beforeEach ->
+    angular.module('kb.config', [])
+      .value('kb.config', {})
+      .value('kb.components', [{"id":"gooddata-writer","uri":"https:\/\/syrup.keboola.com\/gooddata-writer"}])
 
   runner = null
 
@@ -29,3 +30,27 @@ describe 'kb.syrup.asyncRunner', ->
     expect(params.data.config).toBe('test')
     expect(params.url).toBe("https:\/\/syrup.keboola.com\/gooddata-writer\/run")
     expect(params.method).toBe('POST')
+
+  it 'should return default job uri if not set by config', ->
+    expect(runner.jobUri 123).toBe "jobs#/job/123"
+
+
+describe 'kb.syrup.asyncRunner config set', ->
+
+  beforeEach ->
+    angular.module('kb.config', [])
+      .value('kb.config',
+        syrup:
+          jobUriTemplate: "jobs/<%= jobId %>"
+      )
+      .value('kb.components', [{"id":"gooddata-writer","uri":"https:\/\/syrup.keboola.com\/gooddata-writer"}])
+
+  runner = null
+  beforeEach(module('kb.syrup.asyncRunner'))
+
+  beforeEach(inject(($injector) ->
+    runner = $injector.get('kbSyrupAsyncRunner')
+  ))
+
+  it 'should return job uri from template in config', ->
+    expect(runner.jobUri 123).toBe "jobs/123"

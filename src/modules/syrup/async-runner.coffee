@@ -1,10 +1,10 @@
 angular
   .module( 'kb.syrup.asyncRunner', ['kb.config', 'kb.sapi.errorHandler'])
-  .factory('kbSyrupAsyncRunner', ["$http", "kb.components", "kbSapiErrorHandler", "$q", ($http, components, errorHandler, $q) ->
+  .factory('kbSyrupAsyncRunner', ["$http", "kb.components", "kbSapiErrorHandler", "$q", "kb.config", ($http, components, errorHandler, $q, kbConfig) ->
 
     class SyrupAsyncRunner
 
-      constructor: (@$http, @$q) ->
+      constructor: (@$http, @$q, @jobUriTemplate) ->
 
       # makes the async call, returns a wrapper promise
       # config params:
@@ -54,15 +54,23 @@ angular
       # return jobId and jobUri from a response
       runEnd: (response) ->
         data = {
-          jobUri: "jobs#/job/#{response.data.id}"
+          jobUri: @jobUri response.data.id
           jobId: response.data.id
         }
         return data
+
+      jobUri: (jobId) ->
+        _.template(@jobUriTemplate)(
+          jobId: jobId
+        )
 
       # sapi error handler
       handleError: (response) ->
         errorHandler.handleError(response.data)
 
-    new SyrupAsyncRunner($http, $q)
+    # resolve job jobUriTemplate
+    jobUriTemplate = kbConfig.syrup?.jobUriTemplate || "jobs#/job/<%= jobId %>"
+
+    new SyrupAsyncRunner($http, $q, jobUriTemplate)
 
   ])

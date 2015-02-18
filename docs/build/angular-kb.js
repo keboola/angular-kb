@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.15.7 - 2015-01-20
+ * @version v0.15.7 - 2015-02-18
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -1715,12 +1715,13 @@
 
 (function() {
   angular.module('kb.syrup.asyncRunner', ['kb.config', 'kb.sapi.errorHandler']).factory('kbSyrupAsyncRunner', [
-    "$http", "kb.components", "kbSapiErrorHandler", "$q", function($http, components, errorHandler, $q) {
-      var SyrupAsyncRunner;
+    "$http", "kb.components", "kbSapiErrorHandler", "$q", "kb.config", function($http, components, errorHandler, $q, kbConfig) {
+      var SyrupAsyncRunner, jobUriTemplate, _ref;
       SyrupAsyncRunner = (function() {
-        function SyrupAsyncRunner($http, $q) {
+        function SyrupAsyncRunner($http, $q, jobUriTemplate) {
           this.$http = $http;
           this.$q = $q;
+          this.jobUriTemplate = jobUriTemplate;
         }
 
         SyrupAsyncRunner.prototype.call = function(config) {
@@ -1774,10 +1775,16 @@
         SyrupAsyncRunner.prototype.runEnd = function(response) {
           var data;
           data = {
-            jobUri: "jobs#/job/" + response.data.id,
+            jobUri: this.jobUri(response.data.id),
             jobId: response.data.id
           };
           return data;
+        };
+
+        SyrupAsyncRunner.prototype.jobUri = function(jobId) {
+          return _.template(this.jobUriTemplate)({
+            jobId: jobId
+          });
         };
 
         SyrupAsyncRunner.prototype.handleError = function(response) {
@@ -1787,7 +1794,8 @@
         return SyrupAsyncRunner;
 
       })();
-      return new SyrupAsyncRunner($http, $q);
+      jobUriTemplate = ((_ref = kbConfig.syrup) != null ? _ref.jobUriTemplate : void 0) || "jobs#/job/<%= jobId %>";
+      return new SyrupAsyncRunner($http, $q, jobUriTemplate);
     }
   ]);
 
