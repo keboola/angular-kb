@@ -1,3 +1,6 @@
+# 0.15.9 (2015-05-10)
+ * [Feat] `kb.ui.sapiComponentIcon` Default icon for Recipes
+
 # 0.15.8 (2015-02-18)
  * [Feat] `kb.syrup.asyncRunner` Job Uri template can be set by `kb.config.syrup.jobUriTemplate`
 
