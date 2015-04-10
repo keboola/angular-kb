@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.15.8 - 2015-02-18
+ * @version v0.15.9 - 2015-04-10
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -2508,7 +2508,8 @@
             extractor: 'fa-cloud-download',
             writer: 'fa-cloud-upload',
             transformation: 'fa-cogs',
-            other: 'fa-cogs'
+            other: 'fa-cogs',
+            recipe: 'fa-cogs'
           };
           scope.hasIcon = function() {
             return !!scope.component["ico" + scope.size];
