@@ -27,6 +27,7 @@ angular.module( 'kb.ui.sapiComponentIcon', [])
       writer: 'fa-cloud-upload'
       transformation: 'fa-cogs'
       other: 'fa-cogs'
+      recipe: 'fa-cogs'
 
     scope.hasIcon = () ->
       !!scope.component["ico#{scope.size}"]
