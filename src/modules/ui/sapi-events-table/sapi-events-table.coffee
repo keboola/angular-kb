@@ -101,6 +101,10 @@ angular
                             <td>Run ID</td>
                             <td>{{ selectedEvent.runId || "N/A" }}</td>
                             </tr>
+                            <tr>
+                            <td>Creator</td>
+                            <td>{{ event.token.name }}</td>
+                            </tr>
                           </tbody>
                         </table>
                       </div>
