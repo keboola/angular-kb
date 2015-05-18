@@ -103,7 +103,7 @@ angular
                             </tr>
                             <tr>
                             <td>Creator</td>
-                            <td>{{ event.token.name }}</td>
+                            <td>{{ selectedEvent.token.name }}</td>
                             </tr>
                           </tbody>
                         </table>
