@@ -1,3 +1,6 @@
+# 0.15.10 (2015-05-18)
+ * [Feat] `kb.ui.sapiEventsTable` Creator in event detail
+
 # 0.15.9 (2015-05-10)
  * [Feat] `kb.ui.sapiComponentIcon` Default icon for Recipes
 
