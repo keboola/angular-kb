@@ -246,8 +246,15 @@
         method: 'POST'
         headers:
           'Content-Type': 'application/x-www-form-urlencoded'
-        data:
+        data: $.param(
           columns: columns
+        )
+      )
+
+    removeTablePrimaryKey: (tableId) ->
+      @http(
+        url: @url "/storage/tables/#{tableId}/primary-key"
+        method: 'DELETE'
       )
 
     deleteTableRows: (tableId, params) ->

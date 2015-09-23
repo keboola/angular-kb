@@ -1108,9 +1108,16 @@
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
           },
-          data: {
+          data: $.param({
             columns: columns
-          }
+          })
+        });
+      };
+
+      StorageService.prototype.removeTablePrimaryKey = function(tableId) {
+        return this.http({
+          url: this.url("/storage/tables/" + tableId + "/primary-key"),
+          method: 'DELETE'
         });
       };
 
