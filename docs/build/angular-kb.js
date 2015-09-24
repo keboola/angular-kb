@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.15.11 - 2015-05-18
+ * @version v0.15.11 - 2015-09-23
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -1097,6 +1097,26 @@
       StorageService.prototype.removeTableColumnFromIndexedColumns = function(tableId, columnName) {
         return this.http({
           url: this.url('/storage/tables/' + tableId + '/indexed-columns/' + columnName),
+          method: 'DELETE'
+        });
+      };
+
+      StorageService.prototype.createTablePrimaryKey = function(tableId, columns) {
+        return this.http({
+          url: this.url("/storage/tables/" + tableId + "/primary-key"),
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          data: $.param({
+            columns: columns
+          })
+        });
+      };
+
+      StorageService.prototype.removeTablePrimaryKey = function(tableId) {
+        return this.http({
+          url: this.url("/storage/tables/" + tableId + "/primary-key"),
           method: 'DELETE'
         });
       };

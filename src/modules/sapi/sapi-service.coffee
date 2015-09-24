@@ -240,6 +240,23 @@
         method: 'DELETE'
       )
 
+    createTablePrimaryKey: (tableId, columns) ->
+      @http(
+        url: @url "/storage/tables/#{tableId}/primary-key"
+        method: 'POST'
+        headers:
+          'Content-Type': 'application/x-www-form-urlencoded'
+        data: $.param(
+          columns: columns
+        )
+      )
+
+    removeTablePrimaryKey: (tableId) ->
+      @http(
+        url: @url "/storage/tables/#{tableId}/primary-key"
+        method: 'DELETE'
+      )
+
     deleteTableRows: (tableId, params) ->
       @http(
         url: @url "/storage/tables/#{tableId}/rows"
