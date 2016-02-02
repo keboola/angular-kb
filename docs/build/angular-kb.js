@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.16.0 - 2016-02-02
+ * @version v0.16.1 - 2016-02-02
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -3872,7 +3872,7 @@ angular.module("kb.templates").run(["$templateCache", function($templateCache) {
     "</span>\n" +
     "<div ng-show=\"isEditing\" class=\"editing\">\n" +
     "    <div class=\"input-group\">\n" +
-    "        <select ui-select2 multiple ng-model=\"editValue\"\n" +
+    "        <select ui-select2=\"{width : '100%'}\" multiple ng-model=\"editValue\"\n" +
     "                data-placeholder=\"{{ placeholder }}\" >\n" +
     "            <option ng-repeat=\"val in options\" value=\"{{ val }}\" ng-selected=\"{{_.contains(token.componentAccess,val)}}\">\n" +
     "                {{ val }}\n" +
