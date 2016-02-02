@@ -95,4 +95,9 @@
       config = inlineEditFactory("kb/ui/inline-edit/templates/select.html")()
       config.scope.options = '='
       config
-    ))(window.angular)
+    )
+  .directive('kbInlineEditMultiselect', ->
+      config = inlineEditFactory("kb/ui/inline-edit/templates/multiselect.html")()
+      config.scope.options = '='
+      config
+  ))(window.angular)

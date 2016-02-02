@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.15.11 - 2015-09-23
+ * @version v0.16.0 - 2016-02-02
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -846,6 +846,10 @@
         return this.data.bucketPermissions[bucketId] = permission;
       };
 
+      Token.prototype.canAccessComponent = function(componentId) {
+        return this.data.componentAccess[componentId];
+      };
+
       Token.prototype.hasAccessToBuckets = function() {
         var count, key, value, _ref;
         count = 0;
@@ -1458,6 +1462,11 @@
         angular.forEach(token.bucketPermissions, function(permission, bucketId) {
           return params['bucketPermissions[' + bucketId + ']'] = permission;
         });
+        if (!token.canManageBuckets) {
+          angular.forEach(token.componentAccess, function(componentId, ind) {
+            return params['componentAccess[' + ind + ']'] = componentId;
+          });
+        }
         return this.http({
           url: this.url('/storage/tokens/'),
           method: 'POST',
@@ -1475,6 +1484,11 @@
         angular.forEach(token.bucketPermissions, function(permission, bucketId) {
           return params['bucketPermissions[' + bucketId + ']'] = permission;
         });
+        if (!token.canManageBuckets) {
+          angular.forEach(token.componentAccess, function(componentId, ind) {
+            return params['componentAccess[' + ind + ']'] = componentId;
+          });
+        }
         return this.http({
           url: this.url('/storage/tokens/' + token.id),
           method: 'PUT',
@@ -2341,6 +2355,11 @@
     }).directive('kbInlineEdit', inlineEditFactory("kb/ui/inline-edit/templates/text.html")).directive('kbInlineEditDatetime', inlineEditFactory("kb/ui/inline-edit/templates/datetime.html")).directive('kbInlineEditTextarea', inlineEditFactory("kb/ui/inline-edit/templates/textarea.html")).directive('kbInlineEditSelect', function() {
       var config;
       config = inlineEditFactory("kb/ui/inline-edit/templates/select.html")();
+      config.scope.options = '=';
+      return config;
+    }).directive('kbInlineEditMultiselect', function() {
+      var config;
+      config = inlineEditFactory("kb/ui/inline-edit/templates/multiselect.html")();
       config.scope.options = '=';
       return config;
     });
@@ -3846,6 +3865,31 @@ angular.module("kb.templates").run(["$templateCache", function($templateCache) {
     "\n"
   );
 
+  $templateCache.put("kb/ui/inline-edit/templates/multiselect.html",
+    "<span class=\"static\" ng-hide=\"isEditing\" ng-click=\"edit()\" tooltip=\"{{ tooltipTitle }}\">\n" +
+    "  <span ng-repeat=\"val in value\">{{ val }}{{ $last ? '' : ', ' }}</span>\n" +
+    "  <span class=\"placeholder\" ng-show=\"!value\">{{ placeholder }}</span>\n" +
+    "</span>\n" +
+    "<div ng-show=\"isEditing\" class=\"editing\">\n" +
+    "    <div class=\"input-group\">\n" +
+    "        <select ui-select2 multiple ng-model=\"editValue\"\n" +
+    "                data-placeholder=\"{{ placeholder }}\" >\n" +
+    "            <option ng-repeat=\"val in options\" value=\"{{ val }}\" ng-selected=\"{{_.contains(token.componentAccess,val)}}\">\n" +
+    "                {{ val }}\n" +
+    "            </option>\n" +
+    "        </select>\n" +
+    "        <span class=\"input-group-btn\">\n" +
+    "            <button class=\"btn btn-success\" ng-click=\"save()\">\n" +
+    "                <i class=\"fa fa-check\" title=\"save\"></i>\n" +
+    "            </button>\n" +
+    "            <button class=\"btn btn-default\" ng-click=\"cancel()\">\n" +
+    "                <i class=\"fa fa-times\" title=\"Cancel\"></i>\n" +
+    "            </button>\n" +
+    "        </span>\n" +
+    "    </div>\n" +
+    "</div>"
+  );
+
   $templateCache.put("kb/ui/inline-edit/templates/select.html",
     "<span class=\"static\" ng-hide=\"isEditing\" ng-click=\"edit()\" tooltip=\"{{ tooltipTitle }}\">\n" +
     "  {{ value }}\n" +
@@ -3853,7 +3897,7 @@ angular.module("kb.templates").run(["$templateCache", function($templateCache) {
     "</span>\n" +
     "<div ng-show=\"isEditing\" class=\"editing\">\n" +
     "    <div class=\"input-group\">\n" +
-    "        <select ng-options=\"value for value in options\" class=\"form-control\" ng-model=\"editValue\"></select>\n" +
+    "        <select ng-multiple=\"multiple\" ng-options=\"value for value in options\" class=\"form-control\" ng-model=\"editValue\"></select>\n" +
     "\n" +
     "        <span class=\"input-group-btn\">\n" +
     "            <button class=\"btn btn-success\" ng-click=\"save()\">\n" +

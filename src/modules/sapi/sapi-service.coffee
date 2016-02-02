@@ -45,6 +45,9 @@
     setBucketPermission: (bucketId, permission) ->
       @data.bucketPermissions[bucketId] = permission
 
+    canAccessComponent: (componentId) ->
+      @data.componentAccess[componentId]
+
     hasAccessToBuckets: ->
       count = 0
       for own key, value of @data.bucketPermissions
@@ -539,6 +542,11 @@
         params['bucketPermissions[' + bucketId + ']'] = permission
       )
 
+      if !token.canManageBuckets
+        angular.forEach(token.componentAccess, (componentId, ind) ->
+          params['componentAccess[' + ind + ']'] = componentId;
+        )
+
       @http(
         url: @url '/storage/tokens/'
         method: 'POST'
@@ -553,6 +561,11 @@
       angular.forEach(token.bucketPermissions, (permission, bucketId) ->
         params['bucketPermissions[' + bucketId + ']'] = permission
       )
+
+      if !token.canManageBuckets
+        angular.forEach(token.componentAccess, (componentId, ind) ->
+          params['componentAccess[' + ind + ']'] = componentId;
+        )
 
       @http(
         url: @url '/storage/tokens/' + token.id
