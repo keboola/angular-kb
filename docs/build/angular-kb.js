@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.16.1 - 2016-02-02
+ * @version v0.16.2 - 2016-02-02
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -3872,7 +3872,7 @@ angular.module("kb.templates").run(["$templateCache", function($templateCache) {
     "</span>\n" +
     "<div ng-show=\"isEditing\" class=\"editing\">\n" +
     "    <div class=\"input-group\">\n" +
-    "        <select ui-select2=\"{width : '100%'}\" multiple ng-model=\"editValue\"\n" +
+    "        <select ui-select2=\"{ width: '100%' }\" multiple ng-model=\"editValue\"\n" +
     "                data-placeholder=\"{{ placeholder }}\" >\n" +
     "            <option ng-repeat=\"val in options\" value=\"{{ val }}\" ng-selected=\"{{_.contains(token.componentAccess,val)}}\">\n" +
     "                {{ val }}\n" +
@@ -3897,7 +3897,7 @@ angular.module("kb.templates").run(["$templateCache", function($templateCache) {
     "</span>\n" +
     "<div ng-show=\"isEditing\" class=\"editing\">\n" +
     "    <div class=\"input-group\">\n" +
-    "        <select ng-multiple=\"multiple\" ng-options=\"value for value in options\" class=\"form-control\" ng-model=\"editValue\"></select>\n" +
+    "        <select ng-options=\"value for value in options\" class=\"form-control\" ng-model=\"editValue\"></select>\n" +
     "\n" +
     "        <span class=\"input-group-btn\">\n" +
     "            <button class=\"btn btn-success\" ng-click=\"save()\">\n" +

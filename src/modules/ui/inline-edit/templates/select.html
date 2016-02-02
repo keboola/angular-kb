@@ -4,7 +4,7 @@
 </span>
 <div ng-show="isEditing" class="editing">
     <div class="input-group">
-        <select ng-multiple="multiple" ng-options="value for value in options" class="form-control" ng-model="editValue"></select>
+        <select ng-options="value for value in options" class="form-control" ng-model="editValue"></select>
 
         <span class="input-group-btn">
             <button class="btn btn-success" ng-click="save()">

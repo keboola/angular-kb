@@ -1,6 +1,6 @@
 {
   "name": "angular-kb",
-  "version": "0.16.1",
+  "version": "0.16.2",
   "dependencies": {
     "angular": "~1.2.0",
     "angular-sanitize": "~1.2.0",

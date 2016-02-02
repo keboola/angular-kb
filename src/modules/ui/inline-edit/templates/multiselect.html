@@ -4,7 +4,7 @@
 </span>
 <div ng-show="isEditing" class="editing">
     <div class="input-group">
-        <select ui-select2="{width : '100%'}" multiple ng-model="editValue"
+        <select ui-select2="{ width: '100%' }" multiple ng-model="editValue"
                 data-placeholder="{{ placeholder }}" >
             <option ng-repeat="val in options" value="{{ val }}" ng-selected="{{_.contains(token.componentAccess,val)}}">
                 {{ val }}
