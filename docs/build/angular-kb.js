@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.16.2 - 2016-02-02
+ * @version v0.16.3 - 2016-03-02
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -1241,10 +1241,13 @@
         });
       };
 
-      StorageService.prototype.deleteBucket = function(id) {
+      StorageService.prototype.deleteBucket = function(id, force) {
         return this.http({
           url: this.url('/storage/buckets/' + id),
-          method: 'DELETE'
+          method: 'DELETE',
+          params: {
+            force: force
+          }
         });
       };
 

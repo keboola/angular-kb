@@ -358,10 +358,12 @@
         data: $.param(data)
       )
 
-    deleteBucket: (id) ->
+    deleteBucket: (id, force) ->
       @http(
         url: @url '/storage/buckets/' + id
         method: 'DELETE'
+        params:
+          force: force
       )
 
     errorHandler: (data, status, headers, config) =>
