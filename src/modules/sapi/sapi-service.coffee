@@ -191,6 +191,11 @@
         method: 'GET'
       )
 
+    deleteSnapshot: (id) ->
+      @http(
+        url: @url '/storage/snapshots/' + id
+        method: 'DELETE'
+      )
 
     getTables: (params) ->
       @http(

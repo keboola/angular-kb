@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.16.3 - 2016-03-02
+ * @version v0.16.4 - 2016-03-10
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -1043,6 +1043,13 @@
         return this.http({
           url: this.url("/storage/snapshots/" + id),
           method: 'GET'
+        });
+      };
+
+      StorageService.prototype.deleteSnapshot = function(id) {
+        return this.http({
+          url: this.url('/storage/snapshots/' + id),
+          method: 'DELETE'
         });
       };
 
