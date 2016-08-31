@@ -54,6 +54,8 @@
         count++
       count > 0
 
+    isAdminToken: ->
+      !!@data.admin
 
   class StorageService
 
