@@ -122,6 +122,19 @@
         )
       )
 
+    linkBucket: (stage, name, sourceProjectId, sourceBucketId) ->
+      @http(
+        url: @url("/storage/buckets")
+        method: 'POST'
+        headers:
+          'Content-Type': 'application/x-www-form-urlencoded'
+        data: $.param(
+          name: name
+          stage: stage
+          sourceProjectId: sourceProjectId
+          sourceBucketId: sourceBucketId
+        )
+      )
 
     createTable: (bucketId, name, columns) ->
       @http(
@@ -432,6 +445,25 @@
         url: @url '/storage/buckets/'
         method: 'GET'
         params: params
+      )
+
+    getSharedBuckets: (params) ->
+      @http(
+        url: @url '/storage/shared-buckets/'
+        method: 'GET'
+        params: params
+      )
+
+    shareBucket: (bucketId) ->
+      @http(
+        url: @url '/storage/buckets/' + bucketId + '/share'
+        method: 'POST'
+      )
+
+    unshareBucket: (bucketId) ->
+      @http(
+        url: @url '/storage/buckets/' + bucketId + '/share'
+        method: 'DELETE'
       )
 
     getBucket: (id) ->
