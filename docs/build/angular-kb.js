@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.16.5 - 2016-08-31
+ * @version v0.16.6 - 2016-12-22
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -961,6 +961,22 @@
         });
       };
 
+      StorageService.prototype.linkBucket = function(stage, name, sourceProjectId, sourceBucketId) {
+        return this.http({
+          url: this.url("/storage/buckets"),
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          data: $.param({
+            name: name,
+            stage: stage,
+            sourceProjectId: sourceProjectId,
+            sourceBucketId: sourceBucketId
+          })
+        });
+      };
+
       StorageService.prototype.createTable = function(bucketId, name, columns) {
         return this.http({
           url: this.url("/storage/buckets/" + bucketId + "/tables"),
@@ -1327,6 +1343,28 @@
           url: this.url('/storage/buckets/'),
           method: 'GET',
           params: params
+        });
+      };
+
+      StorageService.prototype.getSharedBuckets = function(params) {
+        return this.http({
+          url: this.url('/storage/shared-buckets/'),
+          method: 'GET',
+          params: params
+        });
+      };
+
+      StorageService.prototype.shareBucket = function(bucketId) {
+        return this.http({
+          url: this.url('/storage/buckets/' + bucketId + '/share'),
+          method: 'POST'
+        });
+      };
+
+      StorageService.prototype.unshareBucket = function(bucketId) {
+        return this.http({
+          url: this.url('/storage/buckets/' + bucketId + '/share'),
+          method: 'DELETE'
         });
       };
 
