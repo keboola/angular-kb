@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.16.6 - 2016-12-22
+ * @version v0.16.7 - 2016-12-27
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -864,6 +864,10 @@
 
       Token.prototype.isAdminToken = function() {
         return !!this.data.admin;
+      };
+
+      Token.prototype.isOrganizationMember = function() {
+        return this.isAdminToken() === true && this.data.admin.isOrganizationMember === true;
       };
 
       return Token;
