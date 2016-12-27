@@ -57,6 +57,9 @@
     isAdminToken: ->
       !!@data.admin
 
+    isOrganizationMember: ->
+      @isAdminToken() is true and @data.admin.isOrganizationMember is true
+
   class StorageService
 
     constructor: (@$http, @$rootScope, @csv, @multipartUpload, @$q, @$timeout) ->
