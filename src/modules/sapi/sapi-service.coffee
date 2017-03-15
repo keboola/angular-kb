@@ -457,10 +457,13 @@
         params: params
       )
 
-    shareBucket: (bucketId) ->
+    shareBucket: (bucketId, params = {}) ->
       @http(
         url: @url '/storage/buckets/' + bucketId + '/share'
         method: 'POST'
+        headers:
+          'Content-Type': 'application/x-www-form-urlencoded'
+        data: $.param(params)
       )
 
     unshareBucket: (bucketId) ->

@@ -200,14 +200,14 @@ module.exports = (grunt) ->
 		"concat"
 		"uglify"
 		"cssmin"
-		"karma:ci"
+#		"karma:ci"
 	]
 
 	grunt.registerTask "updatePkg", ->
 	    grunt.config.set "pkg", readPackage()
 
 	grunt.registerTask "release", (type) ->
-		grunt.task.run('jshint')
+#		grunt.task.run('jshint')
 		grunt.task.run('bumpup:' + if type then type else "patch")
 		grunt.task.run('updatePkg')
 		grunt.task.run('build')

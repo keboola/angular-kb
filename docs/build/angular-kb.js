@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.16.7 - 2016-12-27
+ * @version v0.17.0 - 2017-03-15
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -1358,10 +1358,17 @@
         });
       };
 
-      StorageService.prototype.shareBucket = function(bucketId) {
+      StorageService.prototype.shareBucket = function(bucketId, params) {
+        if (params == null) {
+          params = {};
+        }
         return this.http({
           url: this.url('/storage/buckets/' + bucketId + '/share'),
-          method: 'POST'
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          data: $.param(params)
         });
       };
 
