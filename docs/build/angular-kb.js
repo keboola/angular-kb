@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.17.0 - 2017-03-15
+ * @version v0.17.0 - 2017-07-13
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -8,7 +8,7 @@
 
   angular.module('kb.templates', []);
 
-  angular.module('kb', ['kb.config', 'kb.ui.inlineEdit', 'kb.ui.clickToggle', 'kb.ui.copyButton', 'kb.ui.nl2br', 'kb.ui.sapiEventsTable', 'kb.ui.loader', 'kb.ui.autoComplete', 'kb.ui.focus', 'kb.ui.tree', 'kb.ui.runButton', 'kb.ui.runIcon', 'kb.ui.codemirror', 'kb.ui.datetime', 'kb.ui.duration', 'kb.ui.sapiConsoleHref', 'kb.ui.sapiComponentIcon', 'kb.ui.confirm', 'kb.ui.check', 'kb.ui.searchFilter', 'kb.ui.urlize', 'kb.ui.notifications', 'kb.ui.configurationDescription', 'kb.ui.protected', 'kb.ui.extractorInfo', 'kb.ui.sapiInput', 'kb.utils.multipartUpload', 'kb.utils.csv', 'kb.utils.keyboardShortcuts', 'kb.utils.appVersion', 'kb.utils.events', 'kb.utils.notifications', 'kb.filters.date', 'kb.filters.filesize', 'kb.filters.webalize', 'kb.filters.duration', 'kb.sapi.sapiService', 'kb.sapi.eventsService', 'kb.sapi.errorHandler', 'kb.syrup.asyncRunner', 'kb.templates']);
+  angular.module('kb', ['kb.config', 'kb.ui.inlineEdit', 'kb.ui.clickToggle', 'kb.ui.copyButton', 'kb.ui.nl2br', 'kb.ui.sapiEventsTable', 'kb.ui.loader', 'kb.ui.autoComplete', 'kb.ui.focus', 'kb.ui.tree', 'kb.ui.runButton', 'kb.ui.runIcon', 'kb.ui.codemirror', 'kb.ui.datetime', 'kb.ui.duration', 'kb.ui.sapiConsoleHref', 'kb.ui.sapiComponentIcon', 'kb.ui.confirm', 'kb.ui.check', 'kb.ui.searchFilter', 'kb.ui.urlize', 'kb.ui.notifications', 'kb.ui.configurationDescription', 'kb.ui.tableDescription', 'kb.ui.protected', 'kb.ui.extractorInfo', 'kb.ui.sapiInput', 'kb.utils.multipartUpload', 'kb.utils.csv', 'kb.utils.keyboardShortcuts', 'kb.utils.appVersion', 'kb.utils.events', 'kb.utils.notifications', 'kb.filters.date', 'kb.filters.filesize', 'kb.filters.webalize', 'kb.filters.duration', 'kb.sapi.sapiService', 'kb.sapi.eventsService', 'kb.sapi.errorHandler', 'kb.syrup.asyncRunner', 'kb.templates']);
 
 }).call(this);
 
@@ -1035,7 +1035,10 @@
       StorageService.prototype.getTable = function(id) {
         return this.http({
           url: this.url('/storage/tables/' + id),
-          method: 'GET'
+          method: 'GET',
+          params: {
+            include: "metadata,columnMetadata"
+          }
         });
       };
 
@@ -1432,6 +1435,45 @@
         });
       };
 
+      StorageService.prototype.updateColumnMetadata = function(columnId, data) {
+        var payload;
+        payload = this.prepareMetadataPayload(data);
+        return this.http({
+          url: this.url("/storage/columns/" + columnId + "/metadata"),
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          data: $.param(payload)
+        });
+      };
+
+      StorageService.prototype.updateTableMetadata = function(tableId, data) {
+        var payload;
+        payload = this.prepareMetadataPayload(data);
+        return this.http({
+          url: this.url("/storage/tables/" + tableId + "/metadata"),
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          data: $.param(payload)
+        });
+      };
+
+      StorageService.prototype.updateBucketMetadata = function(bucketId, data) {
+        var payload;
+        payload = this.prepareMetadataPayload(data);
+        return this.http({
+          url: this.url("/storage/buckets/" + bucketId + "/metadata"),
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          data: $.param(payload)
+        });
+      };
+
       StorageService.prototype.tableData = function(tableId, options, callback) {
         var csv, deferred, params, promise;
         if (options == null) {
@@ -1801,6 +1843,21 @@
           url: this.url("/storage/credentials/" + id),
           method: 'DELETE'
         });
+      };
+
+      StorageService.prototype.prepareMetadataPayload = function(data) {
+        var metadata;
+        metadata = [];
+        angular.forEach(data, function(v, k) {
+          return metadata = metadata.concat({
+            key: "KBC." + k,
+            value: v
+          });
+        });
+        return {
+          provider: "kbc-ui",
+          metadata: metadata
+        };
       };
 
       return StorageService;
@@ -2880,6 +2937,30 @@
           };
           return scope.hasQuery = function() {
             return !!scope.query;
+          };
+        }
+      };
+    }
+  ]);
+
+}).call(this);
+
+(function() {
+  angular.module('kb.ui.tableDescription', ['kb.sapi.sapiService', 'kb.ui.inlineEdit']).directive('kbTableDescription', [
+    'kbSapiService', function(storageService) {
+      return {
+        template: "<kb-inline-edit-textarea value=\"table.description\" edit-title=\"Click to edit the description\" placeholder=\"Describe the table...\" on-save=\"saveDescription(newValue)\"></kb-inline-edit-textarea>",
+        restrict: 'E',
+        scope: {
+          table: '='
+        },
+        link: function(scope) {
+          return scope.saveDescription = function() {
+            var data;
+            data = {
+              description: scope.table.description
+            };
+            return storageService.updateTableMetadata(scope.table.id, data);
           };
         }
       };
