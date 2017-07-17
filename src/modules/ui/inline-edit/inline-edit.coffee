@@ -54,7 +54,7 @@
 
           element.bind('keyup.inlineEdit', (e) ->
             # save on enter
-            scope.$apply(scope.save) if e.keyCode == 13 && element.get(0).tagName.toLocaleLowerCase() != 'kb-inline-edit-textarea'
+            scope.$apply(scope.save) if e.keyCode == 13 && element.get(0).tagName.toLocaleLowerCase() not in ['kb-inline-edit-textarea','kb-inline-edit-markdown']
 
             # close on escape
             scope.$apply(scope.cancel) if e.keyCode == 27
@@ -91,6 +91,7 @@
   .directive('kbInlineEdit', inlineEditFactory("kb/ui/inline-edit/templates/text.html"))
   .directive('kbInlineEditDatetime', inlineEditFactory("kb/ui/inline-edit/templates/datetime.html"))
   .directive('kbInlineEditTextarea', inlineEditFactory("kb/ui/inline-edit/templates/textarea.html"))
+  .directive('kbInlineEditMarkdown', inlineEditFactory("kb/ui/inline-edit/templates/markdown.html"))
   .directive('kbInlineEditSelect', ->
       config = inlineEditFactory("kb/ui/inline-edit/templates/select.html")()
       config.scope.options = '='

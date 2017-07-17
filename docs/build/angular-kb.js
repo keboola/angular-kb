@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.17.0 - 2017-07-13
+ * @version v0.17.0 - 2017-07-17
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -2437,7 +2437,8 @@
                   return e.stopPropagation();
                 });
                 element.bind('keyup.inlineEdit', function(e) {
-                  if (e.keyCode === 13 && element.get(0).tagName.toLocaleLowerCase() !== 'kb-inline-edit-textarea') {
+                  var _ref;
+                  if (e.keyCode === 13 && ((_ref = element.get(0).tagName.toLocaleLowerCase()) !== 'kb-inline-edit-textarea' && _ref !== 'kb-inline-edit-markdown')) {
                     scope.$apply(scope.save);
                   }
                   if (e.keyCode === 27) {
@@ -2472,7 +2473,7 @@
     };
     return module.factory('kbInlineEdit', function() {
       return inlineEditFactory;
-    }).directive('kbInlineEdit', inlineEditFactory("kb/ui/inline-edit/templates/text.html")).directive('kbInlineEditDatetime', inlineEditFactory("kb/ui/inline-edit/templates/datetime.html")).directive('kbInlineEditTextarea', inlineEditFactory("kb/ui/inline-edit/templates/textarea.html")).directive('kbInlineEditSelect', function() {
+    }).directive('kbInlineEdit', inlineEditFactory("kb/ui/inline-edit/templates/text.html")).directive('kbInlineEditDatetime', inlineEditFactory("kb/ui/inline-edit/templates/datetime.html")).directive('kbInlineEditTextarea', inlineEditFactory("kb/ui/inline-edit/templates/textarea.html")).directive('kbInlineEditMarkdown', inlineEditFactory("kb/ui/inline-edit/templates/markdown.html")).directive('kbInlineEditSelect', function() {
       var config;
       config = inlineEditFactory("kb/ui/inline-edit/templates/select.html")();
       config.scope.options = '=';
@@ -2949,7 +2950,7 @@
   angular.module('kb.ui.tableDescription', ['kb.sapi.sapiService', 'kb.ui.inlineEdit']).directive('kbTableDescription', [
     'kbSapiService', function(storageService) {
       return {
-        template: "<kb-inline-edit-textarea value=\"table.description\" edit-title=\"Click to edit the description\" placeholder=\"Describe the table...\" on-save=\"saveDescription(newValue)\"></kb-inline-edit-textarea>",
+        template: "<kb-inline-edit-markdown value=\"table.description\" edit-title=\"Click to edit the description\" placeholder=\"Describe the table...\" on-save=\"saveDescription(newValue)\"></kb-inline-edit-markdown>",
         restrict: 'E',
         scope: {
           table: '='
@@ -4007,6 +4008,24 @@ angular.module("kb.templates").run(["$templateCache", function($templateCache) {
     "    </div>\n" +
     "</div>\n" +
     "\n"
+  );
+
+  $templateCache.put("kb/ui/inline-edit/templates/markdown.html",
+    "<div class=\"static\" ng-hide=\"isEditing\" ng-click=\"edit()\" tooltip=\"{{ tooltipTitle }}\">\n" +
+    "    <div btf-markdown=\"value\"></div>\n" +
+    "    <a class=\"placeholder\" ng-show=\"!value\">\n" +
+    "        <i class=\"fa fa-pencil-square-o\"></i>\n" +
+    "        {{ placeholder }}\n" +
+    "    </a>\n" +
+    "</div>\n" +
+    "<div ng-show=\"isEditing\" class=\"editing\">\n" +
+    "  <textarea type=\"text\" ng-model=\"editValue\" placeholder=\"{{ placeholder }}\">\n" +
+    "  </textarea>\n" +
+    "    <div class=\"form-actions\">\n" +
+    "        <button class=\"btn btn-primary\" ng-click=\"save()\">Save</button>\n" +
+    "        <button class=\"btn btn-default\" ng-click=\"cancel()\">Cancel</button>\n" +
+    "    </div>\n" +
+    "</div>"
   );
 
   $templateCache.put("kb/ui/inline-edit/templates/multiselect.html",

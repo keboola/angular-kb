@@ -1,0 +1,15 @@
+<div class="static" ng-hide="isEditing" ng-click="edit()" tooltip="{{ tooltipTitle }}">
+    <div btf-markdown="value"></div>
+    <a class="placeholder" ng-show="!value">
+        <i class="fa fa-pencil-square-o"></i>
+        {{ placeholder }}
+    </a>
+</div>
+<div ng-show="isEditing" class="editing">
+  <textarea type="text" ng-model="editValue" placeholder="{{ placeholder }}">
+  </textarea>
+    <div class="form-actions">
+        <button class="btn btn-primary" ng-click="save()">Save</button>
+        <button class="btn btn-default" ng-click="cancel()">Cancel</button>
+    </div>
+</div>
