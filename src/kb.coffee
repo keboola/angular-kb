@@ -28,6 +28,7 @@ angular.module('kb', [
   'kb.ui.urlize'
   'kb.ui.notifications'
   'kb.ui.configurationDescription'
+  'kb.ui.tableDescription'
   'kb.ui.protected'
   'kb.ui.extractorInfo'
   'kb.ui.sapiInput'

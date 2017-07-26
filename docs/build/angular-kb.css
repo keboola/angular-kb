@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.17.0 - 2017-03-15
+ * @version v0.17.0 - 2017-07-17
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */
@@ -71,20 +71,24 @@
 /**
 * Textarea
 */
-.kb-inline-edit-textarea .static {
+.kb-inline-edit-textarea .static,
+.kb-inline-edit-markdown .static {
   display: block;
 }
 
-.kb-inline-edit-textarea textarea {
+.kb-inline-edit-textarea textarea,
+.kb-inline-edit-markdown textarea{
   width: 100%;
   min-height: 126px;
 }
 
-.kb-inline-edit-textarea .editing {
+.kb-inline-edit-textarea .editing,
+.kb-inline-edit-markdown .editing{
   display: block;
 }
 
-.kb-inline-edit-textarea .form-actions {
+.kb-inline-edit-textarea .form-actions,
+.kb-inline-edit-markdown .form-actions {
   padding: 10px 0px;
   margin-top: 0;
   margin-bottom: 10px;

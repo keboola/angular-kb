@@ -182,8 +182,9 @@
       @http(
         url: @url('/storage/tables/' + id)
         method: 'GET'
+        params:
+          include: "metadata,columnMetadata"
       )
-
 
     createTableSnapshot: (tableId, description = null) ->
       @http(
@@ -509,6 +510,36 @@
         headers:
           'Content-Type': 'application/x-www-form-urlencoded'
         data: $.param(params)
+      )
+
+    updateColumnMetadata: (columnId, data) ->
+      payload = this.prepareMetadataPayload(data)
+      @http(
+        url: @url "/storage/columns/#{columnId}/metadata"
+        method: 'POST'
+        headers:
+          'Content-Type': 'application/x-www-form-urlencoded'
+        data: $.param(payload)
+      )
+
+    updateTableMetadata: (tableId, data) ->
+      payload = this.prepareMetadataPayload(data)
+      @http(
+        url: @url "/storage/tables/#{tableId}/metadata"
+        method: 'POST'
+        headers:
+          'Content-Type': 'application/x-www-form-urlencoded'
+        data: $.param(payload)
+      )
+
+    updateBucketMetadata: (bucketId, data) ->
+      payload = this.prepareMetadataPayload(data)
+      @http(
+        url: @url "/storage/buckets/#{bucketId}/metadata"
+        method: 'POST'
+        headers:
+          'Content-Type': 'application/x-www-form-urlencoded'
+        data: $.param(payload)
       )
 
     # Read and parse table data
@@ -840,5 +871,18 @@
         url: @url "/storage/credentials/#{id}"
         method: 'DELETE'
       )
+
+    prepareMetadataPayload: (data) ->
+      metadata = []
+      angular.forEach(data, (v, k) ->
+        metadata = metadata.concat({
+          key: "KBC." + k,
+          value: v
+        })
+      )
+      return {
+        provider: "kbc-ui",
+        metadata: metadata
+      }
 
 )(window.angular)
