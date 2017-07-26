@@ -479,13 +479,9 @@
         method: 'GET'
       )
 
-    exportUrl: (tableId, limit) ->
-      @url '/storage/tables/' + tableId + '/export' +
+    dataPreviewUrl: (tableId, limit) ->
+      @url '/storage/tables/' + tableId + '/data-preview' +
       (if limit then '?limit=' + limit else '')
-
-    exportDownloadUrl: (tableId, limit) ->
-      @url '/storage/tables/' + tableId + '/export?token=' + @apiToken +
-      (if limit then '&limit=' + limit else '')
 
     saveTableData: (tableId, rawData, options) ->
       params = angular.extend {}, options, dataString: rawData
@@ -552,7 +548,7 @@
       params = if angular.isNumber(options) then limit: options else options
 
       @http(
-        url: @exportUrl(tableId) + "?" + $.param(params)
+        url: @dataPreviewUrl(tableId) + "?" + $.param(params)
         method: 'GET'
       ).success((data) ->
         parsed = csv.parse(data)
