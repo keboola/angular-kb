@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v0.17.0 - 2017-07-17
+ * @version v1.0.0 - 2017-07-26
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -1389,12 +1389,8 @@
         });
       };
 
-      StorageService.prototype.exportUrl = function(tableId, limit) {
-        return this.url('/storage/tables/' + tableId + '/export' + (limit ? '?limit=' + limit : ''));
-      };
-
-      StorageService.prototype.exportDownloadUrl = function(tableId, limit) {
-        return this.url('/storage/tables/' + tableId + '/export?token=' + this.apiToken + (limit ? '&limit=' + limit : ''));
+      StorageService.prototype.dataPreviewUrl = function(tableId, limit) {
+        return this.url('/storage/tables/' + tableId + '/data-preview' + (limit ? '?limit=' + limit : ''));
       };
 
       StorageService.prototype.saveTableData = function(tableId, rawData, options) {
@@ -1488,7 +1484,7 @@
           limit: options
         } : options;
         this.http({
-          url: this.exportUrl(tableId) + "?" + $.param(params),
+          url: this.dataPreviewUrl(tableId) + "?" + $.param(params),
           method: 'GET'
         }).success(function(data) {
           var parsed;
