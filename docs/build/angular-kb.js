@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v1.0.0 - 2017-07-26
+ * @version v1.0.0 - 2017-07-31
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -4007,12 +4007,14 @@ angular.module("kb.templates").run(["$templateCache", function($templateCache) {
   );
 
   $templateCache.put("kb/ui/inline-edit/templates/markdown.html",
-    "<div class=\"static\" ng-hide=\"isEditing\" ng-click=\"edit()\" tooltip=\"{{ tooltipTitle }}\">\n" +
+    "<div ng-hide=\"isEditing\">\n" +
+    "    <div class=\"text-right\">\n" +
+    "        <a class=\"placeholder\" tooltip=\"{{ tooltipTitle }}\" ng-click=\"edit()\">\n" +
+    "            <i class=\"fa fa-pencil-square-o\"></i>\n" +
+    "            {{ placeholder }}\n" +
+    "        </a>\n" +
+    "    </div>\n" +
     "    <div btf-markdown=\"value\"></div>\n" +
-    "    <a class=\"placeholder\" ng-show=\"!value\">\n" +
-    "        <i class=\"fa fa-pencil-square-o\"></i>\n" +
-    "        {{ placeholder }}\n" +
-    "    </a>\n" +
     "</div>\n" +
     "<div ng-show=\"isEditing\" class=\"editing\">\n" +
     "  <textarea type=\"text\" ng-model=\"editValue\" placeholder=\"{{ placeholder }}\">\n" +

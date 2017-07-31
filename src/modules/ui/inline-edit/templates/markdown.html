@@ -1,9 +1,11 @@
-<div class="static" ng-hide="isEditing" ng-click="edit()" tooltip="{{ tooltipTitle }}">
+<div ng-hide="isEditing">
+    <div class="text-right">
+        <a class="placeholder" tooltip="{{ tooltipTitle }}" ng-click="edit()">
+            <i class="fa fa-pencil-square-o"></i>
+            {{ placeholder }}
+        </a>
+    </div>
     <div btf-markdown="value"></div>
-    <a class="placeholder" ng-show="!value">
-        <i class="fa fa-pencil-square-o"></i>
-        {{ placeholder }}
-    </a>
 </div>
 <div ng-show="isEditing" class="editing">
   <textarea type="text" ng-model="editValue" placeholder="{{ placeholder }}">
