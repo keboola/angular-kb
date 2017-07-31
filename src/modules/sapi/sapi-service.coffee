@@ -111,7 +111,7 @@
         method: 'GET'
       )
 
-    createBucket: (stage, name, description, backend = 'mysql') ->
+    createBucket: (stage, name, backend = 'mysql') ->
       @http(
         url: @url("/storage/buckets")
         method: 'POST'
@@ -120,7 +120,6 @@
         data: $.param(
           name: name
           stage: stage
-          description: description
           backend: backend
         )
       )
@@ -877,7 +876,7 @@
         })
       )
       return {
-        provider: "kbc-ui",
+        provider: "user",
         metadata: metadata
       }
 

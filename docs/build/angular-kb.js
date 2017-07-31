@@ -8,7 +8,7 @@
 
   angular.module('kb.templates', []);
 
-  angular.module('kb', ['kb.config', 'kb.ui.inlineEdit', 'kb.ui.clickToggle', 'kb.ui.copyButton', 'kb.ui.nl2br', 'kb.ui.sapiEventsTable', 'kb.ui.loader', 'kb.ui.autoComplete', 'kb.ui.focus', 'kb.ui.tree', 'kb.ui.runButton', 'kb.ui.runIcon', 'kb.ui.codemirror', 'kb.ui.datetime', 'kb.ui.duration', 'kb.ui.sapiConsoleHref', 'kb.ui.sapiComponentIcon', 'kb.ui.confirm', 'kb.ui.check', 'kb.ui.searchFilter', 'kb.ui.urlize', 'kb.ui.notifications', 'kb.ui.configurationDescription', 'kb.ui.tableDescription', 'kb.ui.protected', 'kb.ui.extractorInfo', 'kb.ui.sapiInput', 'kb.utils.multipartUpload', 'kb.utils.csv', 'kb.utils.keyboardShortcuts', 'kb.utils.appVersion', 'kb.utils.events', 'kb.utils.notifications', 'kb.filters.date', 'kb.filters.filesize', 'kb.filters.webalize', 'kb.filters.duration', 'kb.sapi.sapiService', 'kb.sapi.eventsService', 'kb.sapi.errorHandler', 'kb.syrup.asyncRunner', 'kb.templates']);
+  angular.module('kb', ['kb.config', 'kb.ui.inlineEdit', 'kb.ui.clickToggle', 'kb.ui.copyButton', 'kb.ui.nl2br', 'kb.ui.sapiEventsTable', 'kb.ui.loader', 'kb.ui.autoComplete', 'kb.ui.focus', 'kb.ui.tree', 'kb.ui.runButton', 'kb.ui.runIcon', 'kb.ui.codemirror', 'kb.ui.datetime', 'kb.ui.duration', 'kb.ui.sapiConsoleHref', 'kb.ui.sapiComponentIcon', 'kb.ui.confirm', 'kb.ui.check', 'kb.ui.searchFilter', 'kb.ui.urlize', 'kb.ui.notifications', 'kb.ui.configurationDescription', 'kb.ui.bucketDescription', 'kb.ui.tableDescription', 'kb.ui.protected', 'kb.ui.extractorInfo', 'kb.ui.sapiInput', 'kb.utils.multipartUpload', 'kb.utils.csv', 'kb.utils.keyboardShortcuts', 'kb.utils.appVersion', 'kb.utils.events', 'kb.utils.notifications', 'kb.filters.date', 'kb.filters.filesize', 'kb.filters.webalize', 'kb.filters.duration', 'kb.sapi.sapiService', 'kb.sapi.eventsService', 'kb.sapi.errorHandler', 'kb.syrup.asyncRunner', 'kb.templates']);
 
 }).call(this);
 
@@ -946,7 +946,7 @@
         });
       };
 
-      StorageService.prototype.createBucket = function(stage, name, description, backend) {
+      StorageService.prototype.createBucket = function(stage, name, backend) {
         if (backend == null) {
           backend = 'mysql';
         }
@@ -959,7 +959,6 @@
           data: $.param({
             name: name,
             stage: stage,
-            description: description,
             backend: backend
           })
         });
@@ -1851,7 +1850,7 @@
           });
         });
         return {
-          provider: "kbc-ui",
+          provider: "user",
           metadata: metadata
         };
       };
@@ -2282,6 +2281,54 @@
               return dateFilter(scope.datetime, 'fullDate');
             }
             return scope.datetime;
+          };
+        }
+      };
+    }
+  ]);
+
+}).call(this);
+
+(function() {
+  angular.module('kb.ui.bucketDescription', ['kb.sapi.sapiService', 'kb.ui.inlineEdit']).directive('kbBucketDescription', [
+    'kbSapiService', function(storageService) {
+      return {
+        template: "<kb-inline-edit-markdown value=\"bucket.description\" edit-title=\"Click to edit the description\" placeholder=\"Describe the bucket...\" on-save=\"saveDescription(newValue)\"></kb-inline-edit-markdown>",
+        restrict: 'E',
+        scope: {
+          bucket: '='
+        },
+        link: function(scope) {
+          return scope.saveDescription = function() {
+            var data;
+            data = {
+              description: scope.bucket.description
+            };
+            return storageService.updateBucketMetadata(scope.bucket.id, data);
+          };
+        }
+      };
+    }
+  ]);
+
+}).call(this);
+
+(function() {
+  angular.module('kb.ui.tableDescription', ['kb.sapi.sapiService', 'kb.ui.inlineEdit']).directive('kbTableDescription', [
+    'kbSapiService', function(storageService) {
+      return {
+        template: "<kb-inline-edit-markdown value=\"table.description\" edit-title=\"Click to edit the description\" placeholder=\"Describe the table...\" on-save=\"saveDescription(newValue)\"></kb-inline-edit-markdown>",
+        restrict: 'E',
+        scope: {
+          table: '='
+        },
+        link: function(scope) {
+          return scope.saveDescription = function() {
+            var data;
+            data = {
+              description: scope.table.description
+            };
+            return storageService.updateTableMetadata(scope.table.id, data);
           };
         }
       };
@@ -2934,30 +2981,6 @@
           };
           return scope.hasQuery = function() {
             return !!scope.query;
-          };
-        }
-      };
-    }
-  ]);
-
-}).call(this);
-
-(function() {
-  angular.module('kb.ui.tableDescription', ['kb.sapi.sapiService', 'kb.ui.inlineEdit']).directive('kbTableDescription', [
-    'kbSapiService', function(storageService) {
-      return {
-        template: "<kb-inline-edit-markdown value=\"table.description\" edit-title=\"Click to edit the description\" placeholder=\"Describe the table...\" on-save=\"saveDescription(newValue)\"></kb-inline-edit-markdown>",
-        restrict: 'E',
-        scope: {
-          table: '='
-        },
-        link: function(scope) {
-          return scope.saveDescription = function() {
-            var data;
-            data = {
-              description: scope.table.description
-            };
-            return storageService.updateTableMetadata(scope.table.id, data);
           };
         }
       };
