@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v1.0.2 - 2017-08-14
+ * @version v1.0.2 - 2018-02-21
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -1330,6 +1330,14 @@
           angular.forEach(_.sortBy(tmpBuckets, function(bucket) {
             return bucket.id;
           }), function(bucket) {
+            var metadataName, nameMeta;
+            nameMeta = _.filter(bucket.metadata, function(entry) {
+              return entry.key === "KBC.name" && entry.provider === "user";
+            });
+            if (nameMeta[0] != null) {
+              metadataName = nameMeta[0]['value'];
+            }
+            bucket.name = metadataName ? metadataName : bucket.id;
             return buckets.push(bucket);
           });
           return deferred.resolve(buckets);

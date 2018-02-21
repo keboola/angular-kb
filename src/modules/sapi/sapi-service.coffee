@@ -429,6 +429,11 @@
         # set buckets
         angular.forEach(_.sortBy(tmpBuckets, (bucket) ->
           bucket.id), (bucket) ->
+          nameMeta = _.filter(bucket.metadata, (entry) ->
+            entry.key == "KBC.name" and entry.provider == "user"
+          )
+          metadataName = nameMeta[0]['value'] if nameMeta[0]?
+          bucket.name = if metadataName then metadataName else bucket.id
           buckets.push bucket
         )
         deferred.resolve(buckets)
