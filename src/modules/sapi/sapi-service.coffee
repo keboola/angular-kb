@@ -222,10 +222,12 @@
         params: params
       )
 
-    deleteTable: (id) ->
+    deleteTable: (id, force) ->
       @http(
         url: @url '/storage/tables/' + id
         method: 'DELETE'
+        params:
+          force: force
       )
 
     unlinkTable: (id) ->
@@ -237,10 +239,12 @@
       )
 
     # columns
-    deleteTableColumn: (tableId, columnName) ->
+    deleteTableColumn: (tableId, columnName, force) ->
       @http(
         url: @url "/storage/tables/#{tableId}/columns/#{columnName}"
         method: 'DELETE'
+        params:
+          force: force
       )
 
     addTableColumn: (tableId, columnName) ->
