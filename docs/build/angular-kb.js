@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v1.1.0 - 2018-06-20
+ * @version v1.2.0 - 2018-09-25
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -1373,6 +1373,20 @@
         return this.http({
           url: this.url('/storage/buckets/' + bucketId + '/share'),
           method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          data: $.param(params)
+        });
+      };
+
+      StorageService.prototype.changeBucketShareType = function(bucketId, params) {
+        if (params == null) {
+          params = {};
+        }
+        return this.http({
+          url: this.url('/storage/buckets/' + bucketId + '/share'),
+          method: 'PUT',
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
           },
