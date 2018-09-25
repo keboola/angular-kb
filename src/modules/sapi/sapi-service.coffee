@@ -470,6 +470,15 @@
         data: $.param(params)
       )
 
+    changeBucketShareType: (bucketId, params = {}) ->
+      @http(
+        url: @url '/storage/buckets/' + bucketId + '/share'
+        method: 'PUT'
+        headers:
+          'Content-Type': 'application/x-www-form-urlencoded'
+        data: $.param(params)
+      )
+
     unshareBucket: (bucketId) ->
       @http(
         url: @url '/storage/buckets/' + bucketId + '/share'
