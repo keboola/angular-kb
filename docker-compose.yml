@@ -6,3 +6,4 @@ services:
         context: .
       volumes:
           - ./:/code
+      working_dir: /code/
