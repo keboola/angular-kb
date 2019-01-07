@@ -20,6 +20,15 @@ Recommended angular libraries:
 * Initial build `grunt`
 * Watch and test `grunt devel`
 
+### Docker
+Or use docker.
+```
+docker-compose run node bash
+yarn && bower install --dev --allow-root
+grunt
+grunt watch
+```
+
 [Development with Karma Test Runner intro](http://www.youtube.com/watch?v=MVw8N3hTfCI)
 
 Before adding any directive please check that directive isn't already implemented in libraries mentioned above.
