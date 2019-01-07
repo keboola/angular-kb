@@ -1,6 +1,6 @@
 /**
  * KB - extensions library for AngularJS
- * @version v1.2.0 - 2018-09-25
+ * @version v1.2.0 - 2019-01-07
  * @link 
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function() {
@@ -1487,6 +1487,51 @@
           },
           data: $.param(payload)
         });
+      };
+
+      StorageService.prototype.jsonTableData = function(tableId, options, callback) {
+        var deferred, params, promise;
+        if (options == null) {
+          options = {};
+        }
+        if (callback == null) {
+          callback = null;
+        }
+        deferred = this.$q.defer();
+        params = angular.isNumber(options) ? {
+          limit: options
+        } : options;
+        params.format = "json";
+        this.http({
+          url: this.dataPreviewUrl(tableId) + "?" + $.param(params),
+          method: 'GET'
+        }).success(function(data) {
+          if (callback) {
+            callback(data);
+          }
+          return deferred.resolve(data);
+        }).error(function(data, status, headers, config) {
+          return deferred.reject({
+            data: data,
+            status: status,
+            headers: headers,
+            config: config
+          });
+        });
+        promise = deferred.promise;
+        promise.success = function(fn) {
+          promise.then(function(data) {
+            return fn(data);
+          });
+          return promise;
+        };
+        promise.error = function(fn) {
+          promise.then(null, function(response) {
+            return fn(response.data, response.status, response.headers);
+          });
+          return promise;
+        };
+        return promise;
       };
 
       StorageService.prototype.tableData = function(tableId, options, callback) {
