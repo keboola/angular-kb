@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+    node: &baseConfig
+      build:
+        context: .
+      volumes:
+          - ./:/code
+      working_dir: /code/
+
+    karma:
+      <<: *baseConfig
+      command: /code/node_modules/.bin/karma start /code/karma.conf.js
+
+    tests:
+      <<: *baseConfig
+      links:
+        - karma
+      command: /code/node_modules/.bin/karma run /code/karma.conf.js
