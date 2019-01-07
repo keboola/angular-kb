@@ -56,7 +56,7 @@ describe 'kb.sapi.service', ->
 
     it 'should accept options', ->
       $httpBackend
-        .expectGET("#{sapiBaseUrl}/v2/storage/tables/in.c-tests.users/export?" + $.param
+        .expectGET("#{sapiBaseUrl}/v2/storage/tables/in.c-tests.users/data-preview?" + $.param
           limit: 10
           whereColumn: 'id'
           whereValues: [234]
@@ -70,9 +70,16 @@ describe 'kb.sapi.service', ->
       )
       $httpBackend.flush()
 
+    it 'should use json format', ->
+      $httpBackend
+        .expectGET("#{sapiBaseUrl}/v2/storage/tables/in.c-tests.users/data-preview?limit=10&format=json")
+        .respond(200, {"columns":["id"],"rows":[]})
+      sapiService.jsonTableData('in.c-tests.users', 10)
+      $httpBackend.flush()
+
     it 'should keep limit parameter BC', ->
       $httpBackend
-        .expectGET("#{sapiBaseUrl}/v2/storage/tables/in.c-tests.users/export?limit=10")
+        .expectGET("#{sapiBaseUrl}/v2/storage/tables/in.c-tests.users/data-preview?limit=10")
         .respond(200, '"id","name"')
 
       sapiService.tableData('in.c-tests.users', 10)
@@ -80,14 +87,14 @@ describe 'kb.sapi.service', ->
 
     it 'should not require options', ->
       $httpBackend
-        .expectGET("#{sapiBaseUrl}/v2/storage/tables/in.c-tests.users/export?")
+        .expectGET("#{sapiBaseUrl}/v2/storage/tables/in.c-tests.users/data-preview?")
         .respond(200, '"id","name"')
       sapiService.tableData('in.c-tests.users')
       $httpBackend.flush()
 
     it 'should propagate error', ->
       $httpBackend
-        .expectGET("#{sapiBaseUrl}/v2/storage/tables/in.c-tests.users/export?")
+        .expectGET("#{sapiBaseUrl}/v2/storage/tables/in.c-tests.users/data-preview?")
         .respond(500,
           'error': 'Unknown error'
         )
