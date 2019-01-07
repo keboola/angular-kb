@@ -550,12 +550,47 @@
         data: $.param(payload)
       )
 
+    jsonTableData: (tableId, options = {}, callback = null) ->
+      deferred = @$q.defer()
+      # BC compatibility
+      params = if angular.isNumber(options) then limit: options else options
+      params.format = "json"
+
+      @http(
+        url: @dataPreviewUrl(tableId) + "?" + $.param(params)
+        method: 'GET'
+      ).success((data) ->
+        callback(data) if callback
+        deferred.resolve(data)
+      )
+      .error((data, status, headers, config) ->
+          deferred.reject(
+            data: data
+            status: status
+            headers: headers
+            config: config
+          )
+        )
+      promise = deferred.promise
+      promise.success = (fn) ->
+        promise.then((data) ->
+          fn(data)
+        )
+        promise
+
+      promise.error = (fn) ->
+        promise.then(null, (response) ->
+          fn(response.data, response.status, response.headers)
+        )
+        promise
+
+      return promise
+
     # Read and parse table data
     # returns promise
     tableData: (tableId, options = {}, callback = null) ->
       csv = @csv
       deferred = @$q.defer()
-
       # BC compatibility
       params = if angular.isNumber(options) then limit: options else options
 
