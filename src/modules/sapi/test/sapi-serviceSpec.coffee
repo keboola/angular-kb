@@ -70,6 +70,13 @@ describe 'kb.sapi.service', ->
       )
       $httpBackend.flush()
 
+    it 'should use json format', ->
+      $httpBackend
+        .expectGET("#{sapiBaseUrl}/v2/storage/tables/in.c-tests.users/data-preview?limit=10&format=json")
+        .respond(200, {"columns":["id"],"rows":[]})
+      sapiService.jsonTableData('in.c-tests.users', 10)
+      $httpBackend.flush()
+
     it 'should keep limit parameter BC', ->
       $httpBackend
         .expectGET("#{sapiBaseUrl}/v2/storage/tables/in.c-tests.users/export?limit=10")
