@@ -54,3 +54,7 @@ Before adding any directive please check that directive isn't already implemente
 
 ## Release History
 See the [CHANGELOG](CHANGELOG.md).
+
+## License
+
+MIT licensed, see [LICENSE](./LICENSE) file.
